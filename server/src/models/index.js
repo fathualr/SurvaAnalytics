@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import Sequelize from 'sequelize';
 import process from 'process';
 import config from '../config/database.js';
@@ -26,7 +26,8 @@ const files = fs.readdirSync(__dirname).filter(file =>
 );
 
 for (const file of files) {
-  const { default: modelFactory } = await import(path.join(__dirname, file));
+  const fileUrl = pathToFileURL(path.join(__dirname, file));
+  const { default: modelFactory } = await import(fileUrl.href);
   const model = modelFactory(sequelize, Sequelize.DataTypes);
   db[model.name] = model;
 }
