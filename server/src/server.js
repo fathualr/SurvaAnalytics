@@ -1,11 +1,11 @@
 import 'dotenv/config';
 
 import app from './app.js';
-import { testConnection } from './config/database.js';
+import { testDatabaseConnection } from './services/database.js';
 
 const PORT = process.env.PORT || 5000;
 
-testConnection().then((isConnected) => {
+testDatabaseConnection().then((isConnected) => {
   if (isConnected) {
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
