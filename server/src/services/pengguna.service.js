@@ -14,25 +14,30 @@ export const create = async (userData) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const user = await Pengguna.create(userData, { transaction });
+    const user = await Pengguna.create({
+      ...userData,
+      email_confirmed: true,
+    }, { transaction });
 
     if (userData.role === 'admin') {
+      const adminData = userData.admin ?? {};
       await Admin.create({ 
         id_pengguna: user.id,
-        nama_admin: userData.nama_admin,
-        kontak_darurat: userData.kontak_darurat 
+        nama_admin: adminData.nama_admin,
+        kontak_darurat: adminData.kontak_darurat
       }, { transaction });
     } else {
+      const umumData = userData.umum ?? {};
       await Umum.create({
         id_pengguna: user.id,
-        nama: userData.nama,
-        profil_responden: userData.profil_responden || {},
-        profil_klien: userData.profil_klien || {}
+        nama: umumData.nama,
+        profil_responden: umumData.profil_responden,
+        profil_klien: umumData.profil_klien
       }, { transaction });
     }
 
     await transaction.commit();
-    return user;
+    return await Pengguna.findByPk(user.id, { include: [Admin, Umum] });
   } catch (error) {
     await transaction.rollback();
     throw error;
@@ -56,27 +61,27 @@ export const update = async (userId, updateData) => {
   try {
     const user = await Pengguna.findByPk(userId, { transaction });
     if (!user) throw new Error('User not found');
+
+    if (updateData.role && updateData.role !== user.role) {
+      throw new Error('Role cannot be changed');
+    }
+
     await user.update(updateData, { transaction });
-
-    if (updateData.role) {
-      if (user.role === 'admin') {
-        await Admin.destroy({ where: { id_pengguna: userId }, transaction });
-      } else {
-        await Umum.destroy({ where: { id_pengguna: userId }, transaction });
-      }
-
-      if (updateData.role === 'admin') {
-        await Admin.create({
-          id_pengguna: userId,
-          nama_admin: updateData.nama_admin,
-          kontak_darurat: updateData.kontak_darurat
+    if (user.role === 'admin') {
+      const admin = await Admin.findOne({ where: { id_pengguna: userId }, transaction });
+      if (admin && updateData.admin) {
+        await admin.update({
+          nama_admin: updateData.admin.nama_admin,
+          kontak_darurat: updateData.admin.kontak_darurat
         }, { transaction });
-      } else {
-        await Umum.create({
-          id_pengguna: userId,
-          nama: updateData.nama,
-          profil_responden: updateData.profil_responden || {},
-          profil_klien: updateData.profil_klien || {}
+      }
+    } else {
+      const umum = await Umum.findOne({ where: { id_pengguna: userId }, transaction });
+      if (umum && updateData.umum) {
+        await umum.update({
+          nama: updateData.umum.nama,
+          profil_responden: updateData.umum.profil_responden,
+          profil_klien: updateData.umum.profil_klien
         }, { transaction });
       }
     }
