@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 export default (sequelize, DataTypes) => {
   const Pengguna = sequelize.define('Pengguna', {
     id: {
@@ -48,6 +50,18 @@ export default (sequelize, DataTypes) => {
     timestamps: true,
     underscored: true,
     paranoid: false,
+    hooks: {
+      beforeCreate: async (pengguna) => {
+        if (pengguna.password) {
+          pengguna.password = await bcrypt.hash(pengguna.password, 10);
+        }
+      },
+      beforeUpdate: async (pengguna) => {
+        if (pengguna.changed('password')) {
+          pengguna.password = await bcrypt.hash(pengguna.password, 10);
+        }
+      },
+    }
   });
 
   Pengguna.associate = (models) => {
