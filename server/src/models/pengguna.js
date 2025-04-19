@@ -48,6 +48,8 @@ export default (sequelize, DataTypes) => {
   }, {
     tableName: 'pengguna',
     timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
     underscored: true,
     paranoid: false,
     hooks: {

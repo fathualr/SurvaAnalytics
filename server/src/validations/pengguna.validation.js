@@ -3,14 +3,14 @@ import Joi from 'joi';
 const adminSchema = Joi.object({
   nama_admin: Joi.string().max(255).optional(),
   kontak_darurat: Joi.string().max(255).optional(),
-}).required();
+}).optional();
 
 const umumSchema = Joi.object({
   nama: Joi.string().max(255).optional(),
   profil_responden: Joi.object().optional(),
   profil_klien: Joi.object().optional(),
   poin: Joi.forbidden(),
-}).required();
+}).optional();
 
 export const createPenggunaSchema = Joi.object({
   email: Joi.string().email().max(255).required(),

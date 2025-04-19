@@ -12,10 +12,11 @@ export default (sequelize, DataTypes) => {
         model: 'Pengguna',
         key: 'id',
       },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     nama: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
+      type: DataTypes.STRING(255)
     },
     profil_responden: {
       type: DataTypes.JSONB,

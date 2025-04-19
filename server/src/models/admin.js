@@ -12,10 +12,11 @@ export default (sequelize, DataTypes) => {
         model: 'Pengguna',
         key: 'id',
       },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     nama_admin: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
+      type: DataTypes.STRING(255)
     },
     kontak_darurat: {
       type: DataTypes.STRING(255),
