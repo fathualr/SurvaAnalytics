@@ -44,30 +44,14 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATEONLY,
       allowNull: false,
       validate: {
-        isDate: true,
-        isValidTanggalMulai(value) {
-          const today = new Date();
-          const minDate = new Date(today);
-          minDate.setDate(minDate.getDate() + 3);
-    
-          const inputDate = new Date(value);
-    
-          if (inputDate < minDate) {
-            throw new Error('tanggal_mulai must be at least 3 days from today.');
-          }
-        }
+        isDate: true
       }
     },
     tanggal_berakhir: {
       type: DataTypes.DATEONLY,
       allowNull: false,
       validate: {
-        isDate: true,
-        isValidTanggalBerakhir() {
-          if (this.tanggal_berakhir <= this.tanggal_mulai) {
-            throw new Error('tanggal_berakhir must be later than tanggal_mulai.');
-          }
-        }
+        isDate: true
       }
     },
     hadiah_poin: {
