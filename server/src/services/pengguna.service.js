@@ -10,26 +10,26 @@ export const index = async () => {
   });
 };
 
-export const create = async (userData) => {
+export const create = async (penggunaData) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const user = await Pengguna.create({
-      ...userData,
+    const pengguna = await Pengguna.create({
+      ...penggunaData,
       email_confirmed: true,
     }, { transaction });
 
-    if (userData.role === 'admin') {
-      const adminData = userData.admin ?? {};
+    if (penggunaData.role === 'admin') {
+      const adminData = penggunaData.admin ?? {};
       await Admin.create({ 
-        id_pengguna: user.id,
+        id_pengguna: pengguna.id,
         nama_admin: adminData.nama_admin,
         kontak_darurat: adminData.kontak_darurat
       }, { transaction });
     } else {
-      const umumData = userData.umum ?? {};
+      const umumData = penggunaData.umum ?? {};
       await Umum.create({
-        id_pengguna: user.id,
+        id_pengguna: pengguna.id,
         nama: umumData.nama,
         profil_responden: umumData.profil_responden,
         profil_klien: umumData.profil_klien
@@ -37,38 +37,38 @@ export const create = async (userData) => {
     }
 
     await transaction.commit();
-    return await Pengguna.findByPk(user.id, { include: [Admin, Umum] });
+    return await Pengguna.findByPk(pengguna.id, { include: [Admin, Umum] });
   } catch (error) {
     await transaction.rollback();
     throw error;
   }
 };
 
-export const show = async (userId) => {
-  const user = await Pengguna.findByPk(userId, {
+export const show = async (penggunaId) => {
+  const pengguna = await Pengguna.findByPk(penggunaId, {
     include: [
       { model: Admin, required: false },
       { model: Umum, required: false }
     ]
   });
-  if (!user) throw new Error('User not found');
-  return user;
+  if (!pengguna) throw new Error('Pengguna not found');
+  return pengguna;
 };
 
-export const update = async (userId, updateData) => {
+export const update = async (penggunaId, updateData) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const user = await Pengguna.findByPk(userId, { transaction });
-    if (!user) throw new Error('User not found');
+    const pengguna = await Pengguna.findByPk(penggunaId, { transaction });
+    if (!pengguna) throw new Error('pPngguna not found');
 
-    if (updateData.role && updateData.role !== user.role) {
+    if (updateData.role && updateData.role !== pengguna.role) {
       throw new Error('Role cannot be changed');
     }
 
-    await user.update(updateData, { transaction });
-    if (user.role === 'admin') {
-      const admin = await Admin.findOne({ where: { id_pengguna: userId }, transaction });
+    await pengguna.update(updateData, { transaction });
+    if (pengguna.role === 'admin') {
+      const admin = await Admin.findOne({ where: { id_pengguna: penggunaId }, transaction });
       if (admin && updateData.admin) {
         await admin.update({
           nama_admin: updateData.admin.nama_admin,
@@ -76,7 +76,7 @@ export const update = async (userId, updateData) => {
         }, { transaction });
       }
     } else {
-      const umum = await Umum.findOne({ where: { id_pengguna: userId }, transaction });
+      const umum = await Umum.findOne({ where: { id_pengguna: penggunaId }, transaction });
       if (umum && updateData.umum) {
         await umum.update({
           nama: updateData.umum.nama,
@@ -87,21 +87,21 @@ export const update = async (userId, updateData) => {
     }
 
     await transaction.commit();
-    return await Pengguna.findByPk(userId, { include: [Admin, Umum] });
+    return await Pengguna.findByPk(penggunaId, { include: [Admin, Umum] });
   } catch (error) {
     await transaction.rollback();
     throw error;
   }
 };
 
-export const destroy = async (userId) => {
+export const destroy = async (penggunaId) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const user = await Pengguna.findByPk(userId, { transaction });
-    if (!user) throw new Error('User not found');
+    const pengguna = await Pengguna.findByPk(penggunaId, { transaction });
+    if (!pengguna) throw new Error('Pengguna not found');
 
-    await user.destroy({ transaction });
+    await pengguna.destroy({ transaction });
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();
