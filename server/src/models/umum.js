@@ -38,6 +38,7 @@ export default (sequelize, DataTypes) => {
 
   Umum.associate = (models) => {
     Umum.belongsTo(models.Pengguna, { foreignKey: 'id_pengguna' });
+    Umum.hasMany(models.Survei, { foreignKey: 'id_umum' });
   };
 
   return Umum;
