@@ -28,3 +28,13 @@ export const startRegistration = async (email) => {
   await emailservice.sendRegistrationOTP(email, otp);
   return { email: user.email };
 };
+
+export const validationOTP = async (email, otp) => {
+  const user = await db.Pengguna.findOne({ where: { email } });
+  
+  if (!user || !otpService.isOTPValid(user, otp)) {
+    throw new Error('Invalid or expired OTP');
+  }
+  
+  return { userId: user.id };
+};
