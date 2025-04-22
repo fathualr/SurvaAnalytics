@@ -27,3 +27,19 @@ export const verifyOTP = async (req, res) => {
     });
   }
 };
+
+export const completeAccount = async (req, res) => {
+  try {
+    const result = await registerService.completeRegistration(req.body);
+    res.json({
+      status: "success",
+      message: "Account registered successfully",
+      data: result
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail',
+      message: error.message
+    });
+  }
+};
