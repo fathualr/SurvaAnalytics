@@ -30,12 +30,13 @@ export const startRegistration = async (email) => {
 };
 
 export const validationOTP = async (email, otp) => {
-  const user = await db.Pengguna.findOne({ where: { email } });
+  const user = await Pengguna.findOne({ where: { email } });
   
   if (!user || !otpService.isOTPValid(user, otp)) {
     throw new Error('Invalid or expired OTP');
   }
   
+  await user.update({ email_confirmation_token: null });
   return { userId: user.id };
 };
 
