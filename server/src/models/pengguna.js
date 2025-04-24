@@ -16,8 +16,7 @@ export default (sequelize, DataTypes) => {
       },
     },
     password: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
+      type: DataTypes.STRING(255)
     },
     email_confirmed: {
       type: DataTypes.BOOLEAN,

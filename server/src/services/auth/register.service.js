@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import * as otpService from '../otp.service.js';
 import * as emailservice from '../email.service.js';
 import db from '../../models/index.js';
@@ -61,14 +60,12 @@ export const completeRegistration = async (penggunaData) => {
 
   const transaction = await sequelize.transaction();
   try {
-    await Pengguna.update({
-      password: await bcrypt.hash(penggunaData.password, 10),
+    await pengguna.update({
+      ...penggunaData,
       email_confirmed: true,
       email_confirmation_token: null,
-    }, {
-      where: { id: penggunaData.id },
-      transaction,
-    });
+      email_confirmation_sent_at: null
+    }, { transaction });
 
     await Umum.create({
       id_pengguna: penggunaData.id,
