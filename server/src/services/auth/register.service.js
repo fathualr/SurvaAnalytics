@@ -4,29 +4,43 @@ import * as emailservice from '../email.service.js';
 import db from '../../models/index.js';
 const { Pengguna, Umum, sequelize } = db;
 
-export const startRegistration = async (email) => {
-  const existingUser = await Pengguna.findOne({ where: { email } });
-  if (existingUser && existingUser.email_confirmed) {
-    throw new Error('Email already registered');
-  }
-
-  const randomPassword = bcrypt.hashSync(Math.random().toString(36), 10);
+const generateAndSendOTP = async (user) => {
   const otp = otpService.generateOTP();
 
-  const [user, created] = await Pengguna.upsert({
-    email,
-    password: randomPassword,
-    email_confirmed: false,
+  await user.update({
     email_confirmation_token: otp,
-    email_confirmation_sent_at: new Date(),
-    role: 'umum'
-  }, {
-    returning: true,
-    where: { email }
+    email_confirmation_sent_at: new Date()
   });
 
-  await emailservice.sendRegistrationOTP(email, otp);
-  return { email: user.email };
+  await emailservice.sendRegistrationOTP(user.email, otp);
+};
+
+export const emailVerification = async (email) => {
+  const existingUser = await Pengguna.findOne({ where: { email } });
+
+  if (existingUser) {
+    if (existingUser.email_confirmed) {
+      throw new Error('Email is already registered');
+    }
+
+    const timeSinceLastSent = Date.now() - new Date(existingUser.email_confirmation_sent_at || 0).getTime();
+    if (timeSinceLastSent < 3 * 60 * 1000) {
+      throw new Error('OTP has already been sent. Please wait a few minutes before trying again.');
+    }
+
+    await generateAndSendOTP(existingUser);
+    return { email };
+  }
+
+  const newUser = await Pengguna.create({
+    email,
+    password: null,
+    email_confirmed: false,
+    role: 'umum'
+  });
+
+  await generateAndSendOTP(newUser);
+  return { email };
 };
 
 export const validationOTP = async (email, otp) => {
