@@ -7,7 +7,7 @@ import surveiRoutes from './survei.routes.js';
 const router = Router();
 
 router.use('/', loginRoutes);
-router.use('/auth/register', registerRoutes);
+router.use('/register', registerRoutes);
 router.use('/pengguna', penggunaRoutes);
 router.use('/survei', surveiRoutes);
 
