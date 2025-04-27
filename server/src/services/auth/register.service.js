@@ -1,3 +1,4 @@
+import { generateCustomToken } from '../../utils/jwt.js';
 import * as otpService from '../otp.service.js';
 import * as emailservice from '../email.service.js';
 import db from '../../models/index.js';
@@ -50,7 +51,12 @@ export const validationOTP = async (email, otp) => {
   }
   
   await user.update({ email_confirmation_token: null });
-  return { userId: user.id };
+  
+  const registerToken = generateCustomToken(
+    { userId: user.id, type: 'register' },
+    '15m'
+  );
+  return registerToken;
 };
 
 export const completeRegistration = async (penggunaData) => {

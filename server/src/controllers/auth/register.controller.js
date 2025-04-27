@@ -1,3 +1,4 @@
+import { verifyAccessToken } from '../../utils/jwt.js';
 import * as registerService from '../../services/auth/register.service.js';
 
 export const emailRegister = async (req, res) => {
@@ -22,7 +23,7 @@ export const verifyOTP = async (req, res) => {
     res.json({
       status: "success",
       message: "OTP verified successfully",
-      data: result
+      data: { register_token : result }
     });
   } catch (error) {
     res.status(400).json({
@@ -34,7 +35,17 @@ export const verifyOTP = async (req, res) => {
 
 export const completeAccount = async (req, res) => {
   try {
-    const result = await registerService.completeRegistration(req.body);
+    const { register_token: registerToken, ...accountData } = req.body;
+    if (!registerToken) throw new Error("Unauthorized request");
+
+    const payload = verifyAccessToken(registerToken);
+    if (payload.type !== 'register') throw new Error("Invalid register token");
+
+    const result = await registerService.completeRegistration({
+      ...accountData,
+      id: payload.userId
+    });
+
     res.json({
       status: "success",
       message: "Account registered successfully",

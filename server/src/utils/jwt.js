@@ -17,6 +17,14 @@ export const generateRefreshToken = (userId) => {
   );
 };
 
+export const generateCustomToken = (payload, expiresIn) => {
+  return jwt.sign(
+    payload,
+    config.accessSecret,
+    { expiresIn, algorithm: config.algorithm }
+  );
+};
+
 export const verifyAccessToken = (token) => {
   return jwt.verify(token, config.accessSecret);
 };
