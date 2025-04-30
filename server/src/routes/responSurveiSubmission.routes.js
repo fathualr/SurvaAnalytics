@@ -1,5 +1,5 @@
 import express from 'express';
-import * as responSurveiController from '../controllers/responSurvei.controller.js';
+import * as responSurveiController from '../controllers/responSurveiSubmission.controller.js';
 import { authenticate } from '../middlewares/auth.js';
 
 const router = express.Router({ mergeParams: true });

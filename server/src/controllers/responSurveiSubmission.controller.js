@@ -1,8 +1,8 @@
-import * as responSurveiService from '../services/responSurvei.service.js';
+import * as responSurveiSubmissionService from '../services/responSurveiSubmission.service.js';
 
 export const getDraft = async (req, res) => {
   try {
-    const [responSurvei] = await responSurveiService.getOrCreateDraft(
+    const [responSurvei] = await responSurveiSubmissionService.getOrCreateDraft(
       req.params.surveiId, 
       req.user.userId 
     );
@@ -25,7 +25,7 @@ export const getDraft = async (req, res) => {
 export const updateDraft = async (req, res) => {
   try {
     const { respon } = req.body;
-    const result = await responSurveiService.saveDraftResponse(
+    const result = await responSurveiSubmissionService.saveDraftResponse(
       req.params.surveiId,
       req.user.userId,
       respon
@@ -42,7 +42,7 @@ export const updateDraft = async (req, res) => {
 
 export const submitRespons = async (req, res) => {
   try {
-    await responSurveiService.submitFinalResponse(
+    await responSurveiSubmissionService.submitFinalResponse(
       req.params.surveiId,
       req.user.userId,
     );
