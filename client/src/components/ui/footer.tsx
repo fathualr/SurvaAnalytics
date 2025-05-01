@@ -3,80 +3,108 @@ import Image from 'next/image';
 
 const Footer = () => {
   return (
-    <footer className="bg-[url('/images/footer.png')] bg-cover text-white p-4">
-      <div className="flex outline-2 outline-white justify-between p-8">
-        
-        <div className="flex flex-col items-start">
-          <p className="font-semibold text-xl">Our social media</p>
-          <div className="flex justify-center w-fit pl-0.5 pt-2 gap-4">
-            <div className="p-1 bg-[#D9D9D9]">
-              <Link href="/login" className="hover:opacity-80">
-                <Image src="/images/instagram.png" alt="Instagram Logo" width={30} height={30} />
-              </Link>
-            </div>
-            <div className="p-1 bg-[#D9D9D9]">
-              <Link href="/" className="hover:opacity-80">
-                <Image src="/images/facebook.png" alt="Facebook Logo" width={30} height={30} />
-              </Link>
-            </div>
-            <div className="p-1 bg-[#D9D9D9]">
-              <Link href="/" className="hover:opacity-80">
-                <Image src="/images/linkedin.png" alt="LinkedIn Logo" width={30} height={30} />
-              </Link>
-            </div>
-          </div>
-          <div className="pl-1 mt-38">
-            <Link href="/" className="hover:opacity-80">
-              <Image src="/images/surva-white.png" alt="Surva Logo" width={100} height={20} />
-            </Link>
-          </div>
-        </div>
+    <footer className="bg-[url('/images/footer.png')] bg-cover bg-center text-white w-full">
+      <div className="container mx-auto px-4 py-8">
 
+        <div className="border-2 border-white rounded-sm p-4 md:p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            
+            {/* Our Social Media */}
+            <div className="col-span-1">
+              <h3 className="text-xl font-semibold mb-4">Our social media</h3>
+              <div className="flex space-x-4">
+                <Link href="#" className="hover:opacity-70 transition-opacity">
+                  <Image 
+                    src="/instagram.svg" 
+                    alt="Instagram" 
+                    width={28} 
+                    height={28}
+                    className="w-7 h-7"
+                  />
+                </Link>
+                <Link href="#" className="hover:opacity-70 transition-opacity">
+                  <Image 
+                    src="/facebook.svg" 
+                    alt="Facebook" 
+                    width={28} 
+                    height={28}
+                    className="w-7 h-7"
+                  />
+                </Link>
+                <Link href="#" className="hover:opacity-70 transition-opacity">
+                  <Image 
+                    src="/linkedin.svg" 
+                    alt="LinkedIn" 
+                    width={28} 
+                    height={28}
+                    className="w-7 h-7"
+                  />
+                </Link>
+              </div>
+            </div>
 
-        <div className="flex flex-col items-start gap-2">
-          <p className="font-semibold text-xl">Our Contact and Location</p>
-          <div className="flex items-center gap-2">
-              <Image
-                src="/location.svg" 
-                alt="Location Icon" 
-                width={30} 
-                height={30} 
-                className="object-contain"
-              />
-              <p className="text-base">Jl. Surva Analytics No.1, Batam, Indonesia</p>
+            {/* Contact Information */}
+            <div className="col-span-1">
+              <h3 className="text-xl font-semibold mb-4">Our Contact and Location</h3>
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <Image 
+                    src="/location.svg" 
+                    alt="Location" 
+                    width={20} 
+                    height={20}
+                    className="mr-2"
+                  />
+                  <span>Jl. Surva Analytics No.1, Batam, Indonesia</span>
+                </div>
+                <div className="flex items-center">
+                  <Image 
+                    src="/email.svg" 
+                    alt="Email" 
+                    width={20} 
+                    height={20}
+                    className="mr-2"
+                  />
+                  <span>info@survaanalytics.com</span>
+                </div>
+                <div className="flex items-center">
+                  <Image 
+                    src="/phone.svg" 
+                    alt="Phone" 
+                    width={20} 
+                    height={20}
+                    className="mr-2"
+                  />
+                  <span>+62 812-3456-7890</span>
+                </div>
+              </div>
+            </div>
           </div>
-           <div className="flex items-center gap-2">
-              <Image
-                src="/email.svg" 
-                alt="Email Icon" 
-                width={30} 
-                height={30} 
-                className="object-contain"
-              />
-              <p className="text-base">info@survaanalytics.com</p>
-          </div>
-          <div className="flex items-center gap-2">
-              <Image
-                src="/phone.svg" 
-                alt="Phone Icon" 
-                width={30} 
-                height={30} 
-                className="object-contain"
-              />
-              <p className="text-base">+62 812-3456-7890</p>
-          </div>
-       </div>
 
-        <div className="flex flex-row items-start mt-56">
-          <Link href="/help-desk" className="text-xl font-semibold hover:underline">
+          {/* Bottom Section */}
+          <div className="flex flex-col md:flex-row justify-between items-center pt-6  mt-4">
+            {/* Logo */}
+            <div className="mb-4 md:mb-0">
+              <Image 
+                src="/images/surva-white.png" 
+                alt="SURVA Logo" 
+                width={140} 
+                height={32}
+                className="h-8 w-auto"
+              />
+            </div>
+            
+            {/* Navigation Links */}
+            <div className="flex space-x-6">
+              <Link href="#" className="hover:underline text-base font-medium">
                 Help desk
-          </Link>
-              <span className='ml-2 mr-2'>|</span>
-          <Link href="/customer-support" className="text-xl font-semibold hover:underline">
+              </Link>
+              <Link href="#" className="hover:underline text-base font-medium">
                 Customer Support
-            </Link>
+              </Link>
+            </div>
+          </div>
         </div>
-
       </div>
     </footer>
   );
