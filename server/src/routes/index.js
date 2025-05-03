@@ -6,6 +6,7 @@ import surveiRoutes from './survei.routes.js';
 import pertanyaanSurveiRoutes from './pertanyaanSurvei.routes.js';
 import responSurveiRoutes from './responSurvei.routes.js';
 import responSurveiSubmissionRoutes from './responSurveiSubmission.routes.js';
+import konfigurasiHargaRoutes from './konfigurasiHarga.routes.js';
 import hadiahRoutes from './hadiah.routes.js';
 
 const router = Router();
@@ -16,6 +17,7 @@ router.use('/pengguna', penggunaRoutes);
 router.use('/survei', surveiRoutes);
 router.use('/survei/:surveiId/pertanyaan-survei', pertanyaanSurveiRoutes);
 router.use('/survei/:surveiId/respon-survei', [responSurveiSubmissionRoutes, responSurveiRoutes]);
+router.use('/konfigurasi-harga', konfigurasiHargaRoutes);
 router.use('/hadiah', hadiahRoutes);
 
 export default router;
