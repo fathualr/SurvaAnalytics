@@ -5,6 +5,9 @@ export default (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
+    nama: {
+      type: DataTypes.STRING(255)
+    },
     deskripsi: {
       type: DataTypes.TEXT,
     },
