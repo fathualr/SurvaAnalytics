@@ -1,86 +1,50 @@
 import * as penggunaService from '../services/pengguna.service.js';
+import { resSuccess, resFail } from '../utils/responseHandler.js';
 
 export const getPenggunas = async (req, res) => {
   try {
-    const result = await penggunaService.index(
-      req.query
-    );
-    
-    res.json({
-      status: 'success',
-      message: result.data.length > 0 
-      ? 'Penggunas retrieved successfully' 
-      : 'No penggunas found',
-      result
-    });
+    const result = await penggunaService.index(req.query);
+    const message = result.data.length > 0
+      ? 'Penggunas retrieved successfully'
+      : 'No penggunas found';
+    resSuccess(res, message, result);
   } catch (error) {
-    res.status(500).json({
-      status: 'error',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const createPengguna = async (req, res) => {
   try {
     const newPengguna = await penggunaService.create(req.body);
-    res.status(201).json({
-      status: 'success',
-      message: `Pengguna created successfully`,
-      data: newPengguna
-    });
+    resSuccess(res, 'Pengguna created successfully', newPengguna, 201);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const getPengguna = async (req, res) => {
   try {
     const pengguna = await penggunaService.show(req.params.id);
-    res.json({
-      status: 'success',
-      message: `Pengguna details for ID ${req.params.id} retrieved successfully`,
-      data: pengguna
-    });
+    resSuccess(res, `Detail pengguna ID ${req.params.id} retrieved`, pengguna);
   } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const updatePengguna = async (req, res) => {
   try {
-    const updatePengguna = await penggunaService.update(req.params.id, req.body);
-    res.json({
-      status: 'success',
-      message: `Pengguna with ID ${req.params.id} updated successfully`,
-      data: updatePengguna
-    });
+    const updated = await penggunaService.update(req.params.id, req.body);
+    resSuccess(res, `Pengguna ID ${req.params.id} updated successfully`, updated);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const deletePengguna = async (req, res) => {
   try {
     await penggunaService.destroy(req.params.id);
-    res.json({
-      status: 'success',
-      message: `Pengguna with ID ${req.params.id} deleted successfully`,
-      data: null
-    });
+    resSuccess(res, `Pengguna ID ${req.params.id} deleted successfully`, null);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
