@@ -2,19 +2,21 @@ import * as penggunaService from '../services/pengguna.service.js';
 
 export const getPenggunas = async (req, res) => {
   try {
-    const penggunas = await penggunaService.index();
+    const result = await penggunaService.index(
+      req.query
+    );
+    
     res.json({
       status: 'success',
-      message: penggunas.length > 0 
-        ? 'Penggunas retrieved successfully' 
-        : 'No penggunas found',
-      results: penggunas.length,
-      data: penggunas
+      message: result.data.length > 0 
+      ? 'Penggunas retrieved successfully' 
+      : 'No penggunas found',
+      result
     });
   } catch (error) {
     res.status(500).json({
       status: 'error',
-      message: 'Failed to fetch penggunas'
+      message: error.message
     });
   }
 };
