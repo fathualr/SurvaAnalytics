@@ -1,13 +1,31 @@
 import db from '../models/index.js';
 const { Survei, Umum, sequelize } = db;
+import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
 
-export const index = async (filters = {}) => {
-  return await Survei.findAll({
-    where: filters,
-    include: [
-      { model: Umum, required: false }
-    ]
+export const index = async (queryParams) => {
+  const { where, order, pagination } = parseQuery(queryParams, {
+    allowedFilters: ['id_umum', 'status', 'judul']
   });
+
+  const { count, rows } = await Survei.findAndCountAll({
+    where: {
+      ...where,
+    },
+    include: [
+      { 
+        model: Umum,
+        attributes: ['id', 'nama', 'profil_klien'],
+      }
+    ],
+    order,
+    ...pagination,
+    distinct: true
+  });
+
+  return {
+    data: rows,
+    ...metaQueryFormat({ count }, pagination)
+  };
 };
 
 export const create = async (surveiData) => {
@@ -27,10 +45,13 @@ export const create = async (surveiData) => {
 export const show = async (surveiId) => {
   const survei = await Survei.findByPk(surveiId, {
     include: [
-      { model: Umum, required: false }
+      {
+        model: Umum,
+        attributes: ['id', 'nama', 'profil_klien'],
+      }
     ]
   });
-  if (!survei) throw new Error('Survei not found');
+  if (!survei) throw { status: 404, message: 'Survei not found' };
   return survei;
 };
 
@@ -39,7 +60,7 @@ export const update = async (surveiId, updateData) => {
 
   try {
     const survei = await Survei.findByPk(surveiId, { transaction });
-    if (!survei) throw new Error('Survei not found');
+    if (!survei) throw { status: 404, message: 'Survei not found' };
 
     await survei.update(updateData, { transaction });
     await transaction.commit();
@@ -55,7 +76,7 @@ export const destroy = async (surveiId) => {
 
   try {
     const survei = await Survei.findByPk(surveiId, { transaction });
-    if (!survei) throw new Error('Survei not found');
+    if (!survei) throw { status: 404, message: 'Survei not found' };
 
     await survei.destroy({ transaction });
     await transaction.commit();

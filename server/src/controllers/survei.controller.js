@@ -1,84 +1,50 @@
 import * as surveiService from '../services/survei.service.js';
+import { resSuccess, resFail } from '../utils/responseHandler.js';
 
 export const getSurveis = async (req, res) => {
   try {
-    const surveis = await surveiService.index(req.query);
-    res.json({
-      status: 'success',
-      message: surveis.length > 0 
-        ? 'Surveis retrieved successfully' 
-        : 'No surveis found',
-      results: surveis.length,
-      data: surveis
-    });
+    const result = await surveiService.index(req.query);
+    const message = result.data.length > 0
+      ? 'Surveis retrieved successfully'
+      : 'No survei found';
+    resSuccess(res, message, result);
   } catch (error) {
-    res.status(500).json({
-      status: 'error',
-      message: 'Failed to fetch surveis'
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const createSurvei = async (req, res) => {
   try {
     const newSurvei = await surveiService.create(req.body);
-    res.status(201).json({
-      status: 'success',
-      message: 'Survei created successfully',
-      data: newSurvei
-    });
+    resSuccess(res, 'Survei created successfully', newSurvei, 201);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const getSurvei = async (req, res) => {
   try {
     const survei = await surveiService.show(req.params.id);
-    res.json({
-      status: 'success',
-      message: `Survei details for ID ${req.params.id} retrieved successfully`,
-      data: survei
-    });
+    resSuccess(res, `Survei details for ID ${req.params.id} retrieved successfully`, survei);
   } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const updateSurvei = async (req, res) => {
   try {
     const updatedSurvei = await surveiService.update(req.params.id, req.body);
-    res.json({
-      status: 'success',
-      message: `Survei with ID ${req.params.id} updated successfully`,
-      data: updatedSurvei
-    });
+    resSuccess(res, `Survei with ID ${req.params.id} updated successfully`, updatedSurvei);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const deleteSurvei = async (req, res) => {
   try {
     await surveiService.destroy(req.params.id);
-    res.json({
-      status: 'success',
-      message: `Survei with ID ${req.params.id} deleted successfully`,
-      data: null
-    });
+    resSuccess(res, `Survei with ID ${req.params.id} deleted successfully`, null);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
