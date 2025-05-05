@@ -11,6 +11,7 @@ import hadiahRoutes from './hadiah.routes.js';
 import penukaranHadiahRoutes from './penukaranHadiah.routes.js';
 
 import profileRoutes from './users/profile.routes.js';
+import userSurveiRoutes from './users/survei.routes.js';
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use('/hadiah', hadiahRoutes);
 router.use('/penukaran-hadiah', penukaranHadiahRoutes);
 
 router.use('/users/profile', profileRoutes)
+router.use('/users/survei', userSurveiRoutes)
 
 export default router;
