@@ -41,6 +41,9 @@ export default (sequelize, DataTypes) => {
       validate: {
         isIn: [['pie', 'bar', 'line', 'doughnut', 'radar', 'text']]
       }
+    },
+    index: {
+      type: DataTypes.INTEGER
     }
   }, {
     tableName: 'pertanyaan_survei',
