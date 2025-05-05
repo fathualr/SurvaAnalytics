@@ -57,6 +57,7 @@ export default (sequelize, DataTypes) => {
     hadiah_poin: {
       type: DataTypes.BIGINT,
       allowNull: false,
+      defaultValue: 0,
       validate: {
         min: 0
       }
