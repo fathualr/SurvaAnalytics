@@ -37,7 +37,7 @@ export const getUserSurvei = async (req, res) => {
     const survei = await surveiService.show(req.params.id);
     const umumId = await getUmumIdByUserId(req.user.userId);
     if (survei.id_umum !== umumId) {
-      return resFail(res, 'Unauthorized', 403);
+      return resFail(res, 'Unauthorized to access this survei', 403);
     }
 
     resSuccess(res, 'Survei detail retrieved successfully', survei);
@@ -51,7 +51,7 @@ export const updateUserSurvei = async (req, res) => {
     const survei = await surveiService.show(req.params.id);
     const umumId = await getUmumIdByUserId(req.user.userId);
     if (survei.id_umum !== umumId) {
-      return resFail(res, 'Unauthorized', 403);
+      return resFail(res, 'Unauthorized to access this survei', 403);
     }
 
     const updatedSurvei = await surveiService.update(req.params.id, req.body);
@@ -66,7 +66,7 @@ export const deleteUserSurvei = async (req, res) => {
     const survei = await surveiService.show(req.params.id);
     const umumId = await getUmumIdByUserId(req.user.userId);
     if (survei.id_umum !== umumId) {
-      return resFail(res, 'Unauthorized', 403);
+      return resFail(res, 'Unauthorized to access this survei', 403);
     }
 
     await surveiService.destroy(req.params.id);
