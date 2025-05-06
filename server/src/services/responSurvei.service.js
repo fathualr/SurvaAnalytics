@@ -8,7 +8,7 @@ export const index = async (surveiId, queryParams) => {
   });
 
   const survei = await Survei.findByPk(surveiId);
-  if (!survei) throw new Error('Survei not found');
+  if (!survei) throw { status: 404, message: 'Survei not found' };
 
   const { count, rows } = await ResponSurvei.findAndCountAll({
     where: {
@@ -64,7 +64,7 @@ export const show = async (responSurveiId) => {
       }
     ]
   });
-  if (!responSurvei) throw new Error('Respon survei not found');
+  if (!responSurvei) throw { status: 404, message: 'Respon survei not found' };
   return responSurvei;
 };
 
@@ -73,7 +73,7 @@ export const destroy = async (responSurveiId) => {
 
   try {
     const responSurvei = await ResponSurvei.findByPk(responSurveiId, { transaction });
-    if (!responSurvei) throw new Error('Respon survei not found');
+    if (!responSurvei) throw { status: 404, message: 'Respon survei not found' };
 
     await responSurvei.destroy({ transaction });
     await transaction.commit();

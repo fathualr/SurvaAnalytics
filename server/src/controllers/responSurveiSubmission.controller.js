@@ -1,24 +1,18 @@
 import * as responSurveiSubmissionService from '../services/responSurveiSubmission.service.js';
+import { resSuccess, resFail } from '../utils/responseHandler.js';
 
 export const getDraft = async (req, res) => {
   try {
     const [responSurvei] = await responSurveiSubmissionService.getOrCreateDraft(
-      req.params.surveiId, 
-      req.user.userId 
+      req.params.surveiId,
+      req.user.userId
     );
-    
-    res.json({
-      status: 'success',
-      data: {
-        draft: responSurvei.respon,
-        is_completed: responSurvei.is_completed
-      }
+    resSuccess(res, 'Draft respon survei retrieved successfully', {
+      draft: responSurvei.respon,
+      is_completed: responSurvei.is_completed
     });
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
@@ -30,31 +24,20 @@ export const updateDraft = async (req, res) => {
       req.user.userId,
       respon
     );
-    
-    res.json({ status: 'success', data: result });
+    resSuccess(res, 'Draft respon survei saved successfully', result);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const submitRespons = async (req, res) => {
   try {
-    await responSurveiSubmissionService.submitFinalResponse(
+    const result = await responSurveiSubmissionService.submitFinalResponse(
       req.params.surveiId,
-      req.user.userId,
+      req.user.userId
     );
-    
-    res.json({ 
-      status: 'success',
-      message: 'Survei submitted successfully'
-    });
+    resSuccess(res, 'Respon survei submitted successfully', result);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
