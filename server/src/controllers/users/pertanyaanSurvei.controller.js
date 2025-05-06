@@ -24,6 +24,10 @@ export const getUserPertanyaanSurveis = async (req, res) => {
 export const createUserPertanyaanSurvei = async (req, res) => {
   try {
     const umumId = await getUmumIdByUserId(req.user.userId);
+    const survei = await surveiService.show(req.params.surveiId);
+    if (survei.id_umum !== umumId) {
+      return resFail(res, 'Unauthorized access to this pertanyaan surveis', 403);
+    }
     const pertanyaanSurveiData = {
       ...req.body,
       id_survei: req.params.surveiId,

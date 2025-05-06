@@ -48,7 +48,7 @@ export const create = async (pertanyaanSurveiData) => {
     }, { transaction });
 
     await transaction.commit();
-    return pertanyaanSurvei;
+    return await PertanyaanSurvei.findByPk(pertanyaanSurvei.id);
   } catch (error) {
     await transaction.rollback();
     throw error;
@@ -77,7 +77,7 @@ export const update = async (pertanyaanSurveiId, updateData) => {
 
     await pertanyaanSurvei.update(updateData, { transaction });
     await transaction.commit();
-    return pertanyaanSurvei;
+    return await PertanyaanSurvei.findByPk(pertanyaanSurvei.id);
   } catch (error) {
     await transaction.rollback();
     throw error;
