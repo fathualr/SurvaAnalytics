@@ -19,7 +19,7 @@ router.use('/', loginRoutes);
 router.use('/register', registerRoutes);
 router.use('/pengguna', penggunaRoutes);
 router.use('/survei', surveiRoutes);
-router.use('/survei/:surveiId/pertanyaan-survei', pertanyaanSurveiRoutes);
+router.use('/', pertanyaanSurveiRoutes);
 router.use('/survei/:surveiId/respon-survei', [responSurveiSubmissionRoutes, responSurveiRoutes]);
 router.use('/konfigurasi-harga', konfigurasiHargaRoutes);
 router.use('/hadiah', hadiahRoutes);

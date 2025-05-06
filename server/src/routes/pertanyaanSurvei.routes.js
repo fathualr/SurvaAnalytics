@@ -5,10 +5,10 @@ import { createPertanyaanSurveiSchema, updatePertanyaanSurveiSchema } from '../v
 
 const router = express.Router({ mergeParams: true });
 
-router.get('/', pertanyaanSurveiController.getpertanyaanSurveis);
-router.get('/:id', pertanyaanSurveiController.getPertanyaanSurvei);
-router.post('/', validate(createPertanyaanSurveiSchema), pertanyaanSurveiController.createPertanyaanSurvei);
-router.patch('/:id', validate(updatePertanyaanSurveiSchema), pertanyaanSurveiController.updatePertanyaanSurvei);
-router.delete('/:id', pertanyaanSurveiController.deletePertanyaanSurvei);
+router.get('/survei/:surveiId/pertanyaan-survei', pertanyaanSurveiController.getpertanyaanSurveis);
+router.post('/survei/:surveiId/pertanyaan-survei', validate(createPertanyaanSurveiSchema), pertanyaanSurveiController.createPertanyaanSurvei);
+router.get('/pertanyaan-survei/:id', pertanyaanSurveiController.getPertanyaanSurvei);
+router.patch('/pertanyaan-survei/:id', validate(updatePertanyaanSurveiSchema), pertanyaanSurveiController.updatePertanyaanSurvei);
+router.delete('/pertanyaan-survei/:id', pertanyaanSurveiController.deletePertanyaanSurvei);
 
 export default router;
