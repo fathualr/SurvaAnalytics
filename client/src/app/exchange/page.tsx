@@ -14,71 +14,76 @@ export default function Exchange() {
         </div>
         <div>
         <p className="mt-6 text-2xl font-semibold">Point Exchange</p>
-            <div className="grid grid-cols-4 gap-9 mt-4 font">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
 
-            {/* card  */}
-            <div className="bg-white shadow rounded-md overflow-hidden">
-                <div className="relative h-48 w-full">
-                  <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover" />
-                </div>
-                <div className="bg-[#3984EF] text-white p-3">
-                  <p className="text-2xl font-bold">Pulsa Telkomsel</p>
-                  <p className="text-md font-semibold">10 pts</p>
-                  <div className="flex items-center justify-end">
-                    <div>
-                      <Button className="bg-[#FFBF68] w-36 h-7 hover:bg-[#D9D9D9] rounded-sm">Tukar</Button>
-                    </div>
-                  </div>
-                </div>
-            </div> 
+          {/* Card  */}
+          <div className="bg-white shadow rounded-md overflow-hidden">
+            <div className="relative h-48 w-full">
+              <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover"
+              />
+            </div>
+            <div className="bg-[#3984EF] text-white p-3">
+              <p className="text-xl md:text-2xl font-bold">Pulsa Telkomsel</p>
+              <p className="text-md font-semibold">10 pts</p>
+              <div className="flex items-center justify-end mt-2">
+                <Button className="bg-[#FFBF68] w-full sm:w-36 h-8 text-sm font-semibold hover:bg-[#D9D9D9] rounded-sm">
+                  Tukar
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Card  */}
+          <div className="bg-white shadow rounded-md overflow-hidden">
+            <div className="relative h-48 w-full">
+              <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover"
+              />
+            </div>
+            <div className="bg-[#3984EF] text-white p-3">
+              <p className="text-xl md:text-2xl font-bold">Pulsa Telkomsel</p>
+              <p className="text-md font-semibold">10 pts</p>
+              <div className="flex items-center justify-end mt-2">
+                <Button className="bg-[#FFBF68] w-full sm:w-36 h-8 text-sm font-semibold hover:bg-[#D9D9D9] rounded-sm">
+                  Tukar
+                </Button>
+              </div>
+            </div>
+          </div>
 
-            {/* card  */}
-            <div className="bg-white shadow rounded-md overflow-hidden">
-                <div className="relative h-48 w-full">
-                  <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover" />
-                </div>
-                <div className="bg-[#3984EF] text-white p-3">
-                  <p className="text-2xl font-bold">Pulsa Telkomsel</p>
-                  <p className="text-md font-semibold">10 pts</p>
-                  <div className="flex items-center justify-end">
-                    <div>
-                      <Button className="bg-[#FFBF68] w-36 h-7 hover:bg-[#D9D9D9] rounded-sm">Tukar</Button>
-                    </div>
-                  </div>
-                </div>
-            </div> 
+          {/* Card  */}
+          <div className="bg-white shadow rounded-md overflow-hidden">
+            <div className="relative h-48 w-full">
+              <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover"
+              />
+            </div>
+            <div className="bg-[#3984EF] text-white p-3">
+              <p className="text-xl md:text-2xl font-bold">Pulsa Telkomsel</p>
+              <p className="text-md font-semibold">10 pts</p>
+              <div className="flex items-center justify-end mt-2">
+                <Button className="bg-[#FFBF68] w-full sm:w-36 h-8 text-sm font-semibold hover:bg-[#D9D9D9] rounded-sm">
+                  Tukar
+                </Button>
+              </div>
+            </div>
+          </div>
+        
+          {/* Card  */}
+          <div className="bg-white shadow rounded-md overflow-hidden">
+            <div className="relative h-48 w-full">
+              <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover"
+              />
+            </div>
+            <div className="bg-[#3984EF] text-white p-3">
+              <p className="text-xl md:text-2xl font-bold">Pulsa Telkomsel</p>
+              <p className="text-md font-semibold">10 pts</p>
+              <div className="flex items-center justify-end mt-2">
+                <Button className="bg-[#FFBF68] w-full sm:w-36 h-8 text-sm font-semibold hover:bg-[#D9D9D9] rounded-sm">
+                  Tukar
+                </Button>
+              </div>
+            </div>
+          </div>
 
-            {/* card  */}
-            <div className="bg-white shadow rounded-md overflow-hidden">
-                <div className="relative h-48 w-full">
-                  <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover" />
-                </div>
-                <div className="bg-[#3984EF] text-white p-3">
-                  <p className="text-2xl font-bold">Pulsa Telkomsel</p>
-                  <p className="text-md font-semibold">10 pts</p>
-                  <div className="flex items-center justify-end">
-                    <div>
-                      <Button className="bg-[#FFBF68] w-36 h-7 hover:bg-[#D9D9D9] rounded-sm font-semibold">Tukar</Button>
-                    </div>
-                  </div>
-                </div>
-            </div> 
-
-            {/* card  */}
-            <div className="bg-white shadow rounded-md overflow-hidden">
-                <div className="relative h-48 w-full">
-                  <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover" />
-                </div>
-                <div className="bg-[#3984EF] text-white p-3">
-                  <p className="text-2xl font-bold">Pulsa Telkomsel</p>
-                  <p className="text-md font-semibold">10 pts</p>
-                  <div className="flex items-center justify-end">
-                    <div>
-                      <Button className="bg-[#FFBF68] w-36 h-7 hover:bg-[#D9D9D9] rounded-sm">Tukar</Button>
-                    </div>
-                  </div>
-                </div>
-            </div> 
             </div>
             <div className="flex justify-center items-center mt-10 ">
             <button className="p-0 m-0 bg mr-4 -transparent border-none outline-none hover:bg-">
