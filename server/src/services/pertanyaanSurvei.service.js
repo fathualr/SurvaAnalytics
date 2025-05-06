@@ -37,7 +37,15 @@ export const create = async (pertanyaanSurveiData) => {
     const survei = await Survei.findByPk(pertanyaanSurveiData.id_survei, { transaction });
     if (!survei) throw { status: 404, message: 'Survei not found' };
 
-    const pertanyaanSurvei = await PertanyaanSurvei.create( pertanyaanSurveiData, { transaction });
+    const maxIndex = await PertanyaanSurvei.count({
+      where: { id_survei: pertanyaanSurveiData.id_survei },
+      transaction
+    });
+
+    const pertanyaanSurvei = await PertanyaanSurvei.create({
+      ...pertanyaanSurveiData,
+      index: maxIndex + 1
+    }, { transaction });
 
     await transaction.commit();
     return pertanyaanSurvei;
@@ -76,6 +84,20 @@ export const update = async (pertanyaanSurveiId, updateData) => {
   }
 };
 
+const reorderPertanyaanSurvei = async (id_survei, transaction) => {
+  const pertanyaanSurveis = await PertanyaanSurvei.findAll({
+    where: { id_survei },
+    order: [['index', 'ASC']],
+    transaction
+  });
+
+  for (let i = 0; i < pertanyaanSurveis.length; i++) {
+    if (pertanyaanSurveis[i].index !== i + 1) {
+      await pertanyaanSurveis[i].update({ index: i + 1 }, { transaction });
+    }
+  }
+};
+
 export const destroy = async (pertanyaanSurveiId) => {
   const transaction = await sequelize.transaction();
 
@@ -84,6 +106,7 @@ export const destroy = async (pertanyaanSurveiId) => {
     if (!pertanyaanSurvei) throw { status: 404, message: 'Pertanyaan survei not found' };
 
     await pertanyaanSurvei.destroy({ transaction });
+    await reorderPertanyaanSurvei(pertanyaanSurvei.id_survei, transaction);
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();

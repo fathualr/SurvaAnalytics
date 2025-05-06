@@ -43,7 +43,8 @@ export default (sequelize, DataTypes) => {
       }
     },
     index: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     tableName: 'pertanyaan_survei',
