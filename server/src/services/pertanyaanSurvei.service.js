@@ -64,7 +64,7 @@ export const show = async (pertanyaanSurveiId) => {
       }
     ]
   });
-  if (!pertanyaanSurvei) throw { status: 404, message: 'Peranyaan survei not found' };
+  if (!pertanyaanSurvei) throw { status: 404, message: 'Pertanyaan survei not found' };
   return pertanyaanSurvei;
 };
 
