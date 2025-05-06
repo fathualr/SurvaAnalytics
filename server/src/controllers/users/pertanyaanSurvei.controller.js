@@ -67,6 +67,24 @@ export const updateUserPertanyaanSurvei = async (req, res) => {
   }
 };
 
+export const updateUserTipeVisualisasiPertanyaanSurvei = async (req, res) => {
+  try {
+    const pertanyaanSurvei = await pertanyaanSurveiService.show(req.params.id);
+    const umumId = await getUmumIdByUserId(req.user.userId);
+    const survei = await surveiService.show(pertanyaanSurvei.id_survei);
+    if (survei.id_umum !== umumId) {
+      return resFail(res, 'Unauthorized access to this pertanyaan survei', 403);
+    }
+
+    const updatedPertanyaanSurvei = await pertanyaanSurveiService.update(req.params.id, {
+      tipe_visualisasi: req.body.tipe_visualisasi
+    });
+    resSuccess(res, 'Tipe visualisasi pertanyaan survei updated successfully', updatedPertanyaanSurvei);
+  } catch (error) {
+    resFail(res, error.message, error.status);
+  }
+};
+
 export const deleteUserPertanyaanSurvei = async (req, res) => {
   try {
     const pertanyaanSurvei = await pertanyaanSurveiService.show(req.params.id);
