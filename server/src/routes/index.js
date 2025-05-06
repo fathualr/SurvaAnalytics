@@ -12,6 +12,7 @@ import penukaranHadiahRoutes from './penukaranHadiah.routes.js';
 
 import profileRoutes from './users/profile.routes.js';
 import userSurveiRoutes from './users/survei.routes.js';
+import userPertanyaanSurveiRoutes from './users/pertanyaanSurvei.routes.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.use('/', loginRoutes);
 router.use('/register', registerRoutes);
 router.use('/pengguna', penggunaRoutes);
 router.use('/survei', surveiRoutes);
-router.use('/survei/:surveiId/pertanyaan-survei', pertanyaanSurveiRoutes);
+router.use('/', pertanyaanSurveiRoutes);
 router.use('/survei/:surveiId/respon-survei', [responSurveiSubmissionRoutes, responSurveiRoutes]);
 router.use('/konfigurasi-harga', konfigurasiHargaRoutes);
 router.use('/hadiah', hadiahRoutes);
@@ -27,5 +28,6 @@ router.use('/penukaran-hadiah', penukaranHadiahRoutes);
 
 router.use('/users/profile', profileRoutes)
 router.use('/users/survei', userSurveiRoutes)
+router.use('/users', userPertanyaanSurveiRoutes)
 
 export default router;
