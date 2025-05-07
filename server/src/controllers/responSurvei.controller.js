@@ -4,8 +4,8 @@ import { resSuccess, resFail } from '../utils/responseHandler.js';
 export const getResponSurveis = async (req, res) => {
   try {
     const result = await responseService.index(req.params.surveiId, req.query);
-    const message = result.length > 0
-      ? 'Respon survei list retrieved successfully'
+    const message = result.data.length > 0
+      ? 'Respon survei retrieved successfully'
       : 'No respon survei found';
     resSuccess(res, message, result);
   } catch (error) {
