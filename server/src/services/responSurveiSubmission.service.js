@@ -1,12 +1,7 @@
 import db from '../models/index.js';
 const { ResponSurvei, Umum, sequelize, Pengguna, Survei } = db;
 
-export const getOrCreateDraft = async (surveiId, penggunaId) => {
-  const pengguna = await Pengguna.findByPk(penggunaId, {
-    include: ['Umum']
-  });
-  const umumId = pengguna.Umum.id;
-
+export const getOrCreateDraft = async (surveiId, umumId) => {
   const existingCompleted = await ResponSurvei.findOne({
     where: {
       id_survei: surveiId,
@@ -28,17 +23,27 @@ export const getOrCreateDraft = async (surveiId, penggunaId) => {
   });
 };
 
-export const saveDraftResponse = async (surveiId, penggunaId, respons) => {
-  const [responSurvei] = await getOrCreateDraft(surveiId, penggunaId);
+export const saveDraftResponse = async (surveiId, umumId, respons) => {
+  const transaction = await sequelize.transaction();
   
-  await responSurvei.update({
-    respon: {
-      ...responSurvei.respon,
-      ...respons
-    }
-  });
-
-  return responSurvei;
+  try {
+    const [responSurvei] = await getOrCreateDraft(surveiId, umumId);
+    await responSurvei.update(
+      {
+        respon: {
+          ...responSurvei.respon,
+          ...respons
+        }
+      },
+      { transaction }
+    );
+    
+    await transaction.commit();
+    return await ResponSurvei.findByPk(responSurvei.id);
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 };
 
 export const submitFinalResponse = async (surveiId, penggunaId) => {

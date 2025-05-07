@@ -5,7 +5,7 @@ import penggunaRoutes from './pengguna.routes.js';
 import surveiRoutes from './survei.routes.js';
 import pertanyaanSurveiRoutes from './pertanyaanSurvei.routes.js';
 import responSurveiRoutes from './responSurvei.routes.js';
-import responSurveiSubmissionRoutes from './responSurveiSubmission.routes.js';
+import responSurveiSubmissionRoutes from './users/responSurveiSubmission.routes.js';
 import konfigurasiHargaRoutes from './konfigurasiHarga.routes.js';
 import hadiahRoutes from './hadiah.routes.js';
 import penukaranHadiahRoutes from './penukaranHadiah.routes.js';

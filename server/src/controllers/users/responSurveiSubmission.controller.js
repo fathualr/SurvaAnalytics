@@ -1,11 +1,13 @@
-import * as responSurveiSubmissionService from '../services/responSurveiSubmission.service.js';
-import { resSuccess, resFail } from '../utils/responseHandler.js';
+import * as responSurveiSubmissionService from '../../services/responSurveiSubmission.service.js';
+import { resSuccess, resFail } from '../../utils/responseHandler.js';
+import { getUmumIdByUserId } from '../../utils/userMapper.js';
 
 export const getDraft = async (req, res) => {
   try {
+    const umumId = await getUmumIdByUserId(req.user.userId);
     const [responSurvei] = await responSurveiSubmissionService.getOrCreateDraft(
       req.params.surveiId,
-      req.user.userId
+      umumId
     );
     resSuccess(res, 'Draft respon survei retrieved successfully', {
       draft: responSurvei.respon,
@@ -18,10 +20,11 @@ export const getDraft = async (req, res) => {
 
 export const updateDraft = async (req, res) => {
   try {
+    const umumId = await getUmumIdByUserId(req.user.userId);
     const { respon } = req.body;
     const result = await responSurveiSubmissionService.saveDraftResponse(
       req.params.surveiId,
-      req.user.userId,
+      umumId,
       respon
     );
     resSuccess(res, 'Draft respon survei saved successfully', result);
