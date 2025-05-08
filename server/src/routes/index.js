@@ -13,6 +13,7 @@ import penukaranHadiahRoutes from './penukaranHadiah.routes.js';
 import profileRoutes from './users/profile.routes.js';
 import userSurveiRoutes from './users/survei.routes.js';
 import userPertanyaanSurveiRoutes from './users/pertanyaanSurvei.routes.js';
+import userResponSurveiRoutes from './users/responSurvei.routes.js';
 
 const router = Router();
 
@@ -30,5 +31,6 @@ router.use('/penukaran-hadiah', penukaranHadiahRoutes);
 router.use('/users/profile', profileRoutes)
 router.use('/users/survei', userSurveiRoutes)
 router.use('/users', userPertanyaanSurveiRoutes)
+router.use('/users/respon-survei', userResponSurveiRoutes)
 
 export default router;

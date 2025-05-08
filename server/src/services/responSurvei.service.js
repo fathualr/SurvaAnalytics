@@ -2,19 +2,20 @@ import db from '../models/index.js';
 const { ResponSurvei, Survei, PertanyaanSurvei, Umum, Pengguna, sequelize } = db;
 import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
 
-export const index = async (surveiId, queryParams) => {
+export const index = async (surveiId = null, queryParams) => {
   const { where, order, pagination } = parseQuery(queryParams, {
     allowedFilters: ['id_umum', 'is_completed']
   });
 
-  const survei = await Survei.findByPk(surveiId);
-  if (!survei) throw { status: 404, message: 'Survei not found' };
+  if (surveiId) {
+    const survei = await Survei.findByPk(surveiId);
+    if (!survei) throw { status: 404, message: 'Survei not found' };
+
+    where.id_survei = surveiId;
+  }
 
   const { count, rows } = await ResponSurvei.findAndCountAll({
-    where: {
-      ...where,
-      id_survei: surveiId,
-    },
+    where,
     include: [
       {
         model: Umum,
