@@ -6,7 +6,7 @@ import Link from "next/link"
 export default function ManageSurvei() {
   return (
     <div className="w-full p-10">
-      <div className="flew flex-row">
+      <div className="flex flex-row">
         <Button className="w-32 h-10 mr-4 bg-[#FFBF68] hover:bg-[#FFBF68] text-sm rounded-md font-semibold ">Kelola survei</Button>
         <Button className="w-32 h-10 bg-[#FFBF68] hover:bg-[#FFBF68] text-sm rounded-md font-semibold">Explore survei</Button>
       </div>
