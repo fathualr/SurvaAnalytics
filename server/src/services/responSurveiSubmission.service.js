@@ -1,7 +1,14 @@
 import db from '../models/index.js';
-const { ResponSurvei, Umum, sequelize, Pengguna, Survei } = db;
+const { ResponSurvei, Umum, sequelize, Survei } = db;
 
 export const getOrCreateDraft = async (surveiId, umumId) => {
+  const survei = await Survei.findByPk(surveiId);
+  if (!survei) throw { status: 404, message: 'Survei not found' };
+
+  if (survei.id_umum === umumId) {
+    throw { status: 400, message: 'You cannot fill your own survei' };
+  }
+
   const existingCompleted = await ResponSurvei.findOne({
     where: {
       id_survei: surveiId,
@@ -11,7 +18,7 @@ export const getOrCreateDraft = async (surveiId, umumId) => {
   });
 
   if (existingCompleted) {
-    throw new Error('You have submitted respon survei, cannot send more in this survei.');
+    throw { status: 400, message: 'You have submitted respon survei, cannot send more in this survei' };
   }
 
   return await ResponSurvei.findOrCreate({
@@ -46,15 +53,10 @@ export const saveDraftResponse = async (surveiId, umumId, respons) => {
   }
 };
 
-export const submitFinalResponse = async (surveiId, penggunaId) => {
+export const submitFinalResponse = async (surveiId, umumId) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const pengguna = await Pengguna.findByPk(penggunaId, {
-      include: ['Umum']
-    });
-  
-    const umumId = pengguna.Umum.id;
     const draft = await ResponSurvei.findOne({
       where: {
         id_survei: surveiId,
@@ -68,9 +70,9 @@ export const submitFinalResponse = async (surveiId, penggunaId) => {
       transaction
     });
 
-    if (!draft) throw new Error('No draft found');
+    if (!draft) throw { status: 404, message: 'No draft found' };
     if (Object.keys(draft.respon).length === 0) {
-      throw new Error('Survei answers cannot be empty');
+      throw { status: 400, message: 'Respon survei cannot be empty' };
     }
 
     await draft.update({ 

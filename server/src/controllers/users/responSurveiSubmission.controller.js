@@ -35,9 +35,10 @@ export const updateDraft = async (req, res) => {
 
 export const submitRespons = async (req, res) => {
   try {
+    const umumId = await getUmumIdByUserId(req.user.userId);
     const result = await responSurveiSubmissionService.submitFinalResponse(
       req.params.surveiId,
-      req.user.userId
+      umumId
     );
     resSuccess(res, 'Respon survei submitted successfully', result);
   } catch (error) {
