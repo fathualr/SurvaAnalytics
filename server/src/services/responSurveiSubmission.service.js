@@ -8,6 +8,24 @@ const loadPertanyaan = async (surveiId) => {
   });
 };
 
+const validateResponSurvei = async (survei) => {
+  if (survei.status !== 'published') {
+    throw { status: 400, message: 'Survei is not published' };
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  if (today < survei.tanggal_mulai || today > survei.tanggal_berakhir) {
+    throw { status: 400, message: 'This survei is not currently active' };
+  }
+
+  const count = await ResponSurvei.count({
+    where: { id_survei: survei.id, is_completed: true }
+  });
+  if (count >= survei.jumlah_responden) {
+    throw { status: 400, message: 'This survei has reached the maximum number of respondents' };
+  }
+};
+
 export const getOrCreateDraft = async (surveiId, umumId) => {
   const survei = await Survei.findByPk(surveiId);
   if (!survei) throw { status: 404, message: 'Survei not found' };
@@ -15,6 +33,8 @@ export const getOrCreateDraft = async (surveiId, umumId) => {
   if (survei.id_umum === umumId) {
     throw { status: 400, message: 'You cannot fill your own survei' };
   }
+
+  await validateResponSurvei(survei); 
 
   const existingCompleted = await ResponSurvei.findOne({
     where: {
@@ -95,13 +115,15 @@ export const submitFinalResponse = async (surveiId, umumId) => {
         is_completed: false
       },
       include: [{
-        model: Survei,
-        attributes: ['hadiah_poin']
+        model: Survei
       }],
       transaction
     });
 
     if (!draft) throw { status: 404, message: 'No draft found' };
+
+    const survei = draft.Survei;
+    await validateResponSurvei(survei); 
 
     const respon = draft.respon || {};
     if (Object.keys(respon).length === 0) {
@@ -120,6 +142,14 @@ export const submitFinalResponse = async (surveiId, umumId) => {
       where: { id: umumId },
       transaction
     });
+
+    const currentCompleted = await ResponSurvei.count({
+      where: { id_survei: surveiId, is_completed: true },
+      transaction
+    });
+    if (currentCompleted >= survei.jumlah_responden) {
+      await survei.update({ status: 'closed' }, { transaction });
+    }
 
     await transaction.commit();
     return draft;
