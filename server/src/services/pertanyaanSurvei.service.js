@@ -37,6 +37,10 @@ export const create = async (pertanyaanSurveiData) => {
     const survei = await Survei.findByPk(pertanyaanSurveiData.id_survei, { transaction });
     if (!survei) throw { status: 404, message: 'Survei not found' };
 
+    if (!['draft', 'rejected'].includes(survei.status)) {
+      throw { status: 400, message: 'Survei cannot be modified unless it is in draft or rejected status' };
+    }
+
     const maxIndex = await PertanyaanSurvei.count({
       where: { id_survei: pertanyaanSurveiData.id_survei },
       transaction
@@ -68,12 +72,23 @@ export const show = async (pertanyaanSurveiId) => {
   return pertanyaanSurvei;
 };
 
-export const update = async (pertanyaanSurveiId, updateData) => {
+export const update = async (pertanyaanSurveiId, updateData, options = {}) => {
   const transaction = await sequelize.transaction();
+  const { skipStatusValidation = false } = options;
 
   try {
-    const pertanyaanSurvei = await PertanyaanSurvei.findByPk(pertanyaanSurveiId, { transaction });
+    const pertanyaanSurvei = await PertanyaanSurvei.findByPk(pertanyaanSurveiId, {
+      include: [{
+        model: Survei,
+        attributes: ['status']
+      }],
+      transaction
+    });
     if (!pertanyaanSurvei) throw { status: 404, message: 'Pertanyaan survei not found' };
+
+    if (!skipStatusValidation && !['draft', 'rejected'].includes(pertanyaanSurvei.Survei.status)) {
+      throw { status: 400, message: 'Survei cannot be modified unless it is in draft or rejected status.' };
+    }
 
     await pertanyaanSurvei.update(updateData, { transaction });
     await transaction.commit();
@@ -102,8 +117,18 @@ export const destroy = async (pertanyaanSurveiId) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const pertanyaanSurvei = await PertanyaanSurvei.findByPk(pertanyaanSurveiId, { transaction });
+    const pertanyaanSurvei = await PertanyaanSurvei.findByPk(pertanyaanSurveiId, {
+      include: [{
+        model: Survei,
+        attributes: ['status']
+      }],
+      transaction
+    });
     if (!pertanyaanSurvei) throw { status: 404, message: 'Pertanyaan survei not found' };
+
+    if (!['draft', 'rejected'].includes(pertanyaanSurvei.Survei.status)) {
+      throw { status: 400, message: 'Survei cannot be modified unless it is in draft or rejected status.' };
+    }
 
     await pertanyaanSurvei.destroy({ transaction });
     await reorderPertanyaanSurvei(pertanyaanSurvei.id_survei, transaction);

@@ -80,9 +80,11 @@ export const updateUserTipeVisualisasiPertanyaanSurvei = async (req, res) => {
       return resFail(res, 'Unauthorized access to this pertanyaan survei', 403);
     }
 
-    const updatedPertanyaanSurvei = await pertanyaanSurveiService.update(req.params.id, {
-      tipe_visualisasi: req.body.tipe_visualisasi
-    });
+    const updatedPertanyaanSurvei = await pertanyaanSurveiService.update(
+      req.params.id,
+      { tipe_visualisasi: req.body.tipe_visualisasi },
+      { skipStatusValidation: true }
+    );
     resSuccess(res, 'Tipe visualisasi pertanyaan survei updated successfully', updatedPertanyaanSurvei);
   } catch (error) {
     resFail(res, error.message, error.status);
