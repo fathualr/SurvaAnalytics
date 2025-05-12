@@ -26,9 +26,34 @@ const validateResponSurvei = async (survei) => {
   }
 };
 
+const validateKriteria = (kriteria, profilResponden) => {
+  if (!kriteria || Object.keys(kriteria).length === 0) return;
+
+  const unmetCriteria = Object.entries(kriteria).reduce((acc, [key, expected]) => {
+    const actual = profilResponden?.[key];
+    const isValid = Array.isArray(expected)
+      ? expected.includes(actual)
+      : actual === expected;
+    if (!isValid) {
+      const expectedStr = Array.isArray(expected) ? expected.join('/') : expected;
+      acc.push(`${key}: ${expectedStr}`);
+    }
+
+    return acc;
+  }, []);
+
+  if (unmetCriteria.length > 0) {
+    const message = `Profil responden does not meet the criteria; ${unmetCriteria.join('; ')}`;
+    throw { status: 400, message };
+  }
+};
+
 export const getOrCreateDraft = async (surveiId, umumId) => {
   const survei = await Survei.findByPk(surveiId);
   if (!survei) throw { status: 404, message: 'Survei not found' };
+
+  const umum = await Umum.findByPk(umumId);
+  validateKriteria(survei.kriteria, umum.profil_responden);
 
   if (survei.id_umum === umumId) {
     throw { status: 400, message: 'You cannot fill your own survei' };
