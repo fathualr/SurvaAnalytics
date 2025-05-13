@@ -1,21 +1,15 @@
 import * as pertanyaanSurveiService from '../services/pertanyaanSurvei.service.js';
+import { resSuccess, resFail } from '../utils/responseHandler.js';
 
 export const getpertanyaanSurveis = async (req, res) => {
   try {
-    const pertanyaanSurveis = await pertanyaanSurveiService.index(req.params.surveiId);
-    res.json({
-      status: 'success',
-      message: pertanyaanSurveis.length > 0 
-        ? 'Pertanyaan survei retrieved successfully' 
-        : 'No pertanyaan survei found for this survei',
-      results: pertanyaanSurveis.length,
-      data: pertanyaanSurveis
-    });
+    const result = await pertanyaanSurveiService.index(req.params.surveiId, req.query);
+    const message = result.data.length > 0
+      ? 'Pertanyaan surveis retrieved successfully'
+      : 'No pertanyaan survei found';
+    resSuccess(res, message, result);
   } catch (error) {
-    res.status(400).json({
-      status: 'error',
-      message: 'Failed to fetch pertanyaan survei'
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
@@ -25,63 +19,35 @@ export const createPertanyaanSurvei = async (req, res) => {
       ...req.body,
       id_survei: req.params.surveiId
     });
-    res.status(201).json({
-      status: 'success',
-      message: 'Pertanyaan survei created successfully',
-      data: newPertanyaanSurvei
-    });
+    resSuccess(res, 'Pertanyaan survei created successfully', newPertanyaanSurvei, 201);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const getPertanyaanSurvei = async (req, res) => {
   try {
     const pertanyaanSurvei = await pertanyaanSurveiService.show(req.params.id);
-    res.json({
-      status: 'success',
-      message: 'Pertanyaan survei details retrieved successfully',
-      data: pertanyaanSurvei
-    });
+    resSuccess(res, `Pertanyaan survei details for ID ${req.params.id} retrieved successfully`, pertanyaanSurvei);
   } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const updatePertanyaanSurvei = async (req, res) => {
   try {
     const updatedPertanyaanSurvei = await pertanyaanSurveiService.update(req.params.id, req.body);
-    res.json({
-      status: 'success',
-      message: 'Pertanyaan survei updated successfully',
-      data: updatedPertanyaanSurvei
-    });
+    resSuccess(res, `Pertanyaan survei with ID ${req.params.id} updated successfully`, updatedPertanyaanSurvei);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const deletePertanyaanSurvei = async (req, res) => {
   try {
     await pertanyaanSurveiService.destroy(req.params.id);
-    res.json({
-      status: 'success',
-      message: 'Pertanyaan survei deleted successfully',
-      data: null
-    });
+    resSuccess(res, `Pertanyaan survei with ID ${req.params.id} deleted successfully`, null);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };

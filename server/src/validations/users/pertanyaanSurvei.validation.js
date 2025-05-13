@@ -8,8 +8,7 @@ export const createPertanyaanSurveiSchema = Joi.object({
     then: Joi.array().min(1).required(),
     otherwise: Joi.optional()
   }),
-  is_required: Joi.boolean().default(true),
-  tipe_visualisasi: Joi.string().valid('pie', 'bar', 'line', 'doughnut', 'radar', 'text').default('pie')
+  is_required: Joi.boolean().default(true)
 });
 
 export const updatePertanyaanSurveiSchema = Joi.object({
@@ -20,6 +19,9 @@ export const updatePertanyaanSurveiSchema = Joi.object({
     then: Joi.array().min(1).required(),
     otherwise: Joi.optional()
   }),
-  is_required: Joi.boolean().optional(),
-  tipe_visualisasi: Joi.string().valid('pie', 'bar', 'line', 'doughnut', 'radar', 'text').optional()
+  is_required: Joi.boolean().optional()
 });
+
+export const updateTipeVisualisasiSchema = Joi.object({
+  tipe_visualisasi: Joi.string().valid('pie', 'bar', 'line', 'doughnut', 'radar', 'text').optional()
+})
