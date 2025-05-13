@@ -2,19 +2,20 @@ import db from '../models/index.js';
 const { ResponSurvei, Survei, PertanyaanSurvei, Umum, Pengguna, sequelize } = db;
 import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
 
-export const index = async (surveiId, queryParams) => {
+export const index = async (surveiId = null, queryParams) => {
   const { where, order, pagination } = parseQuery(queryParams, {
-    allowedFilters: ['is_completed']
+    allowedFilters: ['id_umum', 'is_completed']
   });
 
-  const survei = await Survei.findByPk(surveiId);
-  if (!survei) throw new Error('Survei not found');
+  if (surveiId) {
+    const survei = await Survei.findByPk(surveiId);
+    if (!survei) throw { status: 404, message: 'Survei not found' };
+
+    where.id_survei = surveiId;
+  }
 
   const { count, rows } = await ResponSurvei.findAndCountAll({
-    where: {
-      ...where,
-      id_survei: surveiId,
-    },
+    where,
     include: [
       {
         model: Umum,
@@ -57,14 +58,13 @@ export const show = async (responSurveiId) => {
         include: [
           {
             model: PertanyaanSurvei,
-            attributes: ['id', 'teks_pertanyaan', 'tipe_pertanyaan', 'opsi', 'is_required', 'tipe_visualisasi'],
-            order: [['created_at', 'ASC']]
+            order: [['index', 'ASC']]
           }
         ]
       }
     ]
   });
-  if (!responSurvei) throw new Error('Respon survei not found');
+  if (!responSurvei) throw { status: 404, message: 'Respon survei not found' };
   return responSurvei;
 };
 
@@ -73,7 +73,7 @@ export const destroy = async (responSurveiId) => {
 
   try {
     const responSurvei = await ResponSurvei.findByPk(responSurveiId, { transaction });
-    if (!responSurvei) throw new Error('Respon survei not found');
+    if (!responSurvei) throw { status: 404, message: 'Respon survei not found' };
 
     await responSurvei.destroy({ transaction });
     await transaction.commit();

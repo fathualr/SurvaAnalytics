@@ -34,6 +34,24 @@ export default (sequelize, DataTypes) => {
     tableName: 'umum',
     timestamps: false,
     underscored: true,
+    getterMethods: {
+      usia() {
+        const profil = this.profil_responden || {};
+        const tanggalLahirStr = profil.tanggal_lahir;
+        if (!tanggalLahirStr) return null;
+
+        const tanggalLahir = new Date(tanggalLahirStr);
+        const sekarang = new Date();
+        let usia = sekarang.getFullYear() - tanggalLahir.getFullYear();
+        const bulanSelisih = sekarang.getMonth() - tanggalLahir.getMonth();
+        const hariSelisih = sekarang.getDate() - tanggalLahir.getDate();
+        if (bulanSelisih < 0 || (bulanSelisih === 0 && hariSelisih < 0)) {
+          usia--;
+        }
+
+        return usia;
+      }
+    }
   });
 
   Umum.associate = (models) => {

@@ -24,6 +24,11 @@ export default (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'SET NULL'
     },
+    profil_metadata: {
+      type: DataTypes.JSONB,
+      allowNull: false,
+      defaultValue: {},
+    },
     respon: {
       type: DataTypes.JSONB,
       allowNull: false,
