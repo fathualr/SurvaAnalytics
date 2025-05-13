@@ -53,7 +53,10 @@ export const getOrCreateDraft = async (surveiId, umumId) => {
   if (!survei) throw { status: 404, message: 'Survei not found' };
 
   const umum = await Umum.findByPk(umumId);
-  validateKriteria(survei.kriteria, umum.profil_responden);
+  validateKriteria(survei.kriteria, {
+    ...umum.profil_responden,
+    usia: umum.usia
+  });
 
   if (survei.id_umum === umumId) {
     throw { status: 400, message: 'You cannot fill your own survei' };
