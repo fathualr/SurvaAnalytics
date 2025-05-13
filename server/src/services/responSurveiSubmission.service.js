@@ -75,12 +75,18 @@ export const getOrCreateDraft = async (surveiId, umumId) => {
   if (existingCompleted) {
     throw { status: 400, message: 'You have submitted respon survei, cannot send more in this survei' };
   }
-
+  const { tanggal_lahir, ...filteredProfil } = umum.profil_responden || {};
   return await ResponSurvei.findOrCreate({
     where: {
       id_survei: surveiId,
       id_umum: umumId,
       is_completed: false
+    },
+    defaults: {
+      profil_metadata: {
+        ...filteredProfil,
+        usia: umum.usia,
+      }
     }
   });
 };
