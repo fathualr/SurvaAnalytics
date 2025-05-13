@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import Link from "next/link"
 
 export default function AddSurvei() {
   return (
@@ -26,13 +27,17 @@ export default function AddSurvei() {
           <textarea className="w-full border-2 border-black rounded-md px-3 py-2" rows={5}/>
         </div>
 
+        <div className="flex justify-center mt-6">
+        <Button className="bg-white hover:bg-white border-3 border-black text-black font-bold w-48 rounded-md">Tambah Pertanyaan</Button>
+        </div>
 
-
-
+        <Link href="/managesurvei/add/criteria">
+        <div className="flex justify-end mt-6">
+        <Button className="bg-white hover:bg-white border-3 border-black text-black font-bold w-48 rounded-md">lanjut</Button>
+        </div>
+        </Link>
+        
       </div>
-
-
-
     </div>
   );
 }

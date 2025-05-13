@@ -1,6 +1,5 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-// import { Link } from "lucide-react";
 import Link from "next/link"
 
 export default function ManageSurvei() {
@@ -19,8 +18,20 @@ export default function ManageSurvei() {
         <div className="bg-white shadow rounded-md overflow-hidden">
           <div className="relative h-48 w-full bg-gray-300"> 
           </div>
+          <Link href="/managesurvei/add">
             <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
-            <p className="text-lg font-semibold"> Buat baru</p>
+            <span className="text-lg font-semibold">Buat baru</span>
+            </div>
+          </Link>
+          </div>
+        {/* card */}
+
+        {/* Card */}
+        <div className="bg-white shadow rounded-md overflow-hidden">
+          <div className="relative h-48 w-full bg-gray-300">
+          </div>
+            <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
+            <span className="text-lg font-semibold"> Kelola survei</span>
             </div>
           </div>
         {/* card */}
@@ -30,7 +41,7 @@ export default function ManageSurvei() {
           <div className="relative h-48 w-full bg-gray-300">
           </div>
             <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
-            <p className="text-lg font-semibold"> Kelola survei</p>
+            <span className="text-lg font-semibold"> Kelola survei</span>
             </div>
           </div>
         {/* card */}
@@ -40,7 +51,7 @@ export default function ManageSurvei() {
           <div className="relative h-48 w-full bg-gray-300">
           </div>
             <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
-            <p className="text-lg font-semibold"> Kelola survei</p>
+            <span className="text-lg font-semibold"> Kelola survei</span>
             </div>
           </div>
         {/* card */}
@@ -50,7 +61,7 @@ export default function ManageSurvei() {
           <div className="relative h-48 w-full bg-gray-300">
           </div>
             <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
-            <p className="text-lg font-semibold"> Kelola survei</p>
+            <span className="text-lg font-semibold"> Kelola survei</span>
             </div>
           </div>
         {/* card */}
@@ -60,7 +71,7 @@ export default function ManageSurvei() {
           <div className="relative h-48 w-full bg-gray-300">
           </div>
             <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
-            <p className="text-lg font-semibold"> Kelola survei</p>
+            <span className="text-lg font-semibold"> Kelola survei</span>
             </div>
           </div>
         {/* card */}
@@ -70,7 +81,7 @@ export default function ManageSurvei() {
           <div className="relative h-48 w-full bg-gray-300">
           </div>
             <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
-            <p className="text-lg font-semibold"> Kelola survei</p>
+            <span className="text-lg font-semibold"> Kelola survei</span>
             </div>
           </div>
         {/* card */}
@@ -80,17 +91,7 @@ export default function ManageSurvei() {
           <div className="relative h-48 w-full bg-gray-300">
           </div>
             <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
-            <p className="text-lg font-semibold"> Kelola survei</p>
-            </div>
-          </div>
-        {/* card */}
-
-        {/* Card */}
-        <div className="bg-white shadow rounded-md overflow-hidden">
-          <div className="relative h-48 w-full bg-gray-300">
-          </div>
-            <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
-            <p className="text-lg font-semibold"> Kelola survei</p>
+            <span className="text-lg font-semibold"> Kelola survei</span>
             </div>
           </div>
         {/* card */}
