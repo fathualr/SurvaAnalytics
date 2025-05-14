@@ -8,6 +8,13 @@ export const index = async (surveiId, queryParams) => {
     defaultSort: 'index'
   });
 
+  if (surveiId) {
+    const survei = await Survei.findByPk(surveiId);
+    if (!survei) throw { status: 404, message: 'Survei not found' };
+
+    where.id_survei = surveiId;
+  }
+  
   const { count, rows } = await PertanyaanSurvei.findAndCountAll({
     where: {
       ...where,
