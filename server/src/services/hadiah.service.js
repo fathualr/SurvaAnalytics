@@ -21,7 +21,7 @@ export const create = async (hadiahData) => {
 
 export const show = async (hadiahId) => {
   const hadiah = await Hadiah.findByPk(hadiahId);
-  if (!hadiah) throw new Error('Hadiah not found');
+  if (!hadiah) throw { status: 404, message: 'Hadiah not found' };
   return hadiah;
 };
 
@@ -30,7 +30,7 @@ export const update = async (hadiahId, updateData) => {
 
   try {
     const hadiah = await Hadiah.findByPk(hadiahId, { transaction });
-    if (!hadiah) throw new Error('Hadiah not found');
+    if (!hadiah) throw { status: 404, message: 'Hadiah not found' };
 
     await hadiah.update(updateData, { transaction });
     await transaction.commit();
@@ -46,7 +46,7 @@ export const destroy = async (hadiahId) => {
 
   try {
     const hadiah = await Hadiah.findByPk(hadiahId, { transaction });
-    if (!hadiah) throw new Error('Hadiah not found');
+    if (!hadiah) throw { status: 404, message: 'Hadiah not found' };
 
     await hadiah.destroy({ transaction });
     await transaction.commit();

@@ -42,19 +42,19 @@ export const create = async (penggunaId, penukaranHadiahData) => {
       include: ['Umum'],
       transaction,
     });
-    if (!pengguna) throw new Error('Pengguna not found');
+    if (!pengguna) throw { status: 404, message: 'Pengguna not found' };
 
     const hadiah = await Hadiah.findByPk(penukaranHadiahData.id_hadiah, { transaction });
-    if (!hadiah) throw new Error('Hadiah not found');
+    if (!hadiah) throw { status: 404, message: 'Hadiah not found' };
 
     const total_poin = hadiah.harga_poin;
 
     if (hadiah.stok <= 0) {
-      throw new Error('Out of stock hadiah');
+      throw { status: 400, message: 'Out of stock hadiah' };
     }
 
     if (pengguna.Umum.poin < total_poin) {
-      throw new Error('Not enough poin');
+      throw { status: 400, message: 'Not enough poin' };
     }
 
     const keterangan = `Penukaran hadiah: ${hadiah.nama}`;
@@ -97,6 +97,6 @@ export const show = async (penukaranHadiahId) => {
       }
     ]
   });
-  if (!penukaranHadiah) throw new Error('Penukaran hadiah not found');
+  if (!penukaranHadiah) throw { status: 404, message: 'Penukaran hadiah not found' };
   return penukaranHadiah;
 };

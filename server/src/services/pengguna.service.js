@@ -79,7 +79,7 @@ export const update = async (penggunaId, updateData) => {
     if (!pengguna) throw { status: 404, message: 'Pengguna not found' };
 
     if (updateData.role && updateData.role !== pengguna.role) {
-      throw new Error('Role cannot be changed');
+      throw { status: 400, message: 'Role cannot be changed' };
     }
 
     await pengguna.update(updateData, { transaction });

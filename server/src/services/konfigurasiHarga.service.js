@@ -4,7 +4,7 @@ const { KonfigurasiSurvei, sequelize } = db;
 export const index = async () => {
   const config = await KonfigurasiSurvei.findByPk(1);
   if (!config) {
-    throw new Error('Konfigurasi harga has not been initialized');
+    throw { status: 404, message: 'Konfigurasi harga has not been initialized' };
   }
   return config;
 };
@@ -15,7 +15,7 @@ export const create = async (configPriceData) => {
   try {
     const existingConfigPrice = await KonfigurasiSurvei.findByPk(1);
     if (existingConfigPrice) {
-      throw new Error('Konfigurasi harga has been initialized');
+      throw { status: 409, message: 'Konfigurasi harga has been initialized' };
     }
 
     const newConfigPrice = await KonfigurasiSurvei.create({
@@ -36,7 +36,7 @@ export const update = async (updateData) => {
   
   try {
     const existingConfigPrice = await KonfigurasiSurvei.findByPk(1);
-    if (!existingConfigPrice) throw new Error('Konfigurasi harga not found');
+    if (!existingConfigPrice) throw { status: 404, message: 'Konfigurasi harga not found' };
     
     await existingConfigPrice.update(updateData, { transaction });
 

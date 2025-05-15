@@ -1,17 +1,12 @@
 import * as penukaranHadiahService from '../services/penukaranHadiah.service.js';
+import { resSuccess, resFail } from '../utils/responseHandler.js';
 
 export const getPenukaranHadiahs = async (req, res) => {
   try {
     const result = await penukaranHadiahService.index(req.query);
-    res.json({
-      status: 'success',
-      result
-    });
+    resSuccess(res, 'Penukaran hadiah retrieved successfully', result);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
@@ -21,31 +16,17 @@ export const createPenukaranHadiah = async (req, res) => {
       req.user.userId,
       req.body
     );
-    res.status(201).json({
-      status: 'success',
-      message: 'Penukaran hadiah created successfully',
-      data: penukaranHadiah
-    });
+    resSuccess(res, 'Penukaran hadiah created successfully', penukaranHadiah, 201);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const getPenukaranHadiah = async (req, res) => {
   try {
     const penukaranHadiah = await penukaranHadiahService.show(req.params.id);
-    res.json({
-      status: 'success',
-      message: 'Penukaran hadiah details retrieved successfully',
-      data: penukaranHadiah
-    });
+    resSuccess(res, 'Penukaran hadiah details retrieved successfully', penukaranHadiah);
   } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };

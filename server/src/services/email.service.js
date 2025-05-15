@@ -11,7 +11,6 @@ export const sendRegistrationOTP = async (email, otp) => {
     });
     return true;
   } catch (error) {
-    console.error('Email error:', error);
-    throw new Error('Failed to send OTP');
+    throw { status: 500, message: 'Failed to send OTP' };
   }
 };

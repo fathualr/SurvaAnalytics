@@ -1,49 +1,29 @@
 import * as konfigurasiHargaService from '../services/konfigurasiHarga.service.js';
+import { resSuccess, resFail } from '../utils/responseHandler.js';
 
 export const getConfig = async (req, res) => {
   try {
     const config = await konfigurasiHargaService.index();
-    res.json({
-      status: 'success',
-      message: `Konfigurasi harga retrieved successfully`,
-      data: config
-    });
+    resSuccess(res, 'Konfigurasi harga retrieved successfully', config);
   } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const createConfig = async (req, res) => {
   try {
     const newConfig = await konfigurasiHargaService.create(req.body);
-    res.status(201).json({
-      status: 'success',
-      message: 'Konfigurasi created successfully',
-      data: newConfig
-    });
+    resSuccess(res, 'Konfigurasi created successfully', newConfig, 201);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const updateConfig = async (req, res) => {
   try {
     const updatedConfig = await konfigurasiHargaService.update(req.body);
-    res.json({
-      status: 'success',
-      message: 'Konfigurasi harga updated successfully',
-      data: updatedConfig
-    });
+    resSuccess(res, 'Konfigurasi harga updated successfully', updatedConfig);
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
