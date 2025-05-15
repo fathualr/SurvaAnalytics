@@ -1,9 +1,10 @@
-import * as authService from '../../services/auth/login.service.js';
+import * as loginService from '../../services/auth/login.service.js';
+import { resSuccess, resFail } from '../../utils/responseHandler.js';
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const { accessToken, refreshToken } = await authService.loginService(email, password);
+    const { accessToken, refreshToken } = await loginService.userLogin(email, password);
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -12,32 +13,18 @@ export const login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    res.json({
-      status: 'success',
-      message: `Logged in successfully`,
-      data: { accessToken }
-    });
+    resSuccess(res, 'Logged in successfully', { accessToken });
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
 export const refresh = (req, res) => {
   try {
-    const accessToken = authService.refreshService(req.cookies?.refreshToken);
-    res.json({
-      status: 'success',
-      message: `Refresh token successfully`,
-      data: { accessToken}
-    });
+    const accessToken = loginService.userRefresh(req.cookies?.refreshToken);
+    resSuccess(res, 'Refresh token successfully', { accessToken });
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
 
@@ -45,21 +32,15 @@ export const logout = (req, res) => {
   try {
     const refreshToken = req.cookies?.refreshToken;
     
-    if (!refreshToken) throw new Error('No active session');
+    if (!refreshToken) throw { status: 401, message: 'No active session' };
 
     res.clearCookie('refreshToken', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict'
     });
-    res.json({
-      status: 'success',
-      message: `Logged out succesfully`
-    })
+    resSuccess(res, 'Logged out successfully');
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    resFail(res, error.message, error.status);
   }
 };
