@@ -20,12 +20,12 @@ export const emailVerification = async (email) => {
 
   if (existingUser) {
     if (existingUser.email_confirmed) {
-      throw new Error('Email is already registered');
+      throw { status: 409, message: 'Email is already registered' };
     }
 
     const timeSinceLastSent = Date.now() - new Date(existingUser.email_confirmation_sent_at || 0).getTime();
     if (timeSinceLastSent < 3 * 60 * 1000) {
-      throw new Error('OTP has already been sent. Please wait a few minutes before trying again.');
+      throw { status: 429, message: 'OTP has already been sent. Please wait a few minutes before trying again.'};
     }
 
     await generateAndSendOTP(existingUser);
@@ -47,7 +47,7 @@ export const validationOTP = async (email, otp) => {
   const user = await Pengguna.findOne({ where: { email } });
   
   if (!user || !otpService.isOTPValid(user, otp)) {
-    throw new Error('Invalid or expired OTP');
+    throw { status: 400, message: 'Invalid or expired OTP' };
   }
   
   await user.update({ email_confirmation_token: null });
@@ -61,8 +61,8 @@ export const validationOTP = async (email, otp) => {
 
 export const completeRegistration = async (penggunaData) => {
   const pengguna = await Pengguna.findByPk(penggunaData.id);
-  if (!pengguna) throw new Error("User not found");
-  if (pengguna.email_confirmed) throw new Error("Registration already completed");
+  if (!pengguna) throw { status: 404, message: 'Pengguna not found' };
+  if (pengguna.email_confirmed) throw { status: 409, message: 'Registration already completed' };
 
   const transaction = await sequelize.transaction();
   try {
