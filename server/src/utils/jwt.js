@@ -9,9 +9,9 @@ export const generateAccessToken = (userId, role) => {
   );
 };
 
-export const generateRefreshToken = (userId) => {
+export const generateRefreshToken = (userId, role, tokenId) => {
   return jwt.sign(
-    { userId, type: 'refresh' },
+    { userId, role, type: 'refresh', tokenId },
     config.refreshSecret,
     { expiresIn: config.refreshExpires, algorithm: config.algorithm }
   );
@@ -30,5 +30,9 @@ export const verifyAccessToken = (token) => {
 };
 
 export const verifyRefreshToken = (token) => {
-  return jwt.verify(token, config.refreshSecret);
+  const payload = jwt.verify(token, config.refreshSecret);
+  if (payload.type !== 'refresh') {
+    throw new Error('Invalid token type');
+  }
+  return payload;
 };
