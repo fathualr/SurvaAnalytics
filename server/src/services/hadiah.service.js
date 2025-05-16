@@ -1,9 +1,23 @@
 import db from'../models/index.js';
 const { Hadiah, sequelize } = db;
+import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
 
-export const index = async () => {
-  return await Hadiah.findAll({
+export const index = async (queryParams) => {
+  const { where, order, pagination } = parseQuery(queryParams);
+
+  const { count, rows } = await Hadiah.findAndCountAll({
+    where: {
+      ...where,
+    },
+    order,
+    ...pagination,
+    distinct: true
   });
+
+  return {
+    data: rows,
+    ...metaQueryFormat({ count }, pagination)
+  };
 };
 
 export const create = async (hadiahData) => {
@@ -12,7 +26,7 @@ export const create = async (hadiahData) => {
   try {
     const hadiah = await Hadiah.create(hadiahData, { transaction });
     await transaction.commit();
-    return hadiah;
+    return await Hadiah.findByPk(hadiah.id);
   } catch (error) {
     await transaction.rollback();
     throw error;
@@ -34,7 +48,7 @@ export const update = async (hadiahId, updateData) => {
 
     await hadiah.update(updateData, { transaction });
     await transaction.commit();
-    return hadiah;
+    return await Hadiah.findByPk(hadiah.id);
   } catch (error) {
     await transaction.rollback();
     throw error;
