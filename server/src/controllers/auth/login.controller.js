@@ -2,7 +2,7 @@ import * as loginService from '../../services/auth/login.service.js';
 import { resSuccess, resFail } from '../../utils/responseHandler.js';
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, remember_me } = req.body;
   try {
     const { accessToken, refreshToken } = await loginService.userLogin(email, password);
 
@@ -10,7 +10,9 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      ...(remember_me && {
+        maxAge: 30 * 24 * 60 * 60 * 1000
+      })
     });
 
     resSuccess(res, 'Logged in successfully', { accessToken });

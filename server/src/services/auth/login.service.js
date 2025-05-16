@@ -10,7 +10,7 @@ export const userLogin = async (email, password) => {
   }
 
   const accessToken = generateAccessToken(user.id, user.role);
-  const refreshToken = generateRefreshToken(user.id);
+  const refreshToken = generateRefreshToken(user.id, user.role);
 
   return { accessToken, refreshToken };
 };
@@ -27,7 +27,7 @@ export const userRefresh = (refreshTokenCookie) => {
     throw { status: 403, message: 'Invalid refresh token' };
   }
 
-  const accessToken = generateAccessToken(payload.userId, payload.role || 'umum');
+  const accessToken = generateAccessToken(payload.userId, payload.role);
 
   return accessToken;
 };

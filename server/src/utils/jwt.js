@@ -9,9 +9,9 @@ export const generateAccessToken = (userId, role) => {
   );
 };
 
-export const generateRefreshToken = (userId) => {
+export const generateRefreshToken = (userId, role) => {
   return jwt.sign(
-    { userId, type: 'refresh' },
+    { userId, role, type: 'refresh' },
     config.refreshSecret,
     { expiresIn: config.refreshExpires, algorithm: config.algorithm }
   );

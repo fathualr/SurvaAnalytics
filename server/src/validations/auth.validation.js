@@ -3,6 +3,7 @@ import Joi from 'joi';
 export const loginValidation = Joi.object({
   email: Joi.string().email().max(255).required(),
   password: Joi.string().min(8).required(),
+  remember_me: Joi.boolean().optional(),
 });
 
 export const emailRegisterValidation = Joi.object({
