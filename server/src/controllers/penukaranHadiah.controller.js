@@ -4,7 +4,10 @@ import { resSuccess, resFail } from '../utils/responseHandler.js';
 export const getPenukaranHadiahs = async (req, res) => {
   try {
     const result = await penukaranHadiahService.index(req.query);
-    resSuccess(res, 'Penukaran hadiah retrieved successfully', result);
+    const message = result.data.length > 0
+      ? 'Penukaran hadiahs retrieved successfully'
+      : 'No penukaran hadiahs found';
+    resSuccess(res, message, result);
   } catch (error) {
     resFail(res, error.message, error.status);
   }
@@ -12,11 +15,8 @@ export const getPenukaranHadiahs = async (req, res) => {
 
 export const createPenukaranHadiah = async (req, res) => {
   try {
-    const penukaranHadiah = await penukaranHadiahService.create(
-      req.user.userId,
-      req.body
-    );
-    resSuccess(res, 'Penukaran hadiah created successfully', penukaranHadiah, 201);
+    const newPenukaranHadiah = await penukaranHadiahService.create(req.body);
+    resSuccess(res, 'Penukaran hadiah created successfully', newPenukaranHadiah, 201);
   } catch (error) {
     resFail(res, error.message, error.status);
   }
@@ -26,6 +26,15 @@ export const getPenukaranHadiah = async (req, res) => {
   try {
     const penukaranHadiah = await penukaranHadiahService.show(req.params.id);
     resSuccess(res, 'Penukaran hadiah details retrieved successfully', penukaranHadiah);
+  } catch (error) {
+    resFail(res, error.message, error.status);
+  }
+};
+
+export const deletePenukaranHadiah = async (req, res) => {
+  try {
+    await penukaranHadiahService.destroy(req.params.id);
+    resSuccess(res, `Penukaran hadiah deleted successfully`, null);
   } catch (error) {
     resFail(res, error.message, error.status);
   }
