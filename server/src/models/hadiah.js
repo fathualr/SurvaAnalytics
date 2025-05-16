@@ -6,7 +6,8 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
     },
     nama: {
-      type: DataTypes.STRING(255)
+      type: DataTypes.STRING(255),
+      allowNull: false
     },
     deskripsi: {
       type: DataTypes.TEXT,

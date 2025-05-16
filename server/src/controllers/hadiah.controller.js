@@ -3,8 +3,8 @@ import { resSuccess, resFail } from '../utils/responseHandler.js';
 
 export const getHadiahs = async (req, res) => {
   try {
-    const result = await hadiahService.index();
-    const message = result.length > 0
+    const result = await hadiahService.index(req.query);
+    const message = result.data.length > 0
       ? 'Hadiahs retrieved successfully'
       : 'No hadiahs found';
     resSuccess(res, message, result);
