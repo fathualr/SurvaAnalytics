@@ -28,7 +28,8 @@
     "pg-hstore": "^2.3.4",
     "redis": "^5.0.1",
     "sequelize": "^6.37.7",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "xendit-node": "^6.4.0"
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.2"
