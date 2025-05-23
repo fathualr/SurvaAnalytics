@@ -1,4 +1,5 @@
 import * as pembayaranSurveiService from '../../services/pembayaranSurvei.service.js';
+import * as surveiService from '../../services/survei.service.js';
 import { resSuccess, resFail } from '../../utils/responseHandler.js';
 import { getUmumIdByUserId } from '../../utils/userMapper.js';
 
@@ -20,9 +21,15 @@ export const getUserPembayaranSurveis = async (req, res) => {
 
 export const createPayment = async (req, res) => {
   try {
+    const umumId = await getUmumIdByUserId(req.user.userId);
+    const survei = await surveiService.show(req.params.id);
+    if (survei.id_umum !== umumId) {
+      return resFail(res, 'Unauthorized to access this survei', 403);
+    }
+
     const newPembayaanSurvei = await pembayaranSurveiService.create(
       req.params.id,
-      req.user.userId,
+      umumId,
       req.body
     );
     resSuccess(res, 'Payment initiated', newPembayaanSurvei);

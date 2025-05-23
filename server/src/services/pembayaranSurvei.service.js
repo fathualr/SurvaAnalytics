@@ -39,14 +39,13 @@ export const index = async (queryParams) => {
   };
 };
 
-export const create = async (surveiId, penggunaId, pembayaranSurveiData) => {
+export const create = async (surveiId, umumId, pembayaranSurveiData) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const pengguna = await Pengguna.findByPk(penggunaId, {
-      include: [{ model: Umum }]
+    const umum = await Umum.findByPk(umumId, {
+      include: [{ model: Pengguna }]
     });
-    if (!pengguna) throw { status: 404, message: 'Pengguna not found'};
 
     const survei = await Survei.findByPk(surveiId);
     if (!survei) throw { status: 404, message: 'Survei not found'};
@@ -65,7 +64,7 @@ export const create = async (surveiId, penggunaId, pembayaranSurveiData) => {
 
     const pembayaranSurvei = await PembayaranSurvei.create({
       id_survei: surveiId,
-      id_umum: pengguna.Umum.id,
+      id_umum: umum.id,
       jumlah_tagihan: pembayaranSurveiData.jumlah_tagihan,
       metode_pembayaran: null,
       status: 'pending'
@@ -74,7 +73,7 @@ export const create = async (surveiId, penggunaId, pembayaranSurveiData) => {
     const { invoiceUrl } = await xenditService.createXenditInvoice({
       pembayaranSurveiId: pembayaranSurvei.id,
       jumlahTagihan: pembayaranSurveiData.jumlah_tagihan,
-      penggunaEmail: pengguna.email,
+      penggunaEmail: umum.Pengguna.email,
       judulSurvei: survei.judul
     });
 
