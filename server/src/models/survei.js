@@ -57,6 +57,7 @@ export default (sequelize, DataTypes) => {
     hadiah_poin: {
       type: DataTypes.BIGINT,
       allowNull: false,
+      defaultValue: 0,
       validate: {
         min: 0
       }
@@ -75,6 +76,8 @@ export default (sequelize, DataTypes) => {
 
   Survei.associate = (models) => {
     Survei.belongsTo(models.Umum, { foreignKey: 'id_umum'});
+    Survei.hasMany(models.PertanyaanSurvei, { foreignKey: 'id_survei'});
+    Survei.hasMany(models.ResponSurvei, { foreignKey: 'id_survei'});
   };
 
   return Survei;

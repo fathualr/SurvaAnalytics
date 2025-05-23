@@ -1,13 +1,29 @@
 import db from '../models/index.js';
 const { Pengguna, Admin, Umum, sequelize } = db;
+import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
 
-export const index = async () => {
-  return await Pengguna.findAll({
+export const index = async (queryParams) => {
+  const { where, order, pagination } = parseQuery(queryParams, {
+    allowedFilters: ['email', 'role', 'is_completed']
+  });
+
+  const { count, rows } = await Pengguna.findAndCountAll({
+    where: {
+      ...where,
+    },
     include: [
       { model: Admin, required: false },
       { model: Umum, required: false }
-    ]
+    ],
+    order,
+    ...pagination,
+    distinct: true
   });
+
+  return {
+    data: rows,
+    ...metaQueryFormat({ count }, pagination)
+  };
 };
 
 export const create = async (penggunaData) => {
@@ -51,7 +67,7 @@ export const show = async (penggunaId) => {
       { model: Umum, required: false }
     ]
   });
-  if (!pengguna) throw new Error('Pengguna not found');
+  if (!pengguna) throw { status: 404, message: 'Pengguna not found' };
   return pengguna;
 };
 
@@ -60,10 +76,10 @@ export const update = async (penggunaId, updateData) => {
 
   try {
     const pengguna = await Pengguna.findByPk(penggunaId, { transaction });
-    if (!pengguna) throw new Error('pPngguna not found');
+    if (!pengguna) throw { status: 404, message: 'Pengguna not found' };
 
     if (updateData.role && updateData.role !== pengguna.role) {
-      throw new Error('Role cannot be changed');
+      throw { status: 400, message: 'Role cannot be changed' };
     }
 
     await pengguna.update(updateData, { transaction });
@@ -99,7 +115,7 @@ export const destroy = async (penggunaId) => {
 
   try {
     const pengguna = await Pengguna.findByPk(penggunaId, { transaction });
-    if (!pengguna) throw new Error('Pengguna not found');
+    if (!pengguna) throw { status: 404, message: 'Pengguna not found' };
 
     await pengguna.destroy({ transaction });
     await transaction.commit();
