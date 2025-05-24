@@ -29,8 +29,7 @@ export const createPayment = async (req, res) => {
 
     const newPembayaanSurvei = await pembayaranSurveiService.create(
       req.params.id,
-      umumId,
-      req.body
+      umumId
     );
     resSuccess(res, 'Payment initiated', newPembayaanSurvei);
   } catch (error) {

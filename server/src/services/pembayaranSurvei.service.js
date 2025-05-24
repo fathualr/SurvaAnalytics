@@ -1,7 +1,9 @@
 import * as xenditService from './xendit.service.js';
+import * as konfigurasiService from './konfigurasiHarga.service.js';
 import db from '../models/index.js';
-const { PembayaranSurvei, Survei, Pengguna, Umum, sequelize } = db;
+const { PembayaranSurvei, Survei, PertanyaanSurvei, Pengguna, Umum, sequelize } = db;
 import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
+import { kalkulasiJumlahTagihanSurvei } from '../utils/surveiCalculations.js';
 
 export const index = async (queryParams) => {
   const { where, order, pagination } = parseQuery(queryParams, {
@@ -39,21 +41,10 @@ export const index = async (queryParams) => {
   };
 };
 
-export const create = async (surveiId, umumId, pembayaranSurveiData) => {
+export const create = async (surveiId, umumId) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const umum = await Umum.findByPk(umumId, {
-      include: [{ model: Pengguna }]
-    });
-
-    const survei = await Survei.findByPk(surveiId);
-    if (!survei) throw { status: 404, message: 'Survei not found'};
-
-    if (survei.status !== 'payment_pending') {
-      throw { status: 400, message: 'Survei status must be "payment_pending"' };
-    }
-
     const existingPembayaran = await PembayaranSurvei.findOne({
       where: {
         id_survei: surveiId,
@@ -62,17 +53,33 @@ export const create = async (surveiId, umumId, pembayaranSurveiData) => {
     });
     if (existingPembayaran) throw { status: 400, message: 'This survei has already been paid' };
 
+    const umum = await Umum.findByPk(umumId, {
+      include: [{ model: Pengguna }]
+    });
+    const survei = await Survei.findByPk(surveiId, {
+      include: [{ model: PertanyaanSurvei }]
+    });
+    if (!survei) throw { status: 404, message: 'Survei not found'};
+
+    if (survei.status !== 'payment_pending') {
+      throw { status: 400, message: 'Survei status must be "payment_pending"' };
+    }
+
+    const konfigurasi = await konfigurasiService.index();
+    const jumlahPertanyaan = survei.PertanyaanSurveis?.length || 0;
+    const jumlah_tagihan = kalkulasiJumlahTagihanSurvei(konfigurasi, survei, jumlahPertanyaan);
+
     const pembayaranSurvei = await PembayaranSurvei.create({
       id_survei: surveiId,
       id_umum: umum.id,
-      jumlah_tagihan: pembayaranSurveiData.jumlah_tagihan,
+      jumlah_tagihan,
       metode_pembayaran: null,
       status: 'pending'
     }, { transaction });
 
     const { invoiceUrl } = await xenditService.createXenditInvoice({
       pembayaranSurveiId: pembayaranSurvei.id,
-      jumlahTagihan: pembayaranSurveiData.jumlah_tagihan,
+      jumlahTagihan: jumlah_tagihan,
       penggunaEmail: umum.Pengguna.email,
       judulSurvei: survei.judul
     });
