@@ -77,6 +77,7 @@ export default (sequelize, DataTypes) => {
   Survei.associate = (models) => {
     Survei.belongsTo(models.Umum, { foreignKey: 'id_umum'});
     Survei.hasMany(models.PertanyaanSurvei, { foreignKey: 'id_survei'});
+    Survei.hasOne(models.PembayaranSurvei, { foreignKey: 'id_survei'});
     Survei.hasMany(models.ResponSurvei, { foreignKey: 'id_survei'});
   };
 
