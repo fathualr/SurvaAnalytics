@@ -36,6 +36,10 @@ export const getUserPenukaranHadiah = async (req, res) => {
 	try {
     const umumId = await getUmumIdByUserId(req.user.userId);
 		const penukaranHadiah = await penukaranHadiahService.show(req.params.id);
+		if (penukaranHadiah.id_umum !== umumId) {
+      return resFail(res, 'Unauthorized to access this penukaran hadiah', 403);
+    }
+
 		resSuccess(res, 'Penukaran hadiah details retrieved successfully', penukaranHadiah);
 	} catch (error) {
 		resFail(res, error.message, error.status);
