@@ -37,9 +37,8 @@ export default (sequelize, DataTypes) => {
     tipe_visualisasi: {
       type: DataTypes.STRING(50),
       allowNull: false,
-      defaultValue: 'pie',
       validate: {
-        isIn: [['pie', 'bar', 'line', 'doughnut', 'radar', 'text']]
+        isIn: [['pie', 'bar', 'line', 'doughnut', 'radar', 'text', 'wordcloud', 'sentiment_analysis']]
       }
     },
     index: {
