@@ -20,6 +20,8 @@ import usersurveiVerificationRoutes from './users/surveiVerification.routes.js';
 import userResponSurveiResultRoutes from './users/responSurveiResult.routes.js';
 import userPenukaranHadiahRoutes from './users/penukaranHadiah.routes.js';
 
+import publicSurveiRoutes from './public/survei.routes.js';
+
 const router = Router();
 
 router.use('/', loginRoutes);
@@ -42,5 +44,7 @@ router.use('/users/respon-survei', userResponSurveiRoutes)
 router.use('/users/survei', usersurveiVerificationRoutes)
 router.use('/users/survei', userResponSurveiResultRoutes)
 router.use('/users/penukaran-hadiah', userPenukaranHadiahRoutes)
+
+router.use('/public/survei', publicSurveiRoutes)
 
 export default router;
