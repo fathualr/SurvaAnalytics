@@ -16,7 +16,7 @@ export function SurveyPagination({
       <button
         onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
         disabled={currentPage === 1}
-        className="p-0 m-0 bg-transparent mr-4 border-none outline-none hover:opacity-80 disabled:opacity-40"
+        className="cursor-pointer p-0 m-0 bg-transparent mr-4 border-none outline-none hover:opacity-80 disabled:opacity-40 disabled:cursor-default"
       >
         <Image
           src="/pagination-left.svg"
@@ -32,7 +32,7 @@ export function SurveyPagination({
       <button
         onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
         disabled={currentPage === totalPages}
-        className="p-0 m-0 bg-transparent ml-4 border-none outline-none hover:opacity-80 disabled:opacity-40"
+        className="cursor-pointer p-0 m-0 bg-transparent ml-4 border-none outline-none hover:opacity-80 disabled:opacity-40 disabled:cursor-default"
       >
         <Image
           src="/pagination-right.svg"
