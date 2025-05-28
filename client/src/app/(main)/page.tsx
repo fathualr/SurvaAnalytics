@@ -7,41 +7,47 @@ import {
   CarouselItem
 } from "@/components/ui/carousel";
 import { Card } from "@/components/ui/card";
+import { GridBackgroundDemo } from "@/components/ui/grid-background"
 
 export default function Home() {
   return (
     <main className="flex flex-col w-full overflow-hidden min-h-screen">
       
-      {/* Hero Section */}
-      <section className="py-16 my-auto min-h-screen h-full grid md:grid-cols-2 grid-cols-1 md:px-20 sm:px-10 px-5">
-        <div className="col-span-1 md:row-start-1 row-start-2 flex flex-col m-auto md:gap-10 gap-8">
-          <h1 className="block font-bold md:text-6xl text-5xl ">
-            <span className="block">Survei sekejap,</span>
-            <span className="mt-2 block">Insight Melekat!</span>
-          </h1>
-          <div className="md:text-xl sm:text-lg text-md">
-            <span className="block">
-              Dapatkan data penting dalam hitungan detik!
-            </span>
-            <span>
-              Aplikasi surva analytic yang cepat, mudah, dan akurat untuk membantumu mengambil keputusan terbaik.
-            </span>
-          </div>
-          <Link href="/explore" className="flex justify-center items-center max-w-[300] h-[70] border border-secondary-1 bg-secondary-1 rounded-tr-3xl rounded-bl-3xl hover:rounded-tr-none hover:rounded-bl-none hover:rounded-tl-3xl hover:rounded-br-3xl transition-all duration-150 ">
-            <p className="font-semibold text-center text-3xl text-accent-1">Mulai</p>
-          </Link>
+  <GridBackgroundDemo>
+    {/* Hero Section */}
+    <section className="py-16 my-auto min-h-screen md:h-screen h-full grid md:grid-cols-2 grid-cols-1 md:px-20 sm:px-10 px-5">
+      <div className="col-span-1 md:row-start-1 row-start-2 flex flex-col m-auto md:gap-10 gap-8">
+        <h1 className="block font-bold md:text-6xl text-5xl">
+          <span className="block">Survei sekejap,</span>
+          <span className="mt-2 block">Insight Melekat!</span>
+        </h1>
+        <div className="md:text-xl sm:text-lg text-md">
+          <span className="block">
+            Dapatkan data penting dalam hitungan detik!
+          </span>
+          <span>
+            Aplikasi surva analytic yang cepat, mudah, dan akurat untuk membantumu mengambil keputusan terbaik.
+          </span>
         </div>
-        <div className="col-span-1 row-start-1 p-10 w-full h-full flex items-center justify-center">
-          <Image 
-            src="/images/landing-page/hero-1.png" 
-            alt="Hero" 
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="w-full h-auto md:max-h-[600px] max-h-[400px] object-contain"
-          />
-        </div>
-      </section>
+        <Link
+          href="/explore"
+          className="flex justify-center items-center max-w-[300] h-[70] border border-secondary-1 bg-secondary-1 rounded-tr-3xl rounded-bl-3xl hover:rounded-tr-none hover:rounded-bl-none hover:rounded-tl-3xl hover:rounded-br-3xl transition-all duration-150"
+        >
+          <p className="font-semibold text-center text-3xl text-accent-1">Mulai</p>
+        </Link>
+      </div>
+      <div className="col-span-1 row-start-1 p-10 w-full h-full flex items-center justify-center">
+        <Image 
+          src="/images/landing-page/hero-1.png" 
+          alt="Hero" 
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="w-full h-auto md:max-h-[600px] max-h-[400px] object-contain"
+        />
+      </div>
+    </section>
+  </GridBackgroundDemo>
 
       {/* About / What is Surva */}
       <section className="py-10 md:px-20 sm:px-10 px-5 grid md:grid-cols-2 grid-cols-1">
