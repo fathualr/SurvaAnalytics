@@ -1,101 +1,119 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import Link from 'next/link';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { NavUmum} from "@/components/umum/nav-umum";
+import { SurveyList } from "@/components/umum/survey-list";
+
+const surveys = [
+  {
+    id: 1,
+    title: "Survei Kepuasan Pengguna",
+    points: 20,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 2,
+    title: "Survei Layanan Publik",
+    points: 15,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 3,
+    title: "Survei Kebutuhan Digital",
+    points: 25,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 4,
+    title: "Survei Kesejahteraan Sosial",
+    points: 10,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 5,
+    title: "Survei Literasi Keuangan",
+    points: 30,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 6,
+    title: "Survei Pengalaman Pelanggan",
+    points: 18,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 7,
+    title: "Survei Efektivitas Program",
+    points: 22,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 8,
+    title: "Survei Partisipasi Komunitas",
+    points: 12,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 9,
+    title: "Survei Ketahanan Ekonomi",
+    points: 16,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 10,
+    title: "Survei Penggunaan Teknologi",
+    points: 20,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 11,
+    title: "Survei Ketahanan Ekonomi",
+    points: 11,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 12,
+    title: "Survei Penggunaan Teknologi",
+    points: 120,
+    image: "/images/explore-page/survei.png",
+  },
+  {
+    id: 12,
+    title: "Survei Penggunaan Teknologi",
+    points: 120,
+    image: "/images/explore-page/survei.png",
+  },
+];
 
 export default function Exchange() {
   return (
-    <div className="w-full p-10">
-        <div className="flex flex-row">
-            <Button className="w-32 h-10 mr-4 bg-[#FFBF68] hover:bg-[#D9D9D9] rounded-md font-semibold text-sm">Kelola survei</Button>
-            <Button className="w-32 h-10 bg-[#FFBF68] hover:bg-[#D9D9D9] rounded-md font-semibold text-sm">Exchange</Button>
-        </div>
-        <div className="flex flex-col">
-            <p className="mt-6 ml-2 mb-2 font-bold">Search</p>
-            <Input className="w-96 border-black" placeholder="Look for specific survei ?"></Input>
-        </div>
-        <div>
-        <p className="mt-6 text-2xl font-semibold">Daftar survei</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
+    <main className="flex flex-col w-full overflow-hidden min-h-screen pt-16 pb-5 sm:px-10 px-5">
+      <NavUmum />
 
-          {/* Card  */}
-          <div className="bg-white shadow rounded-md overflow-hidden">
-            <div className="relative h-48 w-full">
-              <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover"
-              />
-            </div>
-            <div className="bg-[#3984EF] text-white p-3">
-              <p className="text-xl md:text-2xl font-bold">Survei Kepuasan Pengguna </p>
-              <p className="text-md font-semibold">20 pts</p>
-              <div className="flex items-center justify-end mt-2">
-                <Button className="bg-[#FFBF68] w-full sm:w-36 h-8 text-sm font-semibold hover:bg-[#D9D9D9] rounded-sm">
-                  kerjakan
-                </Button>
-              </div>
-            </div>
-          </div>
-          
-          {/* Card  */}
-          <div className="bg-white shadow rounded-md overflow-hidden">
-            <div className="relative h-48 w-full">
-              <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover"
-              />
-            </div>
-            <div className="bg-[#3984EF] text-white p-3">
-              <p className="text-xl md:text-2xl font-bold">Survei Kepuasan Pengguna </p>
-              <p className="text-md font-semibold">20 pts</p>
-              <div className="flex items-center justify-end mt-2">
-                <Button className="bg-[#FFBF68] w-full sm:w-36 h-8 text-sm font-semibold hover:bg-[#D9D9D9] rounded-sm">
-                  kerjakan
-                </Button>
-              </div>
-            </div>
+      <section className="flex flex-col flex-grow">
+        {/* Header */}
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">Daftar survei</h1>
+
+        {/* Search */}
+          <div className="flex flex-row gap-5 mb-6">
+            <Input
+              type="text"
+              placeholder="Cari survei"
+              className="max-w-[350px]"
+            />
+            <Button
+              variant="outline"
+              type="submit"
+              className="cursor-pointer hover:bg-primary-2 hover:text-accent-1"
+            >
+              Cari
+            </Button>
           </div>
 
-          {/* Card  */}
-          <div className="bg-white shadow rounded-md overflow-hidden">
-            <div className="relative h-48 w-full">
-              <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover"
-              />
-            </div>
-            <div className="bg-[#3984EF] text-white p-3">
-              <p className="text-xl md:text-2xl font-bold">Survei Kepuasan Pengguna </p>
-              <p className="text-md font-semibold">20 pts</p>
-              <div className="flex items-center justify-end mt-2">
-                <Button className="bg-[#FFBF68] w-full sm:w-36 h-8 text-sm font-semibold hover:bg-[#D9D9D9] rounded-sm">
-                  kerjakan
-                </Button>
-              </div>
-            </div>
-          </div>
-        
-          {/* Card  */}
-          <div className="bg-white shadow rounded-md overflow-hidden">
-            <div className="relative h-48 w-full">
-              <Image src="/images/card-image.png" alt="card image" layout="fill" objectFit="cover"
-              />
-            </div>
-            <div className="bg-[#3984EF] text-white p-3">
-              <p className="text-xl md:text-2xl font-bold">Survei Kepuasan Pengguna </p>
-              <p className="text-md font-semibold">20 pts</p>
-              <div className="flex items-center justify-end mt-2">
-                <Button className="bg-[#FFBF68] w-full sm:w-36 h-8 text-sm font-semibold hover:bg-[#D9D9D9] rounded-sm">
-                  kerjakan
-                </Button>
-              </div>
-            </div>
-          </div>
-
-            </div>
-            <div className="flex justify-center items-center mt-10 ">
-            <button className="p-0 m-0 bg mr-4 -transparent border-none outline-none hover:bg-">
-              <Image src="/pagination-left.svg" alt="Previous" width={29} height={29} priority />
-            </button>
-            <p className="text-2xl font-semibold">1</p>
-            <button className="p-0 m-0 bg ml-4 -transparent border-none outline-none hover:opacity-80 transition">
-              <Image src="/pagination-right.svg" alt="Previous" width={29} height={29} priority />
-            </button>
-            </div>
-        </div>
-    </div>
+        {/* Cards + Pagination */}
+        <SurveyList surveys={surveys} itemsPerPage={12} />
+      </section>
+    </main>
   );
 }
