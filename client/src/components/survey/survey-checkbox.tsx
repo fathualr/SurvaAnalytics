@@ -5,6 +5,7 @@ import { SurveyOptionProps } from "./types"
 
 export function SurveyCheckbox({
   options,
+  type="checkbox",
   onAddOption,
   onRemoveOption,
   onChangeOption,

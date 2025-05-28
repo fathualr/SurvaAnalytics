@@ -5,6 +5,7 @@ import { SurveyOptionProps } from "./types"
 
 export function SurveyRadio({
   options,
+  type = "radio",
   onAddOption,
   onRemoveOption,
   onChangeOption,
