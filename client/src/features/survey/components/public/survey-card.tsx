@@ -1,26 +1,26 @@
-import Image from "next/image";
+'use client';
+
+import Image from 'next/image';
 import {
   Card,
   CardContent,
-  CardTitle,
-} from "@/components/ui/card";
-import { SurveyDialog } from "./survey-dialog";
+  CardTitle } from '@/components/ui/card';
+import SurveyDialog from './survey-dialog';
 
-type SurveyCardProps = {
+interface SurveyCardProps {
   judul: string;
-  deskripsi: string;
-  poin: number;
-  image?: string;
-};
+  deskripsi?: string;
+  poin: string;
+  image: string;
+}
 
-export function SurveyCard({ judul, deskripsi, poin, image }: SurveyCardProps) {
-  const fallbackImage = "/images/explore-page/survei.png";
+export const SurveyCard = ({ judul, deskripsi, poin, image }: SurveyCardProps) => {
 
   return (
     <Card className="overflow-hidden p-0 flex flex-col gap-0">
       <div className="relative xl:h-[140px] md:h-[120px] h-[100px] w-full">
         <Image
-          src={image || fallbackImage}
+          src={image}
           alt={judul}
           loading="lazy"
           fill
@@ -28,20 +28,19 @@ export function SurveyCard({ judul, deskripsi, poin, image }: SurveyCardProps) {
           className="rounded-t-xl object-cover"
         />
       </div>
-
       <CardContent className="bg-primary-2 text-accent-1 px-4 py-3 flex flex-col gap-1 flex-grow">
-        <CardTitle className="text-lg font-bold leading-snug line-clamp-1 min-h-[1.5rem]">
+        <CardTitle className="md:text-xl sm:text-lg text-md font-bold leading-snug line-clamp-1 min-h-[1.5rem]">
           {judul}
         </CardTitle>
-        <p className="text-sm font-medium">{poin} pts</p>
+        <p className="md:text-md sm:text-sm text-xs font-medium">{poin} pts</p>
         <div className="flex justify-end mt-auto pt-2">
           <SurveyDialog
             judul={judul}
             deskripsi={deskripsi}
-            poin={poin}
+            poin={poin} 
           />
         </div>
       </CardContent>
     </Card>
   );
-}
+};

@@ -17,10 +17,11 @@ export const usePublishedSurveys = ({ page = 1, limit = 10 }: UsePublishedSurvey
     ['/api/public/survei', page, limit],
     () => surveyService.getPublishedSurveys(page, limit),
     {
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
       shouldRetryOnError: true,
       errorRetryCount: 2,
       errorRetryInterval: 3000,
+      refreshInterval: 5000,
     }
   );
 
