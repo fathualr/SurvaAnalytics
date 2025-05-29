@@ -7,13 +7,17 @@ export default function DashboardPage() {
 
         {/* Card info */}
         <div className="flex flex-row gap-4 my-6">
-          <div className="w-1/2 bg-[#F2F9FF] border-3 border-[#3E82CD] p-6 rounded-lg text-center">
-            <p className="text-lg font-semibold">Total User</p>
-            <p className="text-3xl mt-2">206</p>
+          <div className="w-full bg-[#F2F9FF] border-3 border-[#3E82CD] p-6 rounded-lg text-center">
+            <p className="text-lg ">Total User</p>
+            <p className="text-3xl font-bold mt-2">100</p>
           </div>
           <div className="w-full bg-[#F2F9FF] border-3 border-[#3E82CD] p-6 rounded-lg text-center">
-            <p className="text-lg font-semibold">Total Survei</p>
-            <p className="text-3xl mt-2">200000 survei</p>
+            <p className="text-lg ">Total Survei</p>
+            <p className="text-3xl font-bold mt-2">20</p>
+          </div>
+          <div className="w-full bg-[#F2F9FF] border-3 border-[#3E82CD] p-6 rounded-lg text-center">
+            <p className="text-lg ">Total Respon</p>
+            <p className="text-3xl font-bold mt-2">80</p>
           </div>
         </div>
           <Component ></Component>
