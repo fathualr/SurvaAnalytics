@@ -22,8 +22,19 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const errorMessage =
-      error.response?.data?.message || 'An unexpected server error occurred.';
-    return Promise.reject(new Error(errorMessage));
+    if (error.response) {
+      const errorMessage =
+        error.response.data?.message || 
+        error.response.data?.error ||
+        'An unexpected server error occurred';
+      
+      const customError = new Error(errorMessage);
+      customError.name = `HTTP_${error.response.status}`;
+      return Promise.reject(customError);
+    } else if (error.request) {
+      return Promise.reject(new Error('No response received from server'));
+    } else {
+      return Promise.reject(error);
+    }
   }
 );
