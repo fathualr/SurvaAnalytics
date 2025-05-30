@@ -17,7 +17,7 @@ export function SurveyCheckbox({
           <Checkbox id={`checkbox-${index}`} className="border-black border-3" disabled/>
           <Input value={option} onChange={(e) => onChangeOption(index, e.target.value)} placeholder={`Opsi ${index + 1}`} className="w-1/2"/>
           {options.length > 1 && (
-          <Button variant="ghost" size="sm" onClick={() => onRemoveOption(index)}><img src="/x.svg" alt="Hapus" className="h-4 w-4"/></Button>
+          <Button variant="ghost" size="sm" onClick={() => onRemoveOption(index)}><img src="/icons/managesurvey/x.svg" alt="Hapus" className="h-4 w-4"/></Button>
           )}
         </div>
       ))}
