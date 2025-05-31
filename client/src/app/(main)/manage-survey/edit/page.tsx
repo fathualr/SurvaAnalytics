@@ -19,7 +19,7 @@ import { SurveyDropdown } from "@/components/survey/survey-dropdown";
 import { SurveyText } from "@/components/survey/survey-text";
 
 
-export default function AddSurvei() {
+export default function EditSurvei() {
 
   type Question = {
     id: string;
@@ -238,7 +238,7 @@ export default function AddSurvei() {
       </div>
 
       <div className="flex flex-col items-center mt-6">
-        <p className="text-3xl font-bold mb-1 ">Buat survei</p>
+        <p className="text-3xl font-bold mb-1 ">Edit survei</p>
         <div className="h-3 bg-[#1860C6] rounded-full w-full mt-2"/>
       </div>
 

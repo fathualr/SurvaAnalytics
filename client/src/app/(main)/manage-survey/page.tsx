@@ -18,7 +18,7 @@ export default function ManageSurvei() {
         <div className="bg-white shadow rounded-md overflow-hidden">
           <div className="relative h-48 w-full bg-gray-300"> 
           </div>
-          <Link href="/managesurvei/add">
+          <Link href="/manage-survey/add">
             <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
             <span className="text-lg font-semibold">Buat baru</span>
             </div>
@@ -30,9 +30,11 @@ export default function ManageSurvei() {
         <div className="bg-white shadow rounded-md overflow-hidden">
           <div className="relative h-48 w-full bg-gray-300">
           </div>
+          <Link href="/manage-survey/edit">
             <div className="bg-[#FFBF68] text-white p-3 flex items-center justify-center h-16">
             <span className="text-lg font-semibold"> Kelola survei</span>
             </div>
+          </Link>
           </div>
         {/* card */}
 
