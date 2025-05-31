@@ -20,6 +20,13 @@ const dummySurvey: Survey = {
       options: ["Tentu saja", "Bisa", "Bisa jadi", "Kemungkinan tidak", "tidak"],
       required: true,
     },
+    {
+      id: "q3git",
+      type: "radio",
+      text: "Apakah Orang jawa barat dapat menekuk tangan 180°",
+      options: ["Tentu saja", "Bisa", "Bisa jadi", "Kemungkinan tidak", "tidak"],
+      required: true,
+    },
   ],
 }
 
