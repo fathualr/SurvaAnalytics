@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { CompleteRegisterPayload } from '../types'
 import { authService } from '../api'
+import { CompleteRegisterPayload } from '../types'
+
+import { PasswordInput} from '@/components/umum/form/password-input'
+import { FormGroup } from '@/components/umum/form/form-group'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
@@ -15,7 +18,7 @@ interface CompleteRegisterFormProps {
   loading: boolean
 }
 
-export default function CompleteRegisterForm({
+export function CompleteRegisterForm({
   email,
   registerToken,
   onSuccess,
@@ -43,14 +46,13 @@ export default function CompleteRegisterForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-    setLoading(true)
 
     if (formData.password !== formData.konfirmasi_password) {
       setError('Password dan konfirmasi password tidak sama')
-      setLoading(false)
       return
     }
 
+    setLoading(true)
     try {
       const payload: CompleteRegisterPayload = {
         register_token: registerToken,
@@ -61,10 +63,11 @@ export default function CompleteRegisterForm({
           status: formData.status,
           region: formData.domisili,
           jenis_kelamin: formData.jenis_kelamin,
-        }
+        },
       }
-      console.log(payload)
+
       const response = await authService.completeAccount(payload)
+
       if (response.status === 'success') {
         onSuccess()
       } else {
@@ -80,144 +83,112 @@ export default function CompleteRegisterForm({
 
   return (
     <>
-      <header className="mb-8 text-center">
+      <header className="w-[600px] mb-8 text-center">
         <h2 className="text-2xl font-bold">Detail Profil</h2>
         <p className="text-sm">Lengkapi informasi akun Anda</p>
       </header>
 
-      <form onSubmit={handleSubmit} className="space-y-6 w-[600px]">
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-1">
-              Email
-            </label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              readOnly
-              className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-[600px]">
+        <FormGroup label="Email" htmlFor="email">
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            readOnly
+            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+          />
+        </FormGroup>
 
-          <div>
-            <label htmlFor="nama_lengkap" className="block text-sm font-medium mb-1">
-              Nama Lengkap
-            </label>
-            <Input
-              id="nama_lengkap"
-              name="nama_lengkap"
-              type="text"
-              value={formData.nama_lengkap}
-              className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <FormGroup label="Nama Lengkap" htmlFor="nama_lengkap">
+          <Input
+            id="nama_lengkap"
+            name="nama_lengkap"
+            type="text"
+            value={formData.nama_lengkap}
+            onChange={handleChange}
+            required
+            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+          />
+        </FormGroup>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-1">
-              Password
-            </label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
-              onChange={handleChange}
-              required
-              minLength={8}
-            />
-          </div>
+        <FormGroup label="Password" htmlFor="password">
+          <PasswordInput
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            minLength={8}
+          />
+        </FormGroup>
 
-          <div>
-            <label htmlFor="konfirmasi_password" className="block text-sm font-medium mb-1">
-              Konfirmasi Password
-            </label>
-            <Input
-              id="konfirmasi_password"
-              name="konfirmasi_password"
-              type="password"
-              value={formData.konfirmasi_password}
-              className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
-              onChange={handleChange}
-              required
-              minLength={8}
-            />
-          </div>
+        <FormGroup label="Konfirmasi Password" htmlFor="konfirmasi_password">
+          <PasswordInput
+            name="konfirmasi_password"
+            value={formData.konfirmasi_password}
+            onChange={handleChange}
+            required
+            minLength={8}
+          />
+        </FormGroup>
 
-          <div>
-            <label htmlFor="tanggal_lahir" className="block text-sm font-medium mb-1">
-              Tanggal Lahir
-            </label>
-            <Input
-              id="tanggal_lahir"
-              name="tanggal_lahir"
-              type="date"
-              value={formData.tanggal_lahir}
-              className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <FormGroup label="Tanggal Lahir" htmlFor="tanggal_lahir">
+          <Input
+            id="tanggal_lahir"
+            name="tanggal_lahir"
+            type="date"
+            value={formData.tanggal_lahir}
+            onChange={handleChange}
+            required
+            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+          />
+        </FormGroup>
 
-          <div>
-            <label htmlFor="jenis_kelamin" className="block text-sm font-medium mb-1">
-              Jenis Kelamin
-            </label>
-            <select
-              id="jenis_kelamin"
-              name="jenis_kelamin"
-              value={formData.jenis_kelamin}
-              className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
-              onChange={handleChange}
-              required
-            >
-              <option disabled value="">Pilih Jenis Kelamin</option>
-              <option value="laki-laki">Laki-laki</option>
-              <option value="perempuan">Perempuan</option>
-            </select>
-          </div>
+        <FormGroup label="Jenis Kelamin" htmlFor="jenis_kelamin">
+          <select
+            id="jenis_kelamin"
+            name="jenis_kelamin"
+            value={formData.jenis_kelamin}
+            onChange={handleChange}
+            required
+            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+          >
+            <option disabled value="">Pilih Jenis Kelamin</option>
+            <option value="laki-laki">Laki-laki</option>
+            <option value="perempuan">Perempuan</option>
+          </select>
+        </FormGroup>
 
-          <div>
-            <label htmlFor="domisili" className="block text-sm font-medium mb-1">
-              Asal Domisili
-            </label>
-            <Input
-              id="domisili"
-              name="domisili"
-              type="text"
-              value={formData.domisili}
-              className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <FormGroup label="Asal Domisili" htmlFor="domisili">
+          <Input
+            id="domisili"
+            name="domisili"
+            type="text"
+            value={formData.domisili}
+            onChange={handleChange}
+            required
+            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+          />
+        </FormGroup>
 
-          <div>
-            <label htmlFor="status" className="block text-sm font-medium mb-1">
-              Status
-            </label>
-            <Input
-              id="status"
-              name="status"
-              type="text"
-              value={formData.status}
-              className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
+        <FormGroup label="Status" htmlFor="status">
+          <Input
+            id="status"
+            name="status"
+            type="text"
+            value={formData.status}
+            onChange={handleChange}
+            required
+            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+          />
+        </FormGroup>
 
         <div className="pt-4 flex justify-end">
           <Button
             type="submit"
             disabled={loading}
-            className="font-semibold w-40 rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
+            className="cursor-pointer font-semibold w-40 rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
           >
-            {loading ? 'Mendaftarkan...' : 'Buat'}
+            {loading ? 'Menyimpan...' : 'Simpan'}
           </Button>
         </div>
       </form>

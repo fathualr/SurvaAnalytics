@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { authService } from '../api'
 import { AuthResponse } from '../types'
+import { useCountdown } from '../hooks/useCountdown'
+import { formatTime } from '@/utils/format'
 
 import {
   InputOTP,
@@ -21,7 +22,7 @@ interface VerifyOtpFormProps {
   loading: boolean
 }
 
-export default function VerifyOtpForm({
+export function VerifyOtpForm({
   email,
   onSuccess,
   onBack,
@@ -30,12 +31,25 @@ export default function VerifyOtpForm({
   loading,
 }: VerifyOtpFormProps) {
   const [otp, setOtp] = useState('')
+  const [loadingResend, setLoadingResend] = useState(false)
+  const {
+    seconds: resendCountdown,
+    canResend,
+    reset: resetCountdown,
+  } = useCountdown(60)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleOtpChange = (value: string) => setOtp(value)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
-    setLoading(true)
 
+    if (otp.length < 6) {
+      setError('Kode OTP harus terdiri dari 6 digit')
+      return
+    }
+
+    setLoading(true)
     try {
       const response = await authService.verifyOtp({ email, otp })
       if (response.status === 'success') {
@@ -51,42 +65,54 @@ export default function VerifyOtpForm({
     }
   }
 
+  const handleResend = async () => {
+    if (!canResend) return
+
+    setError('')
+    setLoadingResend(true)
+
+    try {
+      await authService.emailRegister({ email })
+      resetCountdown()
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Gagal mengirim ulang kode'
+      setError(msg)
+    } finally {
+      setLoadingResend(false)
+    }
+  }
+
   return (
     <>
       <header className="text-center mb-6">
         <h1 className="text-2xl font-bold">Verifikasi OTP</h1>
-        <p className="text-sm  mt-1">
+        <p className="text-sm mt-1">
           Kode OTP telah dikirim ke{' '}
-          <span className="font-semibold underline">{email}</span>
+          <span className="font-semibold underline">{email ? email : "email anda"}</span>
         </p>
       </header>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6 items-center">
         <InputOTP
           value={otp}
-          onChange={setOtp}
+        onChange={handleOtpChange}
           maxLength={6}
           containerClassName="pt-2"
         >
           <InputOTPGroup className="text-black">
-            <InputOTPSlot index={0} />
-            <InputOTPSlot index={1} />
-            <InputOTPSlot index={2} />
-            <InputOTPSlot index={3} />
-            <InputOTPSlot index={4} />
-            <InputOTPSlot index={5} />
+            {[...Array(6)].map((_, index) => (
+              <InputOTPSlot key={index} index={index} />
+            ))}
           </InputOTPGroup>
         </InputOTP>
-
-        <p className="text-xs font-medium">30 : 00</p>
 
         <div className="flex justify-between gap-4 w-full">
           <Button
             type="button"
             onClick={onBack}
-            disabled={loading}
+            disabled={loading || loadingResend}
             variant="ghost"
-            className="font-semibold text-sm hover:text-primary-1"
+            className="cursor-pointer font-semibold w-[120px] text-sm rounded-xl hover:text-primary-1"
           >
             Kembali
           </Button>
@@ -94,21 +120,28 @@ export default function VerifyOtpForm({
           <Button
             type="submit"
             disabled={loading}
-            className="font-semibold  w-[120px] rounded-md text-md bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
+            className="cursor-pointer font-semibold w-[120px] rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
           >
             {loading ? 'Memverifikasi...' : 'Verifikasi'}
           </Button>
         </div>
       </form>
 
-      <footer className="mt-6 text-center text-sm ">
+      <footer className="mt-6 text-center text-sm">
         <p className="mb-1">Tidak menerima kode?</p>
-        <Link
-          href="#"
-          className="text-accent-1 hover:underline font-medium"
-        >
-          Kirim ulang kode
-        </Link>
+        {canResend ? (
+          <button
+            onClick={handleResend}
+            className="cursor-pointer text-accent-1 hover:underline font-medium"
+            disabled={loadingResend}
+          >
+            {loadingResend ? 'Mengirim ulang...' : 'Kirim ulang OTP'}
+          </button>
+        ) : (
+          <span className="cursor-not-allowed font-medium">
+            {formatTime(resendCountdown)}
+          </span>
+        )}
       </footer>
     </>
   )

@@ -1,35 +1,41 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { authService } from '../api'
 import { AuthResponse } from '../types'
 
+import Link from 'next/link'
+import { FormGroup } from '@/components/umum/form/form-group'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
-interface RegisterInitFormProps {
+interface EmailRegisterFormProps {
   onSuccess: (response: AuthResponse) => void
   setError: (error: string) => void
   setLoading: (loading: boolean) => void
   loading: boolean
 }
 
-export default function RegisterInitForm({
+export function EmailRegisterForm({
   onSuccess,
   setError,
   setLoading,
   loading,
-}: RegisterInitFormProps) {
+}: EmailRegisterFormProps) {
   const [email, setEmail] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value)
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
     setLoading(true)
 
     try {
       const response = await authService.emailRegister({ email })
+
       if (response.status === 'success') {
         onSuccess(response)
       } else {
@@ -51,35 +57,36 @@ export default function RegisterInitForm({
       </header>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
-            Email
-          </label>
+        <FormGroup label="Email" htmlFor="email">
           <Input
             id="email"
             type="email"
             required
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            onChange={handleChange}
+            placeholder="test@email.com"
             className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+            disabled={loading}
           />
-        </div>
+        </FormGroup>
 
         <Button
           type="submit"
           disabled={loading}
-          className="font-semibold w-24 rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
+          className="cursor-pointer font-semibold w-24 rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
           variant="default"
         >
-          {loading ? 'Mengirim...' : 'Daftar'}
+          {loading ? 'Mendaftar...' : 'Daftar'}
         </Button>
       </form>
 
       <footer className="mt-6 text-center text-sm">
         <p>
           Sudah punya akun?{' '}
-          <Link href="/login" className="text-accent-1 hover:underline font-medium">
+          <Link
+            href="/login"
+            className="text-accent-1 hover:underline font-medium"
+          >
             Masuk di sini
           </Link>
         </p>
