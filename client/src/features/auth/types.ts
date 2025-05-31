@@ -19,7 +19,6 @@ export interface VerifyOtpPayload {
 export interface CompleteRegisterPayload {
   register_token: string;
   password: string;
-  konfirmasi_password: string;
   nama: string;
   profil_responden?: Record<string, any>;
   profil_klien?: Record<string, any>;
