@@ -1,52 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { authService } from '../api'
-import { AuthResponse } from '../types'
-
 import Link from 'next/link'
 import { FormGroup } from '@/components/umum/form/form-group'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
 interface EmailRegisterFormProps {
-  onSuccess: (response: AuthResponse) => void
-  setError: (error: string) => void
-  setLoading: (loading: boolean) => void
+  onSubmit: (email: string) => void
   loading: boolean
 }
 
-export function EmailRegisterForm({
-  onSuccess,
-  setError,
-  setLoading,
-  loading,
-}: EmailRegisterFormProps) {
+export function EmailRegisterForm({ onSubmit, loading }: EmailRegisterFormProps) {
   const [email, setEmail] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setError('')
-    setLoading(true)
-
-    try {
-      const response = await authService.emailRegister({ email })
-
-      if (response.status === 'success') {
-        onSuccess(response)
-      } else {
-        setError(response.message || 'Gagal mengirim OTP')
-      }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Terjadi kesalahan'
-      setError(msg)
-    } finally {
-      setLoading(false)
-    }
+    onSubmit(email)
   }
 
   return (
@@ -70,14 +44,16 @@ export function EmailRegisterForm({
           />
         </FormGroup>
 
-        <Button
-          type="submit"
-          disabled={loading}
-          className="cursor-pointer font-semibold w-24 rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
-          variant="default"
-        >
-          {loading ? 'Mendaftar...' : 'Daftar'}
-        </Button>
+        <div className="pt-4 flex justify-center">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="cursor-pointer font-semibold w-24 rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
+            variant="default"
+          >
+            {loading ? 'Mendaftar...' : 'Daftar'}
+          </Button>
+        </div>
       </form>
 
       <footer className="mt-6 text-center text-sm">

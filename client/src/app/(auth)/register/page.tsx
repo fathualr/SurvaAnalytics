@@ -1,67 +1,55 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-
+import { useRegister } from '@/features/auth/hooks/useRegister'
 import { EmailRegisterForm } from '@/features/auth/components/email-registration-form'
 import { VerifyOtpForm } from '@/features/auth/components/verify-otp-form'
 import { CompleteRegisterForm } from '@/features/auth/components/complete-registration-form'
-import { AuthResponse } from '@/features/auth/types'
 import { ErrorDialog } from '@/components/umum/error-dialog'
 
 export default function RegisterPage() {
-  const router = useRouter()
-  const [step, setStep] = useState<'init' | 'verify' | 'complete'>('init')
-  const [email, setEmail] = useState('')
-  const [registerToken, setRegisterToken] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const handleInitSuccess = (response: AuthResponse) => {
-    setEmail(response.data?.email || '')
-    setStep('verify')
-  }
-
-  const handleVerifySuccess = (response: AuthResponse) => {
-    setRegisterToken(response.data?.register_token || '')
-    setStep('complete')
-  }
-
-  const handleCompleteSuccess = () => {
-    router.push('/login')
-  }
+  const {
+    step,
+    email,
+    loading,
+    loadingResend,
+    error,
+    initRegister,
+    resendOtp, 
+    verifyOtp,
+    completeRegister,
+    setStep,
+    setError,
+  } = useRegister()
 
   return (
     <>
       <div className="flex items-center justify-center min-h-screen w-full md:px-10 px-5 py-15">
-        <section className="flex flex-col gap-5 text-accent-1 w-fit min-w-[400px] h-fit bg-cover bg-[url('/images/register-page/background.png')] shadow-lg rounded-none rounded-bl-[70px] rounded-tr-[70px] px-6 py-15">
+        <section
+          className="flex flex-col gap-5 text-accent-1 w-full self-center h-fit bg-cover bg-[url('/images/register-page/background.png')] shadow-lg rounded-none rounded-bl-[70px] rounded-tr-[70px] px-6 py-15"
+          style={{ maxWidth: step === 'complete' ? 600 : 400 }}
+        >
           {step === 'init' && (
             <EmailRegisterForm
-              onSuccess={handleInitSuccess}
-              setError={setError}
-              setLoading={setLoading}
-              loading={loading}
+              onSubmit={initRegister}
+              loading={loading} 
             />
           )}
 
           {step === 'verify' && (
             <VerifyOtpForm
               email={email}
-              onSuccess={handleVerifySuccess}
+              onSubmit={verifyOtp}
               onBack={() => setStep('init')}
-              setError={setError}
-              setLoading={setLoading}
+              onResend={resendOtp}
               loading={loading}
+              loadingResend={loadingResend}
             />
           )}
 
           {step === 'complete' && (
             <CompleteRegisterForm
               email={email}
-              registerToken={registerToken}
-              onSuccess={handleCompleteSuccess}
-              setError={setError}
-              setLoading={setLoading}
+              onSubmit={completeRegister}
               loading={loading}
             />
           )}

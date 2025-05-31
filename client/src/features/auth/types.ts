@@ -1,6 +1,9 @@
-export interface AuthResponse {
+export interface Response {
   status: string;
   message: string;
+}
+
+export interface RegisterResponse extends Response {
   data?: {
     email?: string;
     register_token?: string;

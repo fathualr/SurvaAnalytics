@@ -1,29 +1,28 @@
 'use client'
 
 import { useState } from 'react'
-import { authService } from '../api'
-import { CompleteRegisterPayload } from '../types'
-
-import { PasswordInput} from '@/components/umum/form/password-input'
+import { PasswordInput } from '@/components/umum/form/password-input'
 import { FormGroup } from '@/components/umum/form/form-group'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
 interface CompleteRegisterFormProps {
   email: string
-  registerToken: string
-  onSuccess: () => void
-  setError: (error: string) => void
-  setLoading: (loading: boolean) => void
+  onSubmit: (formData: {
+    nama_lengkap: string
+    password: string
+    konfirmasi_password: string
+    jenis_kelamin: string
+    tanggal_lahir: string
+    domisili: string
+    status: string
+  }) => void
   loading: boolean
 }
 
 export function CompleteRegisterForm({
   email,
-  registerToken,
-  onSuccess,
-  setError,
-  setLoading,
+  onSubmit,
   loading,
 }: CompleteRegisterFormProps) {
   const [formData, setFormData] = useState({
@@ -43,52 +42,19 @@ export function CompleteRegisterForm({
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
-
-    if (formData.password !== formData.konfirmasi_password) {
-      setError('Password dan konfirmasi password tidak sama')
-      return
-    }
-
-    setLoading(true)
-    try {
-      const payload: CompleteRegisterPayload = {
-        register_token: registerToken,
-        password: formData.password,
-        nama: formData.nama_lengkap,
-        profil_responden: {
-          tanggal_lahir: formData.tanggal_lahir,
-          status: formData.status,
-          region: formData.domisili,
-          jenis_kelamin: formData.jenis_kelamin,
-        },
-      }
-
-      const response = await authService.completeAccount(payload)
-
-      if (response.status === 'success') {
-        onSuccess()
-      } else {
-        setError(response.message || 'Gagal menyelesaikan pendaftaran')
-      }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Terjadi kesalahan'
-      setError(msg)
-    } finally {
-      setLoading(false)
-    }
+    onSubmit(formData)
   }
 
   return (
     <>
-      <header className="w-[600px] mb-8 text-center">
+      <header className="mb-8 text-center">
         <h2 className="text-2xl font-bold">Detail Profil</h2>
         <p className="text-sm">Lengkapi informasi akun Anda</p>
       </header>
 
-      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-[600px]">
+      <form onSubmit={handleSubmit} className="w-full max-w-[600px] space-y-6">
         <FormGroup label="Email" htmlFor="email">
           <Input
             id="email"
@@ -158,7 +124,7 @@ export function CompleteRegisterForm({
           </select>
         </FormGroup>
 
-        <FormGroup label="Asal Domisili" htmlFor="domisili">
+        <FormGroup label="Domisili" htmlFor="domisili">
           <Input
             id="domisili"
             name="domisili"
@@ -170,7 +136,7 @@ export function CompleteRegisterForm({
           />
         </FormGroup>
 
-        <FormGroup label="Status" htmlFor="status">
+        <FormGroup label="Status Pekerjaan / Pendidikan" htmlFor="status">
           <Input
             id="status"
             name="status"
@@ -182,7 +148,7 @@ export function CompleteRegisterForm({
           />
         </FormGroup>
 
-        <div className="pt-4 flex justify-end">
+        <div className="pt-4 flex justify-center">
           <Button
             type="submit"
             disabled={loading}
