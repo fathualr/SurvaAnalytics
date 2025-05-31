@@ -15,13 +15,7 @@ const SurveyQuestion = () => {
           onRemoveOption={(index) => console.log("Hapus Opsi", index)}
           onChangeOption={(index, value) => console.log("Ubah Opsi", index, value)}
         />
-        <SurveyType
-          options={["Opsi A", "Opsi B"]}
-          type="checkbox"
-          onAddOption={() => console.log("Tambah Opsi")}
-          onRemoveOption={(index) => console.log("Hapus Opsi", index)}
-          onChangeOption={(index, value) => console.log("Ubah Opsi", index, value)}
-        />
+
     </div>
   )
 }
