@@ -27,6 +27,7 @@ api.interceptors.response.use(
 
     if (
       error.response?.status === 401 &&
+      error.response?.data?.message === 'Missing Token' &&
       !originalRequest._retry &&
       !originalRequest.url.includes('/refresh')
     ) {

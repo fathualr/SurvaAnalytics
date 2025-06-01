@@ -50,4 +50,5 @@ export interface CompleteRegisterPayload {
 export interface LoginPayload {
   email: string;
   password: string;
+  remember_me: boolean
 }
