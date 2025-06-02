@@ -10,6 +10,38 @@ export interface RegisterResponse extends Response {
   };
 }
 
+export interface LoginResponse extends Response {
+  data?: {
+    accessToken: string;
+    refreshToken: string;
+    user: {
+      id: string;
+      email: string;
+      role: string;
+      nama: string;
+    };
+  };
+}
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  role: 'admin' | 'umum';
+  Admin?: Record<string, any>;
+  Umum?: Record<string, any>;
+}
+
+export interface UserProfileResponse extends Response {
+  data: UserProfile;
+}
+
+export interface RefreshTokenResponse extends Response {
+  data?: {
+    accessToken: string;
+    refreshToken: string;
+  };
+}
+
 export interface RegisterInitPayload {
   email: string;
 }
@@ -25,4 +57,10 @@ export interface CompleteRegisterPayload {
   nama: string;
   profil_responden?: Record<string, any>;
   profil_klien?: Record<string, any>;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+  remember_me: boolean
 }
