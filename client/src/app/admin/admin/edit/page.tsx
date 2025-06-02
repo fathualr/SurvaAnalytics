@@ -26,20 +26,26 @@ export default function EditPage() {
       <form className="w-full bg-[#F2F9FF] border border-[#3E82CD] p-4 rounded-xl mt-6 shadow-sm">
         <div className="divide-y divide-[#D0E3F6]">
           
-          <div className="grid grid-cols-[auto_1fr] gap-x-4 py-2 items-center">
-            <label htmlFor="nama" className="text-base font-semibold">Nama:</label>
-            <Input id="nama" type="text" placeholder="Nama" defaultValue="Abdul micro" className="text-base w-48 justify-self-end text-right" />
-          </div>
+<div className="space-y-4">
+  <div className="grid grid-cols-[50px_10px_1fr] items-center gap-x-2">
+    <label htmlFor="nama" className="text-base font-semibold">Nama</label>
+    <span className="justify-self-center">:</span>
+    <Input id="nama" type="text" placeholder="Nama" defaultValue="Abdul micro"className="text-base w-full text-left" />
+  </div>
 
-          <div className="grid grid-cols-[auto_1fr] gap-x-4 py-2 items-center">
-            <label htmlFor="email" className="text-base font-semibold">Email:</label>
-            <Input id="email" type="email" placeholder="Email" defaultValue="abdul@gmail.com" className="text-base w-48 justify-self-end text-right" />
-          </div>
+  <div className="grid grid-cols-[50px_10px_1fr] items-center gap-x-2">
+    <label htmlFor="email" className="text-base font-semibold">Email</label>
+    <span className="justify-self-center">:</span>
+    <Input id="email" type="email" placeholder="Email" defaultValue="abdul@gmail.com" className="text-base w-full text-left"/>
+  </div>
 
-          <div className="grid grid-cols-[auto_1fr] gap-x-4 py-2 items-center">
-            <label htmlFor="kontak" className="text-base font-semibold">Kontak:</label>
-            <Input id="kontak" type="text" defaultValue="08123456789101" className="text-base w-32 justify-self-end text-center border-none" />
-          </div>
+  <div className="grid grid-cols-[50px_10px_1fr] items-center gap-x-2">
+    <label htmlFor="kontak" className="text-base font-semibold">Kontak</label>
+    <span className="justify-self-center">:</span>
+    <Input id="kontak" type="text"  defaultValue="08123456789101" className="text-base w-full text-left"/>
+  </div>
+</div>
+
         </div>
 
         <div className="flex justify-end mt-4">
