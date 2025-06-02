@@ -2,6 +2,7 @@ import { api } from '@/lib/api';
 import {
   RegisterResponse,
   LoginResponse,
+  UserProfileResponse,
   RefreshTokenResponse,
   RegisterInitPayload,
   VerifyOtpPayload,
@@ -27,6 +28,11 @@ export const authService = {
 
   login: async (payload: LoginPayload): Promise<LoginResponse> => {
     const response = await api.post('/api/login', payload);
+    return response.data;
+  },
+
+  getProfile: async (): Promise<UserProfileResponse> => {
+    const response = await api.get('/api/users/profile');
     return response.data;
   },
 

@@ -1,11 +1,11 @@
 'use client'
 
-import { useLogin } from '@/features/auth/hooks/useLogin'
+import { useAuthContext } from '@/features/auth/context/AuthContext'
 import { LoginForm } from '@/features/auth/components/login-form'
 import { ErrorDialog } from '@/components/umum/error-dialog'
 
 export default function LoginPage() {
-  const { loading, error, login, setError } = useLogin()
+  const { loading, error, login, setError } = useAuthContext()
 
   return (
     <>
@@ -14,8 +14,6 @@ export default function LoginPage() {
           <LoginForm
             onSubmit={login}
             loading={loading}
-            error={error}
-            onErrorDismiss={() => setError(null)}
           />
         </section>
       </div>
