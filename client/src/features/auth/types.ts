@@ -23,18 +23,6 @@ export interface LoginResponse extends Response {
   };
 }
 
-export interface UserProfile {
-  id: string;
-  email: string;
-  role: 'admin' | 'umum';
-  Admin?: Record<string, any>;
-  Umum?: Record<string, any>;
-}
-
-export interface UserProfileResponse extends Response {
-  data: UserProfile;
-}
-
 export interface RefreshTokenResponse extends Response {
   data?: {
     accessToken: string;

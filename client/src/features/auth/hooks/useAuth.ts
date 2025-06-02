@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { authService } from '../api'
-import { LoginPayload, UserProfile } from '../types'
+import { LoginPayload } from '../types'
+import { UserProfile } from '@/features/profile/types'
+import { profileService } from '@/features/profile/api'
 import { api } from '@/lib/api'
 
 export function useAuth() {
@@ -17,7 +19,7 @@ export function useAuth() {
       const token = localStorage.getItem('accessToken');
       if (token) {
         try {
-          const profile = await authService.getProfile();
+          const profile = await profileService.getProfile();
           setUser(profile.data);
           api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         } catch (err) {
@@ -50,7 +52,7 @@ export function useAuth() {
         localStorage.setItem('accessToken', token);
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-        const profile = await authService.getProfile();
+        const profile = await profileService.getProfile();
         setUser(profile.data);
 
         router.push('/explore');
