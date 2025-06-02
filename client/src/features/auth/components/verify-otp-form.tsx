@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useCountdown } from '../hooks/useCountdown'
+import { useCountdown } from '@/hooks/useCountdown'
 import { formatTime } from '@/utils/format'
 import {
   InputOTP,
