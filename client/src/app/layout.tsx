@@ -1,8 +1,6 @@
-'use client'
-
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/features/auth/context/AuthContext";
+import { QueryProvider } from "@/lib/query-provider";
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -16,11 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${montserrat.className} antialiased flex flex-col min-h-screen bg-accent-1 text-foreground`}
-      >
-        <AuthProvider>{children}</AuthProvider>
+      <body className={`${montserrat.className} antialiased flex flex-col min-h-screen bg-accent-1 text-foreground`} >
+        <QueryProvider>
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );
-}
+};

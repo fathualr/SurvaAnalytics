@@ -10,10 +10,6 @@ export type SurveiStatus =
 export interface Umum {
   id: string
   nama: string
-  profil_klien: {
-    initialized: boolean
-    [key: string]: any
-  }
 };
 
 export interface Survei {
