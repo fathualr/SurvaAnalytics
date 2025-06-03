@@ -87,8 +87,9 @@ const Footer = () => {
             <Image 
               src="/images/surva-white.png" 
               alt="SURVA Logo" 
-              width={140} 
-              height={32}
+              width={0} 
+              height={0}
+              sizes="25vw"
               className="h-8 w-auto"
             />
           </div>

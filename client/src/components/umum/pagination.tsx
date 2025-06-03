@@ -37,8 +37,10 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
         <Image
           src="/pagination-left.svg"
           alt="Previous"
-          width={29}
-          height={29}
+          width={0}
+          height={0}
+          sizes="25vw"
+          className="h-8 w-auto"
           priority
         />
       </button>
@@ -62,8 +64,10 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
         <Image
           src="/pagination-right.svg"
           alt="Next"
-          width={29}
-          height={29}
+          width={0}
+          height={0}
+          sizes="25vw"
+          className="h-8 w-auto"
           priority
         />
       </button>
