@@ -1,4 +1,3 @@
-import { Component } from "@/components/ui/dashboard-chart";
 import { Input } from "@/components/ui/input"
 import {
   Table,
@@ -11,7 +10,6 @@ import {
 } from "@/components/ui/table"
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-
 
 export default function DetailPage() {
   return (

@@ -1,4 +1,3 @@
-import { Component } from "@/components/ui/dashboard-chart";
 import { Input } from "@/components/ui/input"
 import {
   Table,
@@ -13,7 +12,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 
-const dataKlien = [
+const dataumum = [
   {
     id: 1,
     judul: "Survei Kepuasan Pengguna",
@@ -87,12 +86,12 @@ export default function DetailPage() {
                 </TableRow>
               </TableHeader>
               <TableBody >
-                {dataKlien.map((klien, index) => (
-                  <TableRow key={klien.id}>
+                {dataumum.map((umum, index) => (
+                  <TableRow key={umum.id}>
                     <TableCell className="border-black border-b-2 border-t-2 ">{index + 1}</TableCell>
-                    <TableCell className="border-black border-b-2 border-t-2 ">{klien.judul}</TableCell>
-                    <TableCell className="border-black border-b-2 border-t-2 ">{klien.deskripsi}</TableCell>
-                    <TableCell className="border-black border-b-2 border-t-2 ">{klien.tanggalpembuatan}</TableCell>
+                    <TableCell className="border-black border-b-2 border-t-2 max-w-[150px] truncate overflow-hidden whitespace-nowrap">{umum.judul}</TableCell>
+                    <TableCell className="border-black border-b-2 border-t-2 max-w-[150px] truncate overflow-hidden whitespace-nowrap ">{umum.deskripsi}</TableCell>
+                    <TableCell className="border-black border-b-2 border-t-2 ">{umum.tanggalpembuatan}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -1,4 +1,3 @@
-import { Component } from "@/components/ui/dashboard-chart";
 import { Input } from "@/components/ui/input"
 import {
   Table,
@@ -90,7 +89,7 @@ const dataKlien = [
   },
 
 ];
-export default function KlienPage() {
+export default function UmumPage() {
   return (
       <div className=" pl-2 bg-white">
         <h2 className="text-2xl font-semibold mt-4">Data Pengguna Umum</h2>

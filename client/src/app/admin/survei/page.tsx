@@ -23,103 +23,99 @@ import {
 } from "@/components/ui/alert-dialog"
 import Link from "next/link";
 
-const dataKlien = [
+const datasurvei = [
   {
     id: 1,
-    nama: "Fathu",
-    email: "fathu@gmail.com",
-    kontak: "0812345678911",
-    jenisKelamin: "Laki laki",
+    judul: "Survei Kepuasan Pengguna Aplikasi",
+    deskripsi: "Survei untuk mengetahui tingkat kepuasan pengguna terhadap fitur dan performa aplikasi.",
+    status: "draft",
+    tanggalmulai: "10-01-2024",
   },
   {
     id: 2,
-    nama: "Adji",
-    email: "adji@gmail.com",
-    kontak: "0812312743244",
-    jenisKelamin: "Laki laki",
-    
+    judul: "Survei Pengalaman Belanja Elektronik",
+    deskripsi: "Mengukur kepuasan pelanggan setelah berbelanja di toko elektronik secara offline maupun online.",
+    status: "under_review",
+    tanggalmulai: "15-02-2024",
   },
   {
     id: 3,
-    nama: "Mirza",
-    email: "mirza@gmail.com",
-    kontak: "0812945435855",
-    jenisKelamin: "Laki laki",
-    
+    judul: "Survei Efektivitas Iklan Digital",
+    deskripsi: "Evaluasi terhadap seberapa efektif iklan digital menjangkau target audiens.",
+    status: "payment_pending",
+    tanggalmulai: "20-03-2024",
   },
   {
     id: 4,
-    nama: "Azis",
-    email: "azis@gmail.com",
-    kontak: "0811234834374",
-    jenisKelamin: "Laki laki",
-    
+    judul: "Survei Kepuasan Mahasiswa",
+    deskripsi: "Menilai kepuasan mahasiswa terhadap pelayanan akademik dan fasilitas kampus.",
+    status: "published",
+    tanggalmulai: "05-04-2024",
   },
   {
     id: 5,
-    nama: "Rojik",
-    email: "rojik@gmail.com",
-    kontak: "0829475321345",
-    jenisKelamin: "Laki laki",
-    
+    judul: "Survei Lingkungan Bersih",
+    deskripsi: "Mengetahui persepsi dan partisipasi masyarakat terhadap program kebersihan lingkungan.",
+    status: "closed",
+    tanggalmulai: "01-05-2024",
   },
   {
     id: 6,
-    nama: "Satria",
-    email: "satria@gmail.com",
-    kontak: "0838274285525",
-    jenisKelamin: "Laki laki",
-    
+    judul: "Survei Minat Baca Anak",
+    deskripsi: "Mengukur tingkat minat baca siswa sekolah dasar dan faktor pendukungnya.",
+    status: "archived",
+    tanggalmulai: "12-06-2024",
   },
   {
     id: 7,
-    nama: "Aidan",
-    email: "Aidan@gmail.com",
-    kontak: "0884234234532",
-    jenisKelamin: "Laki laki",
-    
+    judul: "Survei Layanan Rumah Sakit",
+    deskripsi: "Menilai kualitas layanan medis dan non-medis dari rumah sakit umum daerah.",
+    status: "rejected",
+    tanggalmulai: "03-07-2024",
   },
   {
     id: 8,
-    nama: "Abdul",
-    email: "abdul@gmail.com",
-    kontak: "0842342456843",
-    jenisKelamin: "Laki laki",
-    
+    judul: "Survei Pengguna Layanan Antar Makanan",
+    deskripsi: "Evaluasi kepuasan pelanggan terhadap layanan pengiriman makanan online.",
+    status: "published",
+    tanggalmulai: "18-08-2024",
   },
-
 ];
-export default function EditPage() {
+
+export default function S() {
   return (
       <div className=" pl-2 bg-white">
-        <h2 className="text-2xl font-semibold">Data Admin</h2>
+        <h2 className="text-2xl font-semibold mt-4">Data Survei</h2>
             <div className="flex flex-col mt-2">
-                <Input className="w-64 border-black border-1" placeholder="Cari Admin"></Input>
+                <Input className="w-64 border-black border-1" placeholder="Cari Survei"></Input>
             </div>
               <Table className="mt-8 bg-[#E5F1FF] rounded-tr-2xl rounded-tl-2xl hover:[#E5F1FF]">
               <TableHeader className="bg-[#3984EF] ">
                 <TableRow className="hover:bg-[#3984EF] ">
                   <TableHead className="w-[50px] text-white rounded-tl-2xl">No</TableHead>
-                  <TableHead className="text-white">Nama</TableHead>
-                  <TableHead className="text-white">Email</TableHead>
-                  <TableHead className="text-white">Kontak</TableHead>
-                  <TableHead className="text-white rounded-tr-2xl">Detail</TableHead>
+                  <TableHead className="text-white">Judul</TableHead>
+                  <TableHead className="text-white">Deskripsi</TableHead>
+                  <TableHead className="text-white">Status</TableHead>
+                  <TableHead className="text-white">Tanggal Mulai</TableHead>
+                  <TableHead className="text-white rounded-tr-2xl">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody >
-                {dataKlien.map((klien, index) => (
-                  <TableRow key={klien.id}>
+                {datasurvei.map((survei, index) => (
+                  <TableRow key={survei.id}>
                     <TableCell className="border-black border-b-2 border-t-2">{index + 1}</TableCell>
-                    <TableCell className="border-black border-b-2 border-t-2">{klien.nama}</TableCell>
-                    <TableCell className="border-black border-b-2 border-t-2">{klien.email}</TableCell>
-                    <TableCell className="border-black border-b-2 border-t-2">{klien.kontak}</TableCell>
+                    <TableCell className="border-black border-b-2 border-t-2 max-w-[150px] truncate overflow-hidden whitespace-nowrap">{survei.judul}</TableCell>
+                    <TableCell className="border-black border-b-2 border-t-2 max-w-[150px] truncate overflow-hidden whitespace-nowrap"> {survei.deskripsi} </TableCell>
+
+                    <TableCell className="border-black border-b-2 border-t-2">{survei.status}</TableCell>
+                    <TableCell className="border-black border-b-2 border-t-2">{survei.tanggalmulai}</TableCell>
                     <TableCell className="border-black border-b-2 border-t-2 ">
-                      <Link href="/admin/admin/detail">
+                      <Link href="/admin/survei/detail">
                       <Button className="p-2 rounded-md bg-blue-200 hover:bg-blue-200 transition-transform hover:scale-105 active:scale-95" title="Lihat detail klien" >
                         <Image src="/detail.svg" alt="Detail" width={15} height={15} priority />
                       </Button>
                       </Link>
-                      <Link href='/admin/admin/edit'>
+                      <Link href='/admin/survei/edit'>
                       <Button className="ml-2 p-2 rounded-md bg-yellow-200 hover:bg-yellow-200 transition-transform hover:scale-105 active:scale-95" title="Edit klien">
                         <Image src="/edit.svg" alt="Edit" width={15} height={15} priority />
                       </Button>
