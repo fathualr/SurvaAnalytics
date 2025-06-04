@@ -93,7 +93,7 @@ const dataKlien = [
 export default function KlienPage() {
   return (
       <div className=" pl-2 bg-white">
-        <h2 className="text-2xl font-semibold">Data Pengguna Umum</h2>
+        <h2 className="text-2xl font-semibold mt-4">Data Pengguna Umum</h2>
             <div className="flex flex-col mt-2">
                 <Input className="w-64 border-black border-1" placeholder="Cari Pengguna"></Input>
             </div>

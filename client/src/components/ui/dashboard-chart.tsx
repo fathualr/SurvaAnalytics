@@ -1,10 +1,13 @@
 "use client"
 
+import { TrendingUp } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -15,68 +18,67 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
+export const description = "A linear area chart with daily data"
+
 const chartData = [
-  { month: "January", desktop: 40 },
-  { month: "February", desktop: 70 },
-  { month: "March", desktop: 40 },
-  { month: "April", desktop: 50 },
+  { month: "Jan", desktop: 40 },
+  { month: "Feb", desktop: 70 },
+  { month: "Mar", desktop: 40 },
+  { month: "Apr", desktop: 50 },
   { month: "May", desktop: 140 },
   { month: "June", desktop: 40 },
   { month: "July", desktop: 80 },
-  { month: "August", desktop: 50 },
-  { month: "September", desktop: 150 },
-  { month: "October", desktop: 50},
-  { month: "November", desktop: 90 },
-  { month: "Desmber", desktop: 60 },
+  { month: "Aug", desktop: 50 },
+  { month: "Sepr", desktop: 150 },
+  { month: "Oct", desktop: 50},
+  { month: "Nov", desktop: 90 },
+  { month: "Des", desktop: 60 },
 ]
 
 const chartConfig = {
   desktop: {
-    label: "",
-    color: "#3984EF",
+    label: "Desktop",
+    color: "var(--chart-1)",
   },
 } satisfies ChartConfig
 
-export function Component() {
+export function ChartAreaLinearDaily() {
   return (
-    <Card className="w-full border-2 border-[#3984EF] bg-[#F2F9FF]"> 
+    <Card className="border-3 border-[#3E82CD] rounded-lg bg-[#F2F9FF] ">
       <CardHeader>
-        <CardTitle className="text-base">Summary Pendapatan</CardTitle>
-        <CardDescription className="text-sm">
-          Total: 2.000.000 Rp
+        <CardTitle className="text-lg">Jumlah Pendapatan</CardTitle>
+        <CardDescription>
+         Rp.3.400.000
         </CardDescription>
       </CardHeader>
-      <CardContent className="p-0">
-        {/* Container untuk chart tanpa overflow */}
-        <div className="w-full" style={{ height: '180px' }}>
-          <ChartContainer config={chartConfig} className="h-full">
-            <AreaChart 
-              data={chartData}
-              margin={{ top: 10, left: 30, right: 30, bottom: 5 }}
-            >
-              <CartesianGrid vertical={false} strokeDasharray="3 3" />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={10}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent indicator="dot" hideLabel />}
-              />
-              <Area
-                dataKey="desktop"
-                type="linear"
-                fill="#3984EF"
-                fillOpacity={0.4}
-                stroke="#FFBF68"
-                strokeWidth={2.5}
-              />
-            </AreaChart>
-          </ChartContainer>
-        </div>
+      <CardContent>
+        <ChartContainer className="h-40 w-full" config={chartConfig}>
+          <AreaChart
+            data={chartData}
+            margin={{ left: 12, right: 12 }}
+
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="month"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="dot" hideLabel />}
+            />
+            <Area
+              dataKey="desktop"
+              type="linear"
+              fill="#3984EF"
+              fillOpacity={0.4}
+              stroke="#FFBF68"
+              strokeWidth={2.5}
+            />
+          </AreaChart>
+        </ChartContainer>
       </CardContent>
     </Card>
   )

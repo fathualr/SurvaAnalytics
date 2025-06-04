@@ -1,8 +1,8 @@
-import { Component } from "@/components/ui/dashboard-chart";
+import { ChartAreaLinearDaily } from "@/components/ui/dashboard-chart";
 
 export default function DashboardPage() {
   return (
-      <div className=" pl-2 bg-white">
+      <div className=" pl-2 pt-3 bg-white">
         <h2 className="text-2xl font-semibold">Dashboard</h2>
 
         {/* Card info */}
@@ -20,7 +20,7 @@ export default function DashboardPage() {
             <p className="text-3xl font-bold mt-2">80</p>
           </div>
         </div>
-          <Component ></Component>
+      <ChartAreaLinearDaily></ChartAreaLinearDaily>
         
       </div>
   );

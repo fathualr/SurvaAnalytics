@@ -22,7 +22,7 @@ import {
 export default function EditPage() {
   return (
     <div className="pl-2 bg-white">
-      <h2 className="text-2xl font-semibold">Detail Pengguna Umum</h2>
+      <h2 className="text-2xl font-semibold mt-4">Detail Pengguna Umum</h2>
       <form className="w-full bg-[#F2F9FF] border border-[#3E82CD] p-4 rounded-xl mt-6 shadow-sm">
         <div className="divide-y divide-[#D0E3F6] ">
           {/* label  |  colon  |  input */}

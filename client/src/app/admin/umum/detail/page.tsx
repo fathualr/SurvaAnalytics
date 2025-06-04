@@ -47,7 +47,7 @@ const dataKlien = [
 export default function DetailPage() {
   return (
       <div className=" pl-2 bg-white">
-        <h2 className="text-2xl font-semibold">Informasi Pengguna </h2>
+        <h2 className="text-2xl mt-4 font-semibold">Informasi Pengguna </h2>
         <div className="w-full bg-[#F2F9FF] border border-[#3E82CD] p-4 rounded-xl mt-6 shadow-sm">
           <div className="divide-y divide-[#D0E3F6]">
             <div className="grid grid-cols-[auto_1fr] gap-x-4 py-2">
