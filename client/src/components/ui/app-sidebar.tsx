@@ -48,8 +48,8 @@ const data = {
       icon: ClipboardList,
     },
     {
-      title: "Kalkulasi Harga",
-      url: "/admin/harga",
+      title: "Konfigurasi Harga",
+      url: "/admin/konfigurasi-harga",
       icon: Calculator,
       
     },

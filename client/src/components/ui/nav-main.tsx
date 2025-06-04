@@ -32,7 +32,7 @@ export function NavMain({
     }[];
   }[];
 }) {
-  const nonCollapsible = ["Dashboard", "Survei", "Kalkulasi Harga","Hadiah"];
+  const nonCollapsible = ["Dashboard", "Survei", "Konfigurasi Harga","Hadiah"];
 
   return (
     <SidebarGroup className="">
