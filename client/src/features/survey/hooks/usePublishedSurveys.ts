@@ -24,7 +24,6 @@ export const usePublishedSurveys = (options: UsePublishedSurveysOptions = {}) =>
     isFetching,
     refetch,
     isError,
-    status,
   } = useQuery<SurveyListResponse>({
     queryKey,
     queryFn: () =>

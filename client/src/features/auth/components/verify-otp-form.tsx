@@ -11,12 +11,12 @@ import {
 import { Button } from '@/components/ui/button'
 
 interface VerifyOtpFormProps {
-  email: string
-  onSubmit: (otp: string) => void
-  onBack: () => void
-  onResend: () => Promise<void>
-  loading: boolean
-  loadingResend: boolean
+  email: string;
+  onSubmit: (payload: { email: string; otp: string }) => void;
+  onBack: () => void;
+  onResend: () => Promise<void>;
+  loading: boolean;
+  loadingResend: boolean;
 }
 
 export function VerifyOtpForm({
@@ -35,9 +35,9 @@ export function VerifyOtpForm({
   } = useCountdown(60)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    onSubmit(otp)
-  }
+    e.preventDefault();
+    onSubmit({ email, otp });
+  };
 
   const handleResend = async () => {
     if (!canResend) return

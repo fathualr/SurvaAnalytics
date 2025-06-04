@@ -4,33 +4,25 @@ export interface Response {
 }
 
 export interface RegisterResponse extends Response {
-  data?: {
-    email?: string;
-    register_token?: string;
+  data: {
+    email: string;
+    register_token: string;
   };
 }
 
 export interface LoginResponse extends Response {
-  data?: {
+  data: {
     accessToken: string;
-    refreshToken: string;
-    user: {
-      id: string;
-      email: string;
-      role: string;
-      nama: string;
-    };
   };
 }
 
 export interface RefreshTokenResponse extends Response {
-  data?: {
+  data: {
     accessToken: string;
-    refreshToken: string;
   };
 }
 
-export interface RegisterInitPayload {
+export interface EmailRegisterPayload {
   email: string;
 }
 
@@ -39,7 +31,7 @@ export interface VerifyOtpPayload {
   otp: string;
 }
 
-export interface CompleteRegisterPayload {
+export interface CompleteAccountPayload {
   register_token: string;
   password: string;
   nama: string;
@@ -50,5 +42,5 @@ export interface CompleteRegisterPayload {
 export interface LoginPayload {
   email: string;
   password: string;
-  remember_me: boolean
+  remember_me: boolean;
 }

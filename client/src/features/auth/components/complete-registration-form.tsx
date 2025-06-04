@@ -5,33 +5,26 @@ import { PasswordInput } from '@/components/umum/form/password-input'
 import { FormGroup } from '@/components/umum/form/form-group'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { RegisterForm } from '../hooks/useRegister'
 
-interface CompleteRegisterFormProps {
-  email: string
-  onSubmit: (formData: {
-    nama_lengkap: string
-    password: string
-    konfirmasi_password: string
-    jenis_kelamin: string
-    tanggal_lahir: string
-    domisili: string
-    status: string
-  }) => void
-  loading: boolean
+interface CompleteAccountFormProps {
+  email: string;
+  onSubmit: (formData: RegisterForm) => void;
+  loading: boolean;
 }
 
-export function CompleteRegisterForm({
+export function CompleteAccountForm({
   email,
   onSubmit,
   loading,
-}: CompleteRegisterFormProps) {
+}: CompleteAccountFormProps) {
   const [formData, setFormData] = useState({
     nama_lengkap: '',
     password: '',
     konfirmasi_password: '',
     jenis_kelamin: '',
     tanggal_lahir: '',
-    domisili: '',
+    region: '',
     status: '',
   })
 
@@ -124,12 +117,12 @@ export function CompleteRegisterForm({
           </select>
         </FormGroup>
 
-        <FormGroup label="Domisili" htmlFor="domisili">
+        <FormGroup label="Region" htmlFor="region">
           <Input
-            id="domisili"
-            name="domisili"
+            id="region"
+            name="region"
             type="text"
-            value={formData.domisili}
+            value={formData.region}
             onChange={handleChange}
             required
             className="border-none bg-accent-1 rounded-md w-full h-10 text-black"

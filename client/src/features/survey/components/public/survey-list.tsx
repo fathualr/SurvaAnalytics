@@ -1,6 +1,6 @@
 'use client';
 
-import { usePublishedSurveys } from '@/features/survey/hooks/usePublishedSurveys';
+import { usePublishedSurveys } from '../../hooks/usePublishedSurveys';
 import { SurveyCard } from './survey-card';
 import { Button } from '@/components/ui/button';
 import { Pagination } from '@/components/umum/pagination';

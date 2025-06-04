@@ -1,132 +1,129 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { authService } from '../api'
-import { CompleteRegisterPayload } from '../types'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import { authService } from '../api';
+import { CompleteAccountPayload, EmailRegisterPayload, VerifyOtpPayload } from '../types';
 
-export function useRegister() {
-  const router = useRouter()
-  const [step, setStep] = useState<'init' | 'verify' | 'complete'>('init')
-  const [email, setEmail] = useState('')
-  const [registerToken, setRegisterToken] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [loadingResend, setLoadingResend] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+type RegisterStep = 'init' | 'verify' | 'complete';
 
-  const initRegister = async (emailInput: string) => {
-    setError(null)
-    setLoading(true)
-    try {
-      const response = await authService.emailRegister({ email: emailInput })
-      if (response.status === 'success') {
-        setEmail(response.data?.email || '')
-        setStep('verify')
+export interface RegisterForm {
+  nama_lengkap: string;
+  password: string;
+  konfirmasi_password: string;
+  jenis_kelamin: string;
+  tanggal_lahir: string;
+  region: string;
+  status: string;
+}
+
+export const useRegister = () => {
+  const router = useRouter();
+
+  const [step, setStep] = useState<RegisterStep>('init');
+  const [email, setEmail] = useState('');
+  const [registerToken, setRegisterToken] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleError = (err: unknown, fallback = 'Terjadi kesalahan') => {
+    const message =
+      (err as any)?.response?.data?.message ||
+      (err as Error)?.message ||
+      fallback;
+    setErrorMessage(message);
+  };
+
+  const emailRegister = useMutation({
+    mutationFn: (payload: EmailRegisterPayload) => authService.emailRegister(payload),
+    onSuccess: (res) => {
+      if (res.status === 'success') {
+        setEmail(res.data?.email ?? '');
+        setStep('verify');
       } else {
-        setError(response.message || 'Gagal mengirim OTP')
+        setErrorMessage(res.message || 'Gagal mengirim OTP');
       }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Terjadi kesalahan'
-      setError(msg)
-    } finally {
-      setLoading(false)
-    }
-  }
+    },
+    onError: (err) => handleError(err, 'Gagal mengirim OTP'),
+  });
 
-  const resendOtp = async () => {
-    setError(null)
-    setLoadingResend(true)
-    try {
-      await authService.emailRegister({ email })
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Gagal mengirim ulang kode'
-      setError(msg)
-    } finally {
-      setLoadingResend(false)
-    }
-  }
-  
-  const verifyOtp = async (otp: string) => {
-    setError(null)
+  const resendOtp = useMutation<void, Error, EmailRegisterPayload>({
+    mutationFn: (payload) => authService.emailRegister(payload).then(() => {}),
+    onError: (err) => handleError(err, 'Gagal mengirim ulang kode'),
+  });
 
-    if (!otp || otp.length < 6) {
-      setError('Kode OTP harus terdiri dari 6 digit')
-      return
-    }
-
-    setLoading(true)
-    try {
-      const response = await authService.verifyOtp({ email, otp })
-      if (response.status === 'success') {
-        setRegisterToken(response.data?.register_token || '')
-        setStep('complete')
+  const verifyOtp = useMutation({
+    mutationFn: (payload: VerifyOtpPayload) => authService.verifyOtp(payload),
+    onSuccess: (res) => {
+      if (res.status === 'success') {
+        setRegisterToken(res.data?.register_token ?? '');
+        setStep('complete');
       } else {
-        setError(response.message || 'OTP tidak valid')
+        setErrorMessage(res.message || 'OTP tidak valid');
       }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Terjadi kesalahan'
-      setError(msg)
-    } finally {
-      setLoading(false)
-    }
-  }
+    },
+    onError: (err) => handleError(err, 'Gagal verifikasi OTP'),
+  });
 
-  const completeRegister = async (formData: {
-    nama_lengkap: string
-    password: string
-    konfirmasi_password: string
-    jenis_kelamin: string
-    tanggal_lahir: string
-    domisili: string
-    status: string
-  }) => {
-    setError(null)
+  const completeAccount = useMutation({
+    mutationFn: async (form: RegisterForm) => {
+      if (form.password !== form.konfirmasi_password) {
+        throw new Error('Password dan konfirmasi password tidak sama');
+      }
 
-    if (formData.password !== formData.konfirmasi_password) {
-      setError('Password dan konfirmasi password tidak sama')
-      return
-    }
-
-    setLoading(true)
-    try {
-      const payload: CompleteRegisterPayload = {
+      const payload: CompleteAccountPayload = {
         register_token: registerToken,
-        password: formData.password,
-        nama: formData.nama_lengkap,
+        password: form.password,
+        nama: form.nama_lengkap,
         profil_responden: {
-          tanggal_lahir: formData.tanggal_lahir,
-          status: formData.status,
-          region: formData.domisili,
-          jenis_kelamin: formData.jenis_kelamin,
+          tanggal_lahir: form.tanggal_lahir,
+          status: form.status,
+          region: form.region,
+          jenis_kelamin: form.jenis_kelamin,
         },
-      }
+      };
 
-      const response = await authService.completeAccount(payload)
-
-      if (response.status === 'success') {
-        router.push('/login')
+      return authService.completeAccount(payload);
+    },
+    onSuccess: (res) => {
+      if (res.status === 'success') {
+        router.push('/login');
       } else {
-        setError(response.message || 'Gagal menyelesaikan pendaftaran')
+        setErrorMessage(res.message || 'Gagal menyelesaikan pendaftaran');
       }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Terjadi kesalahan'
-      setError(msg)
-    } finally {
-      setLoading(false)
-    }
-  }
+    },
+    onError: (err) => handleError(err, 'Gagal menyelesaikan pendaftaran'),
+  });
+
+  const clearError = () => {
+    setErrorMessage(null);
+    emailRegister.reset();
+    resendOtp.reset();
+    verifyOtp.reset();
+    completeAccount.reset();
+  };
 
   return {
     step,
     email,
-    loading,
-    loadingResend,
-    error,
-    initRegister,
-    resendOtp,
-    verifyOtp,
-    completeRegister,
     setStep,
-    setError,
-  }
-}
+    clearError,
+    errorMessage,
+    emailRegister: {
+      mutate: emailRegister.mutate,
+      isPending: emailRegister.isPending,
+    },
+    verifyOtp: {
+      mutate: verifyOtp.mutate,
+      isPending: verifyOtp.isPending,
+    },
+    resendOtp: {
+      mutateAsync: resendOtp.mutateAsync,
+      isPending: resendOtp.isPending,
+    },
+    completeAccount: {
+      mutate: completeAccount.mutate,
+      isPending: completeAccount.isPending,
+    },
+  };
+};

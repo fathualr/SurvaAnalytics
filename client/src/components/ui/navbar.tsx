@@ -4,10 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
+import { useAuth } from '@/features/auth/hooks/useAuth';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { isLoggedIn, user, logout, hydrated } = useAuth();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -25,6 +27,10 @@ const Navbar = () => {
     };
   }, []);
 
+  if (!hydrated) return (
+    <nav className="fixed top-0 left-0 w-full h-16 flex justify-between bg-[#F0F0F0]/90 shadow-md z-10" />
+  );
+
   return (
     <nav className="fixed top-0 left-0 w-full h-16 flex justify-between bg-[#F0F0F0]/90 shadow-md z-10">
 
@@ -40,6 +46,7 @@ const Navbar = () => {
           />
         </Link>
 
+        {isLoggedIn ? (
           <div className="flex flex-col justify-center relative" ref={dropdownRef}>
             <button onClick={toggleDropdown} className="cursor-pointer hover:bg-[#FFF]/80 rounded-full">
               <Image 
@@ -55,10 +62,10 @@ const Navbar = () => {
               <div className="absolute right-0 top-10 mt-4 max-w-[220px] bg-[#F0F0F0]/90 rounded-lg shadow-md z-20 p-4">
                 <div>
                   <span className="block text-md font-semibold truncate whitespace-nowrap overflow-hidden">
-                    Pengguna
+                    {user?.Umum?.nama || 'Anonim'}
                   </span>
                   <span className="block text-xs text-gray-500 truncate whitespace-nowrap overflow-hidden">
-                    @email.com
+                    {user?.email || '@email'}
                   </span>
                 </div>
                 <ul className='gap-1 py-3 border-b'>
@@ -78,6 +85,7 @@ const Navbar = () => {
                 <Button
                   variant="ghost"
                   className="cursor-pointer w-48 mt-2 py-2 hover:bg-accent-1"
+                  onClick={logout}
                 >
                   <Image 
                     src="/icons/navbar/sign-out.svg" 
@@ -91,11 +99,13 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          {/* <Link href="/login">
+        ) : (
+          <Link href="/login">
             <Button className="cursor-pointer text-lg font-semibold bg-primary-2 hover:bg-primary-3 hover:text-accent-1">
               Masuk
             </Button>
-          </Link> */}
+          </Link>
+        )}
 
       </div>
 

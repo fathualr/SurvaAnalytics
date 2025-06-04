@@ -1,37 +1,37 @@
 import { api } from '@/lib/api';
 import {
+  EmailRegisterPayload,
+  VerifyOtpPayload,
+  CompleteAccountPayload,
+  LoginPayload,
   RegisterResponse,
   LoginResponse,
   RefreshTokenResponse,
-  RegisterInitPayload,
-  VerifyOtpPayload,
-  CompleteRegisterPayload,
-  LoginPayload
 } from './types';
 
 export const authService = {
-  emailRegister: async (payload: RegisterInitPayload): Promise<RegisterResponse> => {
-    const response = await api.post('/api/register', payload);
+  emailRegister: async (payload: EmailRegisterPayload): Promise<RegisterResponse> => {
+    const response = await api.post<RegisterResponse>('api/register', payload);
     return response.data;
   },
 
   verifyOtp: async (payload: VerifyOtpPayload): Promise<RegisterResponse> => {
-    const response = await api.post('/api/register/verify', payload);
+    const response = await api.post<RegisterResponse>('api/register/verify', payload);
     return response.data;
   },
 
-  completeAccount: async (payload: CompleteRegisterPayload): Promise<RegisterResponse> => {
-    const response = await api.post('/api/register/account', payload);
+  completeAccount: async (payload: CompleteAccountPayload): Promise<RegisterResponse> => {
+    const response = await api.post<RegisterResponse>('api/register/account', payload);
     return response.data;
   },
 
   login: async (payload: LoginPayload): Promise<LoginResponse> => {
-    const response = await api.post('/api/login', payload);
+    const response = await api.post<LoginResponse>('/api/login', payload);
     return response.data;
   },
 
   refreshToken: async (): Promise<RefreshTokenResponse> => {
-    const response = await api.post('/api/refresh');
+    const response = await api.post<RefreshTokenResponse>('/api/refresh');
     return response.data;
   },
 

@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
 interface EmailRegisterFormProps {
-  onSubmit: (email: string) => void
+  onSubmit: (payload: {email:string}) => void;
   loading: boolean
 }
 
@@ -20,7 +20,7 @@ export function EmailRegisterForm({ onSubmit, loading }: EmailRegisterFormProps)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    onSubmit(email)
+    onSubmit({email})
   }
 
   return (
