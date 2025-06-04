@@ -1,17 +1,17 @@
-export interface ProfilResponden {
+interface ProfilResponden {
   region: string;
   status: string;
   jenis_kelamin: string;
   tanggal_lahir: string;
 }
 
-export interface ProfilKlien {
+interface ProfilKlien {
   nama_klien: string;
   kontak_klien: string;
   alamat_klien: string;
 }
 
-export interface UmumData {
+interface UmumData {
   id: string;
   id_pengguna: string;
   nama: string;
@@ -21,7 +21,7 @@ export interface UmumData {
   poin: string;
 }
 
-export interface AdminData {
+interface AdminData {
   nama_admin: string;
   kontak_darurat: string;
 }
@@ -38,4 +38,12 @@ export interface UserProfileResponse {
   status: string;
   message: string;
   data: UserProfile;
+}
+
+export interface UpdateProfilePayload {
+  umum?: {
+    nama?: string;
+    profil_responden?: Partial<ProfilResponden>;
+    profil_klien?: Partial<ProfilKlien>;
+  };
 }

@@ -1,5 +1,5 @@
 import { api } from '@/lib/api';
-import { UserProfileResponse, UserProfile } from './types';
+import { UserProfileResponse, UpdateProfilePayload } from './types';
 
 export const profileService = {
   getProfile: async (): Promise<UserProfileResponse> => {
@@ -7,8 +7,8 @@ export const profileService = {
     return response.data;
   },
 
-  updateProfile: async (data: Partial<UserProfile>): Promise<UserProfileResponse> => {
-    const response = await api.patch('/api/users/profile', data);
+  updateProfile: async (payload: UpdateProfilePayload): Promise<UserProfileResponse> => {
+    const response = await api.patch('/api/users/profile', payload);
     return response.data;
   },
 };

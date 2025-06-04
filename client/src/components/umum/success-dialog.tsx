@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   Dialog,
@@ -6,24 +6,24 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { AlertCircle } from 'lucide-react'
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { CheckCircle } from 'lucide-react';
 
-interface ErrorDialogProps {
-  open: boolean
-  message: string
-  onClose: () => void
+interface SuccessDialogProps {
+  open: boolean;
+  message: string;
+  onClose: () => void;
 }
 
-export function ErrorDialog({ open, message, onClose }: ErrorDialogProps) {
+export function SuccessDialog({ open, message, onClose }: SuccessDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex text-3xl justify-center gap-2 text-red-600 w-full">
-            <AlertCircle className="w-10 h-10" />
-            Error
+          <DialogTitle className="flex justify-center text-3xl gap-2 text-green-600 w-full">
+            <CheckCircle className="w-10 h-10" />
+            Success
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="flex text-lg justify-center">
@@ -32,7 +32,7 @@ export function ErrorDialog({ open, message, onClose }: ErrorDialogProps) {
         <div className="flex justify-end pt-2">
           <Button
             onClick={onClose}
-            variant="destructive"
+            variant="outline"
             className='cursor-pointer'
           >
             Tutup
@@ -40,5 +40,5 @@ export function ErrorDialog({ open, message, onClose }: ErrorDialogProps) {
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

@@ -28,7 +28,20 @@ const Navbar = () => {
   }, []);
 
   if (!hydrated) return (
-    <nav className="fixed top-0 left-0 w-full h-16 flex justify-between bg-[#F0F0F0]/90 shadow-md z-10" />
+    <nav className="fixed top-0 left-0 w-full h-16 flex justify-between bg-[#F0F0F0]/90 shadow-md z-10" >
+      <div className="size-full mx-auto md:px-[50] px-[20] flex items-center justify-between">
+        <Link href="/" className="hover:opacity-80 flex items-center">
+          <Image
+            src="/images/surva.png"
+            alt="Logo"
+            width={0}
+            height={0}
+            sizes="100vw"
+            className="w-[120px] h-auto object-contain"
+          />
+        </Link>
+      </div>
+    </nav>
   );
 
   return (
@@ -70,7 +83,7 @@ const Navbar = () => {
                 </div>
                 <ul className='gap-1 py-3 border-b'>
                   <li>
-                    <Link href="/profile" className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-accent-1">
+                    <Link href="/profile" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-accent-1">
                       <Image 
                         src="/icons/navbar/identification-card.svg" 
                         alt="Profile Icon" 

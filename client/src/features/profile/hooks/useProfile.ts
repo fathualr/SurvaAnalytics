@@ -1,47 +1,80 @@
-'use client'
+'use client';
 
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { UserProfile } from '../types';
 import { profileService } from '../api';
+import { UserProfile } from '../types';
 
-export function useProfile() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export interface updateProfileForm {
+  umum: {
+    nama: string;
+    profil_responden: {
+      tanggal_lahir: string;
+      jenis_kelamin: string;
+      region: string;
+      status: string;
+    };
+    profil_klien: {
+      nama_klien: string;
+      kontak_klien: string;
+      alamat_klien: string;
+    };
+  };
+}
 
-  const updateProfile = async (data: Partial<UserProfile>): Promise<void> => {
-    setLoading(true);
-    setError(null);
+export const useProfile = (enabled = true) => {
+  const queryClient = useQueryClient();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    try {
-      const payload: any = {
-        umum: {
-          ...(data.Umum?.nama && { nama: data.Umum.nama }),
-          ...(data.Umum?.profil_responden && { profil_responden: data.Umum.profil_responden }),
-          ...(data.Umum?.profil_klien && {
-            profil_klien: Object.fromEntries(
-              Object.entries(data.Umum.profil_klien).filter(([_, v]) => v !== '')
-            )
-          })
-        }
-      }
+  const handleError = (err: unknown, fallback = 'Terjadi kesalahan') => {
+    const message =
+      (err as any)?.response?.data?.message ||
+      (err as Error)?.message ||
+      fallback;
+    setErrorMessage(message);
+  };
 
-      await profileService.updateProfile(payload);
-      setIsEditing(false);
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Gagal memperbarui profil');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
+  // Fetch Profile
+  const {
+    data: profile,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery<UserProfile>({
+    queryKey: ['userProfile'],
+    queryFn: async () => {
+      const res = await profileService.getProfile();
+      return res.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled,
+  });
+
+  const updateProfile = useMutation({
+    mutationFn: profileService.updateProfile,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+    },
+    onError: (err) => handleError(err, 'Gagal memperbarui profil'),
+  });
+
+  const clearError = () => {
+    setErrorMessage(null);
+    updateProfile.reset();
   };
 
   return {
-    isEditing,
-    loading,
+    profile,
+    isLoading,
+    isError,
     error,
-    setIsEditing,
-    updateProfile,
-    setError,
+    refetch,
+    errorMessage,
+    clearError,
+    updateProfile: {
+      mutate: updateProfile.mutate,
+      isPending: updateProfile.isPending,
+    },
   };
-}
+};

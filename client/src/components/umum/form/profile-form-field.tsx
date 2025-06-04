@@ -45,7 +45,7 @@ export function ProfileFormField({
             onChange={(e) => onChange?.(id, e.target.value)}
             disabled={!isEditing || readOnly}
             autoComplete="off"
-            className="!border-none !ring-0 rounded-md w-full h-10 bg-none px-3"
+            className="rounded-md w-full h-10 border bg-none px-3"
           >
             <option className="text-[#323232]" disabled value="">Pilih {label.toLowerCase()}</option>
             {options.map(opt => (
@@ -62,7 +62,7 @@ export function ProfileFormField({
             onChange={(e) => onChange?.(id, e.target.value)}
             readOnly={readOnly || !isEditing}
             autoComplete="off"
-            className="!border-none !ring-0 h-9 w-full bg-none"
+            className="h-9 w-full bg-none"
           />
         )}
       </div>
