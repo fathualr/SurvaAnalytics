@@ -40,3 +40,15 @@ export interface SurveyListResponse {
     per_page: number
   }
 };
+
+export interface CreateUserSurveiPayload {
+  judul: string
+  deskripsi?: string
+  kriteria: Record<string, any>
+  jumlah_responden: string
+  tanggal_mulai: string
+  tanggal_berakhir: string
+  hadiah_poin: string
+}
+
+export interface UpdateUserSurveiPayload extends Partial<CreateUserSurveiPayload> {}
