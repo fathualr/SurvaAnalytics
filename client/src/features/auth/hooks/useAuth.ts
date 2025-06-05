@@ -8,7 +8,8 @@ import { LoginPayload } from '../types';
 import { useAuthStore } from '../store';
 import { api } from '@/lib/api';
 import { profileService } from '@/features/profile/api';
-import { UserProfile } from '@/features/profile/types';
+
+let channel: BroadcastChannel | null = null;
 
 export const useAuth = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ export const useAuth = () => {
     clearAccessToken,
     user,
     setUser,
-    hydrated
+    hydrated,
   } = useAuthStore();
 
   const login = useMutation({
@@ -31,21 +32,30 @@ export const useAuth = () => {
     onSuccess: async (response) => {
       if (response.status === 'success' && response.data?.accessToken) {
         const token = response.data.accessToken;
+
         setAccessToken(token);
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        const profile = await profileService.getProfile();
-        const user = profile.data;
-        setUser(user);
-        switch (user.role) {
-          case 'admin':
-            router.push('/admin/dashboard');
-            break;
-          case 'umum':
-            router.push('/explore');
-            break;
-          default:
-            router.push('/');
-            break;
+
+        try {
+          const profile = await profileService.getProfile();
+          const user = profile.data;
+          setUser(user);
+
+          channel?.postMessage('login');
+
+          switch (user.role) {
+            case 'admin':
+              router.push('/admin/dashboard');
+              break;
+            case 'umum':
+              router.push('/explore');
+              break;
+            default:
+              router.push('/');
+              break;
+          }
+        } catch {
+          setError('Gagal memuat profil.');
         }
       } else {
         setError(response.message || 'Login gagal');
@@ -58,12 +68,20 @@ export const useAuth = () => {
   });
 
   const logout = async () => {
-    await authService.logout();
-    clearAccessToken();
-    setUser(null);
-    delete api.defaults.headers.common['Authorization'];
-    queryClient.clear();
-    router.push('/login');
+    try {
+      await authService.logout();
+    } catch {
+      router.push('/login')
+    } finally {
+      clearAccessToken();
+      setUser(null);
+      delete api.defaults.headers.common['Authorization'];
+      queryClient.clear();
+
+      channel?.postMessage('logout');
+
+      router.push('/login');
+    }
   };
 
   const refreshToken = async () => {
@@ -96,8 +114,46 @@ export const useAuth = () => {
   }, [accessToken]);
 
   useEffect(() => {
-    const interval = setInterval(refreshToken, 1000 * 60 * 15);
+    const interval = setInterval(refreshToken, 15 * 60 * 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (!channel) {
+      channel = new BroadcastChannel('auth');
+    }
+
+    const handleMessage = async (event: MessageEvent) => {
+      const type = event.data;
+
+      if (type === 'logout') {
+        clearAccessToken();
+        setUser(null);
+        delete api.defaults.headers.common['Authorization'];
+        queryClient.clear();
+        router.push('/login');
+      }
+
+      if (type === 'login') {
+        const raw = localStorage.getItem('auth-storage');
+        if (!raw) return;
+        const parsed = JSON.parse(raw)?.state?.accessToken;
+        if (!parsed) return;
+
+        setAccessToken(parsed);
+        api.defaults.headers.common['Authorization'] = `Bearer ${parsed}`;
+
+        try {
+          const profile = await profileService.getProfile();
+          setUser(profile.data);
+        } catch {
+          await logout();
+        }
+      }
+    };
+
+    channel.addEventListener('message', handleMessage);
+    return () => channel?.removeEventListener('message', handleMessage);
   }, []);
 
   return {
