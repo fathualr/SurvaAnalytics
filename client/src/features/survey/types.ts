@@ -48,7 +48,10 @@ export interface CreateUserSurveiPayload {
   jumlah_responden: string
   tanggal_mulai: string
   tanggal_berakhir: string
-  hadiah_poin: string
+  hadiah_poin?: string
 }
 
-export interface UpdateUserSurveiPayload extends Partial<CreateUserSurveiPayload> {}
+export interface UpdateUserSurveiPayload extends Partial<CreateUserSurveiPayload> {
+  status?: SurveiStatus
+  umpan_balik?: string
+}

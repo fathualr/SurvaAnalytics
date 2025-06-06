@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/c
 import { Survei, SurveiStatus } from '../../types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
 
 interface UserSurveyCardProps {
   surveys: Survei;
@@ -39,8 +40,10 @@ export const UserSurveyCard = ({ surveys }: UserSurveyCardProps) => (
         </span>
       </div>
     </CardContent>
-    <Button className="cursor-pointer flex items-center justify-center bg-primary-1 text-accent-1 hover:bg-primary-2 h-14 rounded-t-none">
-      <span className="text-lg font-semibold">Detail survei</span>
-    </Button>
+    <Link href={`/manage-survey/edit/${surveys.id}`} passHref>
+      <Button className="cursor-pointer flex items-center justify-center bg-primary-1 text-accent-1 hover:bg-primary-2 h-14 rounded-t-none w-full">
+        <span className="text-lg font-semibold">Detail survei</span>
+      </Button>
+    </Link>
   </Card>
 );
