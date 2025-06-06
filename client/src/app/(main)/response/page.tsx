@@ -1,3 +1,5 @@
+"use client"
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -7,8 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select" 
+import BarChart from "@/components/surveyresults/bar-chart";
+import PieChart from "@/components/surveyresults/pie-chart";
 
 export default function ResponseSurvey() {
+
+  const [selectedChart, setSelectedChart] = useState<string>("");
+
   return (
     <div  className="w-full p-10">
       <div className="flex flex-row">
@@ -30,7 +37,7 @@ export default function ResponseSurvey() {
       <div className="border-2 border-black rounded-md p-8 mb-6">
         <div className="mb-1">
           <span className="text-md font-semibold">1. Apakah ikan suka makan pelet</span>
-          <Select>
+          <Select onValueChange={(value) => setSelectedChart(value)}>
             <SelectTrigger className="text-black border-2 border-black w-36 mt-2 ml-4">
               <SelectValue placeholder="Pilih chart"/>
             </SelectTrigger>
@@ -39,6 +46,11 @@ export default function ResponseSurvey() {
               <SelectItem value="bar">Bar Graph</SelectItem>
             </SelectContent>
           </Select>
+
+          <div className="mt-4 flex justify-center items-center">
+          {selectedChart == "pie" && <PieChart />}
+          {selectedChart == "bar" && <BarChart />}
+          </div>
         </div>
       </div>
 
