@@ -3,23 +3,40 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { useUserSurvey, useUpdateUserSurvey, useDeleteUserSurvey } from '@/features/survey/hooks/useUserSurveys'
-import { SurveyForm } from './survey-form'
 import { Button } from '@/components/ui/button'
 import { ConfirmDeleteDialog } from '@/components/umum/confirm-delete-dialog'
+import { SurveyForm } from './survey-form'
+import {
+  useUserSurvey,
+  useUpdateUserSurvey,
+  useDeleteUserSurvey,
+} from '@/features/survey/hooks/useUserSurveys'
+import { QuestionSection } from '@/features/surveyQuestion/components/user/question-section'
 
-interface SurveyFormProps {
+interface SurveyContainerProps {
   surveyId: string
 }
 
-export function SurveyContainer({ surveyId }: SurveyFormProps) {
+export function SurveyContainer({ surveyId }: SurveyContainerProps) {
   const router = useRouter()
-  const { data, isLoading, isError, error } = useUserSurvey(surveyId)
+  const { data: survey, isLoading, isError, error } = useUserSurvey(surveyId)
   const updateSurvey = useUpdateUserSurvey()
   const deleteSurvey = useDeleteUserSurvey()
+  const isEditable = survey?.status === 'draft' || survey?.status === 'rejected'
+
+  const initialForm = {
+    judul: survey?.judul,
+    deskripsi: survey?.deskripsi ?? '',
+    kriteria: survey?.kriteria ?? {},
+    jumlah_responden: survey?.jumlah_responden,
+    tanggal_mulai: survey?.tanggal_mulai,
+    tanggal_berakhir: survey?.tanggal_berakhir,
+    status: survey?.status,
+    umpan_balik: survey?.umpan_balik,
+  }
 
   useEffect(() => {
-    if (updateSurvey.isSuccess) toast.success('Perubahan berhasil disimpan')
+    if (updateSurvey.isSuccess) toast.success('Perubahan survei disimpan')
     if (updateSurvey.isError) toast.error('Gagal menyimpan perubahan')
   }, [updateSurvey.isSuccess, updateSurvey.isError])
 
@@ -41,21 +58,12 @@ export function SurveyContainer({ surveyId }: SurveyFormProps) {
     )
   }
 
-  if (isError || !data) {
+  if (isError || !survey) {
     return (
       <div className="flex justify-center items-center min-h-[300px] text-red-600 text-sm">
         Gagal memuat data survei: {error?.message || 'Unknown error'}
       </div>
     )
-  }
-
-  const initialData = {
-    judul: data.judul,
-    deskripsi: data.deskripsi ?? '',
-    kriteria: data.kriteria ?? {},
-    jumlah_responden: data.jumlah_responden,
-    tanggal_mulai: data.tanggal_mulai,
-    tanggal_berakhir: data.tanggal_berakhir,
   }
 
   return (
@@ -70,20 +78,26 @@ export function SurveyContainer({ surveyId }: SurveyFormProps) {
         <Button
           type="button"
           variant="destructive"
-          className="cursor-pointer w-fit text-sm mb-2 bg-red-400"
+          className="cursor-pointer w-fit sm:text-sm text-xs mb-2 bg-red-400"
         >
           {deleteSurvey.isPending ? 'Menghapus...' : 'Hapus Survei'}
         </Button>
       </ConfirmDeleteDialog>
+
       <div className="flex-grow">
-        <div className="grid bg-primary-2/90 rounded-xl sm:p-10 p-5 lg:gap-5 gap-3">
+        <div className="grid bg-accent-1 rounded-xl sm:p-10 p-5 lg:gap-5 gap-3 border border-black sm:text-sm text-xs">
           <SurveyForm
             surveyId={surveyId}
-            initialData={initialData}
+            initialData={initialForm}
             onAutoSave={(formData: any) =>
               updateSurvey.mutate({ id: surveyId, data: formData })
             }
+            disabled={!isEditable}
           />
+
+          <h2 className="text-xl font-semibold p-3 mx-auto">Pertanyaan Survei</h2>
+          
+          <QuestionSection surveyId={surveyId} isEditable={isEditable} />
         </div>
       </div>
     </>

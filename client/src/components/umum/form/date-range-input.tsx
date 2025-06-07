@@ -8,12 +8,14 @@ interface DateRangeSectionProps {
   startDate: string;
   endDate: string;
   onChange: (payload: { startDate: string; endDate: string }) => void;
+  disabled?: boolean;
 }
 
 export function DateRangeSection({
   startDate,
   endDate,
   onChange,
+  disabled = false,
 }: DateRangeSectionProps) {
   const [start, setStart] = useState(startDate);
   const [end, setEnd] = useState(endDate);
@@ -21,7 +23,6 @@ export function DateRangeSection({
   const [duration, setDuration] = useState<number | null>(null);
 
   const formatDate = (date: Date) => date.toISOString().split('T')[0];
-
   const addDays = (date: Date, days: number) => {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -35,6 +36,14 @@ export function DateRangeSection({
     const endDateObj = new Date(end);
     const now = new Date();
 
+    if (disabled) {
+      const diffTime = endDateObj.getTime() - startDateObj.getTime();
+      const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      setDuration(days > 0 ? days : null);
+      setError('');
+      return;
+    }
+
     const isStartValid = startDateObj > addDays(now, 3);
     const isEndValid = endDateObj >= startDateObj;
 
@@ -47,43 +56,46 @@ export function DateRangeSection({
     } else {
       setError('');
       const diffTime = endDateObj.getTime() - startDateObj.getTime();
-      const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 untuk inklusif
+      const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
       setDuration(days);
       onChange({ startDate: start, endDate: end });
     }
-  }, [start, end]);
+  }, [start, end, disabled, onChange]);
 
   return (
-    <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-5">
-      <FormGroup label="Tanggal Mulai" htmlFor="start-date" className="w-full">
+    <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-5 ">
+      <FormGroup label="Tanggal Mulai" htmlFor="start-date">
         <Input
           id="start-date"
           type="date"
-          className="placeholder:text-accent-1/50"
           value={start}
           min={minStartDate}
+          className="sm:text-sm text-xs w-full"
           onChange={(e) => setStart(e.target.value)}
+          disabled={disabled}
         />
       </FormGroup>
 
-      <FormGroup label="Tanggal Berakhir" htmlFor="end-date" className="w-full">
+      <FormGroup label="Tanggal Berakhir" htmlFor="end-date">
         <Input
           id="end-date"
           type="date"
-          className="placeholder:text-accent-1/50"
           value={end}
           min={start}
+          className="sm:text-sm text-xs"
           onChange={(e) => setEnd(e.target.value)}
+          disabled={disabled}
         />
       </FormGroup>
 
-      <FormGroup label="Total Durasi (hari)" htmlFor="duration" className="w-full">
+      <FormGroup label="Total Durasi (hari)" htmlFor="duration">
         <Input
           id="duration"
           type="text"
-          className="placeholder:text-accent-1/50"
+          className="sm:text-sm text-xs"
           value={duration ? `${duration} hari` : ''}
           readOnly
+          disabled
         />
       </FormGroup>
 
