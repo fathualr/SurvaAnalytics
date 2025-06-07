@@ -5,7 +5,7 @@ const validVisualisasi = ['pie', 'bar', 'line', 'doughnut', 'radar', 'text', 'wo
 
 export const createPertanyaanSurveiSchema = Joi.object({
   teks_pertanyaan: Joi.string().min(3).max(500).required(),
-  tipe_pertanyaan: Joi.string().valid(...validTipe).required(),
+  tipe_pertanyaan: Joi.string().valid(...validTipe).default('pilihan_ganda'),
   opsi: Joi.when('tipe_pertanyaan', {
     is: Joi.not('essay'),
     then: Joi.array().min(1).required(),
