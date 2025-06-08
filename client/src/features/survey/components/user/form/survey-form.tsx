@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { isEqual } from 'lodash'
 import { Input } from '@/components/ui/input'
 import { KriteriaSection } from './kriteria-section'
@@ -16,40 +16,61 @@ interface SurveyFormProps {
   disabled?: boolean
 }
 
+function isValidDateRange(start?: string, end?: string) {
+  if (!start || !end) return false
+  return new Date(start) <= new Date(end)
+}
+
 export function SurveyForm({
   surveyId,
   initialData,
   onAutoSave,
   disabled = false,
 }: SurveyFormProps) {
-  const [localForm, setLocalForm] = useState<UpdateUserSurveiPayload>(initialData)
-  const [isMounted, setIsMounted] = useState(false)
-  const isFirstLoad = useRef(true)
+  const [localForm, setLocalForm] = useState(initialData)
+  const [lastSavedForm, setLastSavedForm] = useState(initialData)
+  const isMounted = useRef(false)
 
   const autosave = useAutosave((data: UpdateUserSurveiPayload) => {
-    if (!disabled) onAutoSave(data)
+    if (!disabled) {
+      onAutoSave(data)
+      setLastSavedForm(data)
+    }
   }, 3000)
 
   useEffect(() => {
-    if (isMounted && !isEqual(localForm, initialData) && !disabled) {
-      autosave(localForm)
-    }
-  }, [localForm])
-
-  useEffect(() => {
-    if (isFirstLoad.current) {
+    if (!isEqual(initialData, localForm)) {
       setLocalForm(initialData)
-      setIsMounted(true)
-      isFirstLoad.current = false
+      setLastSavedForm(initialData)
     }
   }, [initialData])
+
+  useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true
+      return
+    }
+
+    const { status, umpan_balik, ...formToSave } = localForm
+    const { status: _, umpan_balik: __, ...lastSaved } = lastSavedForm
+
+    if (
+      !isEqual(formToSave, lastSaved) &&
+      isValidDateRange(formToSave.tanggal_mulai, formToSave.tanggal_berakhir)
+    ) {
+      autosave(formToSave)
+    }
+  }, [localForm])
 
   const handleChange = <K extends keyof UpdateUserSurveiPayload>(
     field: K,
     value: UpdateUserSurveiPayload[K]
   ) => {
     if (!disabled) {
-      setLocalForm((prev) => ({ ...prev, [field]: value }))
+      setLocalForm((prev) => {
+        if (isEqual(prev[field], value)) return prev
+        return { ...prev, [field]: value }
+      })
     }
   }
 

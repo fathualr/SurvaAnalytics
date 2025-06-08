@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -24,16 +24,27 @@ export function SurveyContainer({ surveyId }: SurveyContainerProps) {
   const deleteSurvey = useDeleteUserSurvey()
   const isEditable = survey?.status === 'draft' || survey?.status === 'rejected'
 
-  const initialForm = {
+  const stableKriteria = useMemo(() => survey?.kriteria ?? {}, [JSON.stringify(survey?.kriteria)])
+
+  const initialForm = useMemo(() => ({
     judul: survey?.judul,
     deskripsi: survey?.deskripsi ?? '',
-    kriteria: survey?.kriteria ?? {},
+    kriteria: stableKriteria,
     jumlah_responden: survey?.jumlah_responden,
     tanggal_mulai: survey?.tanggal_mulai,
     tanggal_berakhir: survey?.tanggal_berakhir,
     status: survey?.status,
     umpan_balik: survey?.umpan_balik,
-  }
+  }), [
+    survey?.judul,
+    survey?.deskripsi,
+    survey?.jumlah_responden,
+    survey?.tanggal_mulai,
+    survey?.tanggal_berakhir,
+    survey?.status,
+    survey?.umpan_balik,
+    stableKriteria,
+  ])
 
   useEffect(() => {
     if (updateSurvey.isSuccess) toast.success('Perubahan survei disimpan')
@@ -94,9 +105,7 @@ export function SurveyContainer({ surveyId }: SurveyContainerProps) {
             }
             disabled={!isEditable}
           />
-
           <h2 className="text-xl font-semibold p-3 mx-auto">Pertanyaan Survei</h2>
-          
           <QuestionSection surveyId={surveyId} isEditable={isEditable} />
         </div>
       </div>
