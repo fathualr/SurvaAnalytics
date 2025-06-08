@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select" 
 import BarChart from "@/components/surveyresults/bar-chart";
 import PieChart from "@/components/surveyresults/pie-chart";
+import LineChart from "@/components/surveyresults/line-chart";
 
 export default function ResponseSurvey() {
 
@@ -44,12 +45,14 @@ export default function ResponseSurvey() {
             <SelectContent>
               <SelectItem value="pie">Pie Chart</SelectItem>
               <SelectItem value="bar">Bar Graph</SelectItem>
+              <SelectItem value="line">line</SelectItem>
             </SelectContent>
           </Select>
 
           <div className="mt-4 flex justify-center items-center">
           {selectedChart == "pie" && <PieChart />}
           {selectedChart == "bar" && <BarChart />}
+          {selectedChart == "line" && <LineChart />}
           </div>
         </div>
       </div>
