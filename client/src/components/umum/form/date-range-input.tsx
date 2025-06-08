@@ -23,18 +23,23 @@ export function DateRangeSection({
   const [duration, setDuration] = useState<number | null>(null);
 
   const formatDate = (date: Date) => date.toISOString().split('T')[0];
+
   const addDays = (date: Date, days: number) => {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
   };
 
-  const minStartDate = formatDate(addDays(new Date(), 4));
+  const getDateOnly = (date: Date) =>
+    new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+  const today = getDateOnly(new Date());
+  const minStartDate = formatDate(addDays(today, 4));
 
   useEffect(() => {
-    const startDateObj = new Date(start);
-    const endDateObj = new Date(end);
-    const now = new Date();
+    const startDateObj = getDateOnly(new Date(start));
+    const endDateObj = getDateOnly(new Date(end));
+    const now = getDateOnly(new Date());
 
     if (disabled) {
       const diffTime = endDateObj.getTime() - startDateObj.getTime();
@@ -44,14 +49,14 @@ export function DateRangeSection({
       return;
     }
 
-    const isStartValid = startDateObj > addDays(now, 3);
-    const isEndValid = endDateObj >= startDateObj;
+    const isStartValid = startDateObj >= addDays(now, 3);
+    const isEndValid = endDateObj > startDateObj;
 
     if (!isStartValid) {
-      setError('Tanggal mulai minimal 4 hari dari hari ini.');
+      setError('Tanggal mulai minimal 3 hari dari hari ini.');
       setDuration(null);
     } else if (!isEndValid) {
-      setError('Tanggal berakhir tidak boleh sebelum tanggal mulai.');
+      setError('Tanggal berakhir harus 1 hari setelah tanggal mulai.');
       setDuration(null);
     } else {
       setError('');
@@ -63,7 +68,7 @@ export function DateRangeSection({
   }, [start, end, disabled, onChange]);
 
   return (
-    <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-5 ">
+    <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-5">
       <FormGroup label="Tanggal Mulai" htmlFor="start-date">
         <Input
           id="start-date"
@@ -81,7 +86,7 @@ export function DateRangeSection({
           id="end-date"
           type="date"
           value={end}
-          min={start}
+          min={formatDate(addDays(new Date(start), 1))}
           className="sm:text-sm text-xs"
           onChange={(e) => setEnd(e.target.value)}
           disabled={disabled}

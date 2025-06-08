@@ -1,7 +1,9 @@
 import Joi from 'joi';
 
-const minStartDate = new Date();
-minStartDate.setDate(minStartDate.getDate() + 3);
+function getDateOnly(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+}
+const minStartDate = getDateOnly(new Date(Date.now() + 3 * 86400000))
 
 export const createSurveiSchema = Joi.object({
   id_umum: Joi.string().uuid().required(),
