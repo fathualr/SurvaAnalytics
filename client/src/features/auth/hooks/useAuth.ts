@@ -71,7 +71,7 @@ export const useAuth = () => {
     try {
       await authService.logout();
     } catch {
-      router.push('/login')
+      router.push('/login');
     } finally {
       clearAccessToken();
       setUser(null);
@@ -85,6 +85,8 @@ export const useAuth = () => {
   };
 
   const refreshToken = async () => {
+    if (!accessToken) return;
+
     try {
       const response = await authService.refreshToken();
       if (response.status === 'success' && response.data?.accessToken) {
@@ -114,7 +116,13 @@ export const useAuth = () => {
   }, [accessToken]);
 
   useEffect(() => {
-    const interval = setInterval(refreshToken, 15 * 60 * 1000);
+    const interval = setInterval(() => {
+      const token = useAuthStore.getState().accessToken;
+      if (token) {
+        refreshToken();
+      }
+    }, 15 * 60 * 1000);
+
     return () => clearInterval(interval);
   }, []);
 
