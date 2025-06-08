@@ -54,11 +54,11 @@ export const useUserSurveys = (options: UseUserSurveysOptions = {}) => {
   };
 };
 
-export const useUserSurvey = (id: string) => {
+export const useUserSurvey = (id: string, enabled = true) => {
   return useQuery<Survei>({
     queryKey: ['user-survey', id],
     queryFn: () => userSurveiService.getById(id),
-    enabled: !!id,
+    enabled: !!id && enabled,
   });
 };
 

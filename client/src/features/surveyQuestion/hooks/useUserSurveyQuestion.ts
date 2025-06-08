@@ -38,7 +38,7 @@ export const useInfiniteSurveyQuestions = (surveiId: string, enabled = true) => 
 
 export const useSurveyQuestions = (surveiId: string, enabled = true) => {
   return useQuery<SurveyQuestionListResponse>({
-    queryKey: ['question-survey', surveiId],
+    queryKey: ['question-survey-all', surveiId],
     queryFn: () => questionSurveyAPI.getAllBySurveyId(surveiId),
     enabled,
   });
@@ -60,6 +60,7 @@ export const useCreateSurveyQuestion = (surveiId: string) => {
       questionSurveyAPI.create(surveiId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['question-survey', surveiId] });
+      queryClient.invalidateQueries({ queryKey: ['question-survey-all', surveiId] });
     },
   });
 };
@@ -77,6 +78,7 @@ export const useUpdateSurveyQuestion = (surveiId: string) => {
     }) => questionSurveyAPI.update(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['question-survey', surveiId] });
+      queryClient.invalidateQueries({ queryKey: ['question-survey-all', surveiId] });
     },
   });
 };
@@ -105,6 +107,7 @@ export const useDeleteSurveyQuestion = (surveiId: string) => {
     mutationFn: (id: string) => questionSurveyAPI.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['question-survey', surveiId] });
+      queryClient.invalidateQueries({ queryKey: ['question-survey-all', surveiId] });
     },
   });
 };
