@@ -1,13 +1,25 @@
-import Image from "next/image";
-import Link from 'next/link';
-import { Button } from "@/components/ui/button";
+import { Metadata } from 'next';
+import Image from "next/image"
+import Link from 'next/link'
+import { Button } from "@/components/ui/button"
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem
-} from "@/components/ui/carousel";
-import { Card } from "@/components/ui/card";
-import { GridBackgroundDemo } from "@/components/ui/grid-background";
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"
+import { Card, CardContent, CardTitle } from "@/components/ui/card"
+import { GridBackgroundDemo } from "@/components/ui/grid-background"
+import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards"
+
+
+export const metadata: Metadata = {
+  title: 'Surva.',
+  description: 'Aplikasi analisis cerdas untuk hasil survei.'
+};
+
 
 export default function Home() {
   return (
@@ -16,7 +28,7 @@ export default function Home() {
       <GridBackgroundDemo>
         {/* Hero Section */}
         <section className="py-16 my-auto min-h-screen md:h-screen h-full grid md:grid-cols-2 grid-cols-1 md:px-20 sm:px-10 px-5">
-          <div className="col-span-1 md:row-start-1 row-start-2 flex flex-col m-auto md:gap-10 gap-8">
+          <div className="col-span-1 md:row-start-1 row-start-2 flex flex-col m-auto md:gap-10 gap-8 md:items-start items-center md:text-left text-center">
             <h1 className="block font-bold md:text-6xl text-5xl">
               <span className="block">Survei sekejap,</span>
               <span className="mt-2 block">Insight Melekat!</span>
@@ -31,7 +43,7 @@ export default function Home() {
             </div>
             <Link
               href="/explore"
-              className="flex justify-center items-center max-w-[300] h-[70] border border-secondary-1 bg-secondary-1 rounded-tr-3xl rounded-bl-3xl hover:rounded-tr-none hover:rounded-bl-none hover:rounded-tl-3xl hover:rounded-br-3xl transition-all duration-150"
+              className="flex justify-center items-center w-full max-w-[300] h-[70] border border-secondary-1 bg-secondary-1 rounded-tr-3xl rounded-bl-3xl hover:rounded-tr-none hover:rounded-bl-none hover:rounded-tl-3xl hover:rounded-br-3xl transition-all duration-150"
             >
               <p className="font-semibold text-center text-3xl text-accent-1">Mulai</p>
             </Link>
@@ -61,9 +73,9 @@ export default function Home() {
             className="w-full h-auto md:max-h-[600px] max-h-[400px] object-contain"
           />
         </div>
-        <div className="col-span-1 grid content-center h-full pr-10 md:gap-8 gap-6">
+        <div className="col-span-1 grid content-center h-full md:pr-10 md:gap-8 gap-6 md:text-left text-center">
           <h2 className="md:text-5xl text-4xl font-semibold">What is Surva?</h2>
-          <p className="md:text-lg sm:text-md">
+          <p className="md:text-lg  sm:text-md text-justify">
             SurvaAnalytics adalah aplikasi berbasis web yang dikembangkan untuk menyederhanakan proses pembuatan, penyebaran, dan analisis survei secara menyeluruh. Latar belakang dari proyek ini adalah kebutuhan akan solusi efisien dalam pengumpulan dan pengolahan data survei, yang sering kali terhambat oleh rendahnya tingkat partisipasi responden, pencarian responden yang relevan, serta keterbatasan dalam analisis data.
           </p>
         </div>
@@ -76,37 +88,108 @@ export default function Home() {
         </h2>
 
         <div className="flex justify-center md:gap-15 gap-5">
-          <Link href="#" className="w-full max-w-[280px] h-[300px] rounded-xl overflow-hidden shadow-sm border flex flex-col">
-            <div className="h-[200px] flex items-center justify-center">
-              <Image
-                src="/images/landing-page/survey-tools.png"
-                alt="Survey & Tools"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="w-full h-full object-none"
-              />
-            </div>
-            <div className="grid items-center bg-secondary-1 py-3 text-center w-full h-full">
-              <p className="font-bold text-accent-1 text-2xl">Survey & Tools</p>
-            </div>
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Card className="w-full max-w-[280px] h-[300px] overflow-hidden p-0 flex flex-col items-center rounded-lg shadow-md gap-0 cursor-pointer">
+                <div className="w-full h-[200px] flex items-center justify-center bg-accent-1 p-0">
+                  <Image
+                    src="/images/landing-page/survey-tools.png"
+                    alt="Survey & Tools"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="w-full object-cover p-0"
+                  />
+                </div>
+                <CardContent className="grid items-center bg-secondary-1 py-3 text-center w-full h-full">
+                  <CardTitle className="font-bold text-accent-1 text-2xl">
+                    Survey & Tools
+                  </CardTitle>
+                </CardContent>
+              </Card>
+            </DialogTrigger>
+            <DialogContent className="md:p-4 p-2">
+              <DialogHeader>
+                <DialogTitle>Survey & Tools</DialogTitle>
+                <div className="max-h-120 h-auto overflow-auto md:p-2 p-1">
+                  <div className="grid justify-items-center">
+                    <Image
+                      src="/images/landing-page/survey-tools.png"
+                      alt="Survey & Tools"
+                      width={120}
+                      height={120}
+                      sizes="50vw"
+                      className="object-cover p-0"
+                    />
+                  </div>
+                  <div className="space-y-3 text-left text-sm">
+                    <p><strong>Apa itu Survey & Tools?</strong><br />
+                    Fitur ini menyediakan berbagai survei yang dapat diisi pengguna, serta alat bantu (tools) untuk mempermudah aktivitas Anda dalam platform kami.</p>
+                    <p><strong>Mengapa fitur ini penting?</strong><br />
+                    Dengan mengisi survei, Anda membantu kami memahami kebutuhan pengguna dan meningkatkan kualitas layanan. Tools yang tersedia juga mempermudah pekerjaan, seperti pengumpulan data atau analisis sederhana.</p>
+                    <p><strong>Bagaimana cara menggunakannya?</strong><br />
+                    1. Klik menu "Survey & Tools" di dashboard.<br />
+                    2. Pilih survei yang ingin Anda isi atau tools yang ingin digunakan.<br />
+                    3. Ikuti instruksi pada masing-masing halaman dengan teliti.<br />
+                    4. Setelah selesai, pastikan Anda menyimpan atau mengirim data Anda jika diperlukan.</p>
+                    <p><em>Tips:</em> Cek secara rutin untuk melihat survei baru dan tools yang diperbarui.</p>
+                  </div>
+                </div>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
 
-          <Link href="#" className="w-full max-w-[280px] h-[300px] rounded-xl overflow-hidden shadow-sm border flex flex-col">
-            <div className="h-[200px] flex items-center justify-center">
-              <Image
-                src="/images/landing-page/payment.png"
-                alt="Payment"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="w-full h-full object-none"
-              />
-            </div>
-            <div className="grid items-center bg-secondary-1 py-3 text-center w-full h-full">
-              <p className="font-bold text-accent-1 text-2xl">Payment</p>
-            </div>
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Card className="w-full max-w-[280px] h-[300px] overflow-hidden p-0 flex flex-col items-center rounded-lg shadow-md gap-0 cursor-pointer">
+                <div className="w-full h-[200px] flex items-center justify-center bg-accent-1 p-0">
+                  <Image
+                    src="/images/landing-page/payment.png"
+                    alt="Payment"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="w-full object-cover p-0"
+                  />
+                </div>
+                <CardContent className="grid items-center bg-secondary-1 py-3 text-center w-full h-full">
+                  <CardTitle className="font-bold text-accent-1 text-2xl">
+                    Payment
+                  </CardTitle>
+                </CardContent>
+              </Card>
+            </DialogTrigger>
+            <DialogContent className="md:p-4 p-2">
+              <DialogHeader>
+                <DialogTitle>Payment</DialogTitle>
+                <div className="max-h-120 h-auto overflow-auto md:p-2 p-1">
+                  <div className="grid justify-items-center">
+                    <Image
+                      src="/images/landing-page/payment.png"
+                      alt="Payment"
+                      width={120}
+                      height={120}
+                      sizes="50vw"
+                      className="object-cover p-0"
+                    />
+                  </div>
+                  <div className="space-y-3 text-left text-sm">
+                    <p><strong>Apa itu fitur Payment?</strong><br />
+                    Fitur ini memungkinkan Anda melakukan pembayaran langsung melalui aplikasi, baik untuk langganan, produk, maupun layanan tertentu.</p>
+                    <p><strong>Mengapa Anda perlu menggunakannya?</strong><br />
+                    Dengan fitur ini, proses pembayaran menjadi lebih cepat, aman, dan terintegrasi dengan layanan yang Anda gunakan.</p>
+                    <p><strong>Langkah-langkah penggunaannya:</strong><br />
+                    1. Masuk ke halaman "Payment" dari dashboard Anda.<br />
+                    2. Pilih jenis pembayaran atau tagihan yang ingin dibayar.<br />
+                    3. Pilih metode pembayaran (transfer bank, e-wallet, kartu kredit, dll).<br />
+                    4. Ikuti instruksi pembayaran hingga selesai.<br />
+                    5. Anda akan menerima konfirmasi otomatis setelah pembayaran berhasil.</p>
+                    <p><em>Catatan:</em> Pastikan informasi akun Anda sudah diperbarui agar pembayaran tidak tertunda.</p>
+                  </div>
+                </div>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         </div>
 
       </section>
@@ -114,13 +197,13 @@ export default function Home() {
       {/* Opinion Form Section */}
       <section className="py-15 md:px-20 sm:px-10 px-5 grid md:grid-cols-2 grid-cols-1 md:gap-none gap-5 bg-gradient-to-r from-primary-3 to-primary-1">
         <div className="col-span-1 grid content-center h-full md:gap-8 gap-6 text-accent-1">
-          <h2 className="md:text-4xl text-3xl font-semibold">We still need ur opinion </h2>
+          <h2 className="md:text-4xl text-3xl font-semibold">We still need your opinion </h2>
           <p className="md:text-lg sm:text-md">
             Kami selalu ingin meningkatkan pengalaman Anda di Surva. Berikan opini, saran, atau masukan Anda tentang platform ini, dan bantu kami menjadi lebih baik!
           </p>
         </div>
 
-        <div className="col-span-1 grid content-center h-full md:px-10">
+        <div className="col-span-1 grid content-center h-full md:pl-10">
           <div className="bg-accent-1 rounded-lg p-6 text-black w-full mx-auto shadow-md">
             <h4 className="text-lg font-bold mb-4 text-center">Opinion letters</h4>
             <form className="flex flex-col gap-4">
@@ -133,6 +216,17 @@ export default function Home() {
                   id="email"
                   className="w-full border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFBF68]"
                   placeholder="pengguna@email.com"
+                />
+              </div>
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium mb-1">
+                  Subject
+                </label>
+                <input
+                  type="subject"
+                  id="subject"
+                  className="w-full border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFBF68]"
+                  placeholder="Laporan"
                 />
               </div>
               <div>
@@ -159,61 +253,74 @@ export default function Home() {
       </section>
 
       {/* Testimonial Section */}
-      <section className="flex flex-col py-15 md:px-20 sm:px-10 px-5 md:gap-15 gap-5">
+      <section className="flex flex-col items-center py-15 md:px-20 sm:px-10 px-5 md:gap-15 gap-5">
         <h2 className="text-center md:text-4xl text-3xl font-semibold">
-          Our Client know best
+          Our Clients Know Best
         </h2>
-
-        <Carousel className="w-full mx-auto ">
-          <CarouselContent>
-            {[
+        <div className="antialiased overflow-hidden">
+          <InfiniteMovingCards
+            items={[
               {
-                name: "User 1",
-                avatar: "/icons/navbar/user-circle.svg",
-                message: "Surva made my data collection 10x easier!",
+                quote: "Aplikasi ini sangat membantu saya dalam menyebarkan survei riset skripsi. Respondennya cepat terkumpul!",
+                name: "Andi Pratama",
+                title: "Mahasiswa Politeknik",
               },
               {
-                name: "User 2",
-                avatar: "/icons/navbar/user-circle.svg",
-                message: "Super intuitive and fast. Love the UI!",
+                quote: "Platform ini mempercepat proses pengumpulan data pelanggan kami. Sangat direkomendasikan untuk riset pasar!",
+                name: "Dina Ayu",
+                title: "Analis Pasar di Kantor",
               },
               {
-                name: "User 3",
-                avatar: "/icons/navbar/user-circle.svg",
-                message: "Insightful analytics that helped my research.",
+                quote: "Antarmukanya simpel, distribusi surveinya efektif, dan hasilnya bisa langsung diekspor. Sangat efisien!",
+                name: "Rudi Kurniawan",
+                title: "Peneliti Independen",
               },
               {
-                name: "User 4",
-                avatar: "/icons/navbar/user-circle.svg",
-                message: "Finally, a survey tool that doesn't frustrate me.",
+                quote: "Kami menggunakan aplikasi ini untuk survei kepuasan pengguna. Fitur penyebarannya sangat memudahkan.",
+                name: "Sari Meilani",
+                title: "Manajer Produk di Perusahaan",
               },
               {
-                name: "User 5",
-                avatar: "/icons/navbar/user-circle.svg",
-                message: "Great support team and super clean dashboard.",
+                quote: "Sangat membantu untuk menyebarkan survei secara luas dan mendapatkan insight berkualitas dari responden nyata.",
+                name: "Yusuf Hakim",
+                title: "Konsultan Data",
               },
-            ].map((item, index) => (
-              <CarouselItem
-                key={index}
-                className="min-w-0 basis-auto md:basis-1/2 lg:basis-1/3"
-              >
-                <Card className="bg-primary-2 text-white p-6 rounded-xl shadow-md h-full">
-                  <div className="flex items-center gap-4">
-                    <Image
-                      src={item.avatar}
-                      alt={item.name}
-                      width={40}
-                      height={40}
-                      className="rounded-full"
-                    />
-                    <p className="font-semibold">{item.name}</p>
-                  </div>
-                  <p className="text-sm italic">“{item.message}”</p>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+            ]}
+            direction="right"
+            speed="slow"
+          />
+          <InfiniteMovingCards
+            items={[
+              {
+                quote: "Aplikasi ini sangat membantu saya dalam menyebarkan survei riset skripsi. Respondennya cepat terkumpul!",
+                name: "Andi Pratama",
+                title: "Mahasiswa Politeknik",
+              },
+              {
+                quote: "Platform ini mempercepat proses pengumpulan data pelanggan kami. Sangat direkomendasikan untuk riset pasar!",
+                name: "Dina Ayu",
+                title: "Analis Pasar di Kantor",
+              },
+              {
+                quote: "Antarmukanya simpel, distribusi surveinya efektif, dan hasilnya bisa langsung diekspor. Sangat efisien!",
+                name: "Rudi Kurniawan",
+                title: "Peneliti Independen",
+              },
+              {
+                quote: "Kami menggunakan aplikasi ini untuk survei kepuasan pengguna. Fitur penyebarannya sangat memudahkan.",
+                name: "Sari Meilani",
+                title: "Manajer Produk di Perusahaan",
+              },
+              {
+                quote: "Sangat membantu untuk menyebarkan survei secara luas dan mendapatkan insight berkualitas dari responden nyata.",
+                name: "Yusuf Hakim",
+                title: "Konsultan Data",
+              },
+            ]}
+            direction="left"
+            speed="slow"
+          />
+        </div>
       </section>
 
     </main>
