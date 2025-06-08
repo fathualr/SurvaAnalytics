@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { ConfirmDeleteDialog } from '@/components/umum/confirm-delete-dialog'
+import { ConfirmDialog } from '@/components/umum/confirm-dialog'
 import { SurveyForm } from './survey-form'
 import {
   useUserSurvey,
@@ -12,6 +12,9 @@ import {
   useDeleteUserSurvey,
 } from '@/features/survey/hooks/useUserSurveys'
 import { QuestionSection } from '@/features/surveyQuestion/components/user/question-section'
+import SubmitButton from '@/features/surveyVerification/components/user/submit-button'
+import { useSurveyQuestions } from '@/features/surveyQuestion/hooks/useUserSurveyQuestion'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 
 interface SurveyContainerProps {
   surveyId: string
@@ -19,10 +22,14 @@ interface SurveyContainerProps {
 
 export function SurveyContainer({ surveyId }: SurveyContainerProps) {
   const router = useRouter()
-  const { data: survey, isLoading, isError, error } = useUserSurvey(surveyId)
+  const { isLoggedIn, loading: authLoading } = useAuth()
+  const shouldFetch = isLoggedIn && !authLoading
+  const { data: survey, isLoading, isError, error } = useUserSurvey(surveyId, shouldFetch)
   const updateSurvey = useUpdateUserSurvey()
   const deleteSurvey = useDeleteUserSurvey()
   const isEditable = survey?.status === 'draft' || survey?.status === 'rejected'
+  const { data: fullQuestionResponse } = useSurveyQuestions(surveyId, shouldFetch);
+  const totalQuestions = fullQuestionResponse?.data?.length ?? 0;
 
   const stableKriteria = useMemo(() => survey?.kriteria ?? {}, [JSON.stringify(survey?.kriteria)])
 
@@ -61,6 +68,14 @@ export function SurveyContainer({ surveyId }: SurveyContainerProps) {
     }
   }, [deleteSurvey.isSuccess, deleteSurvey.isError])
 
+  if (!shouldFetch) {
+    return (
+      <div className="flex justify-center items-center min-h-[300px]">
+        <div className="animate-pulse text-gray-500 text-sm">Menyiapkan akses...</div>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[300px]">
@@ -79,21 +94,25 @@ export function SurveyContainer({ surveyId }: SurveyContainerProps) {
 
   return (
     <>
-      <ConfirmDeleteDialog
-        title="Hapus Survei"
-        description="Survei akan dihapus secara permanen. Tindakan ini tidak bisa dibatalkan."
-        actionLabel="Ya, Hapus"
-        isLoading={deleteSurvey.isPending}
-        onConfirm={() => deleteSurvey.mutate(surveyId)}
-      >
-        <Button
-          type="button"
-          variant="destructive"
-          className="cursor-pointer w-fit sm:text-sm text-xs mb-2 bg-red-400"
+      <div className="flex justify-between">
+        <ConfirmDialog
+          title="Hapus Survei"
+          description="Survei akan dihapus secara permanen."
+          actionLabel="Ya, Hapus"
+          isLoading={deleteSurvey.isPending}
+          onConfirm={() => deleteSurvey.mutate(surveyId)}
+          actionClassName="bg-red-400 hover:bg-red-500"
         >
-          {deleteSurvey.isPending ? 'Menghapus...' : 'Hapus Survei'}
-        </Button>
-      </ConfirmDeleteDialog>
+          <Button className="w-fit sm:text-sm text-xs mb-2 bg-red-400" variant="destructive">
+            Hapus Survei
+          </Button>
+        </ConfirmDialog>
+
+        {(survey.status === 'draft' || survey.status === 'rejected') &&
+          totalQuestions > 0 && (
+            <SubmitButton surveiId={surveyId} />
+        )}
+      </div>
 
       <div className="flex-grow">
         <div className="grid bg-accent-1 rounded-xl sm:p-10 p-5 lg:gap-5 gap-3 border border-black sm:text-sm text-xs">

@@ -12,23 +12,25 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
 
-interface ConfirmDeleteDialogProps {
+interface ConfirmDialogProps {
   children: React.ReactNode;
   title?: string;
   description?: string;
   actionLabel?: string;
   isLoading?: boolean;
   onConfirm: () => void;
+  actionClassName?: string;
 }
 
-export function ConfirmDeleteDialog({
+export function ConfirmDialog({
   children,
-  title = 'Hapus Item',
+  title = 'Konfirmasi Tindakan',
   description = 'Tindakan ini tidak dapat dibatalkan.',
-  actionLabel = 'Ya, Hapus',
+  actionLabel = 'Lanjut',
   isLoading = false,
   onConfirm,
-}: ConfirmDeleteDialogProps) {
+  actionClassName = '',
+}: ConfirmDialogProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -39,8 +41,12 @@ export function ConfirmDeleteDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel className="cursor-pointer">Batal</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-400 hover:bg-red-600 cursor-pointer" onClick={onConfirm} disabled={isLoading}>
-            {isLoading ? 'Menghapus...' : actionLabel}
+          <AlertDialogAction
+            onClick={onConfirm}
+            disabled={isLoading}
+            className={`cursor-pointer ${actionClassName}`}
+          >
+            {isLoading ? 'Memproses...' : actionLabel}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
