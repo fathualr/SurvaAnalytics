@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useAutosave } from '@/hooks/useAutoSave'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -55,6 +54,10 @@ export function QuestionCard({
     3000
   )
 
+  const sanitizeOptions = (opsi: string[]) => {
+    return opsi.map((opt, i) => (opt.trim() === '' ? `Opsi ${i + 1}` : opt))
+  }
+
   useEffect(() => {
     if (!hasMounted.current) {
       hasMounted.current = true
@@ -62,7 +65,12 @@ export function QuestionCard({
     }
 
     const { teks_pertanyaan, tipe_pertanyaan, opsi, is_required } = localQuestion
-    autosave({ teks_pertanyaan, tipe_pertanyaan, opsi, is_required })
+    autosave({
+      teks_pertanyaan,
+      tipe_pertanyaan,
+      opsi: opsi ? sanitizeOptions(opsi) : undefined,
+      is_required,
+    })
   }, [localQuestion])
 
   const handleInputChange = (
@@ -115,11 +123,18 @@ export function QuestionCard({
         </Button>
       </div>
 
-      <Input
+      <textarea
         value={localQuestion.teks_pertanyaan}
         onChange={(e) => handleInputChange('teks_pertanyaan', e.target.value)}
         placeholder="Tuliskan pertanyaan di sini"
-        className="sm:text-sm text-xs"
+        rows={1}
+        className="sm:text-sm text-xs border rounded-lg p-3 h-auto resize-none overflow-hidden"
+        onInput={(e) => {
+          const target = e.target as HTMLTextAreaElement
+          target.style.height = 'auto'
+          target.style.height = `${target.scrollHeight}px`
+        }}
+        maxLength={500}
         disabled={disabled}
       />
 
@@ -171,13 +186,17 @@ export function QuestionCard({
           disabled={disabled}
         />
       )}
-      {localQuestion.tipe_pertanyaan === 'essay' && <EssayQuestion disabled={disabled} />}
+      {localQuestion.tipe_pertanyaan === 'essay' && (
+        <EssayQuestion disabled={disabled} />
+      )}
 
       <div className="flex items-center space-x-2 mt-2">
         <Checkbox
           id={`required-${question.id}`}
           checked={localQuestion.is_required}
-          onCheckedChange={(checked) => handleInputChange('is_required', !!checked)}
+          onCheckedChange={(checked) =>
+            handleInputChange('is_required', !!checked)
+          }
           disabled={disabled}
         />
         <label

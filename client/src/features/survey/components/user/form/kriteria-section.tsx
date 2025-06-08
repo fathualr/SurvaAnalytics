@@ -40,8 +40,17 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
     }
 
     let usia: number[] | undefined = undefined
-    if (typeof ageMin === 'number' && typeof ageMax === 'number' && ageMin <= ageMax) {
-      usia = Array.from({ length: ageMax - ageMin + 1 }, (_, i) => ageMin + i)
+
+    const hasMin = typeof ageMin === 'number'
+    const hasMax = typeof ageMax === 'number'
+
+    if (hasMin || hasMax) {
+      const min = hasMin ? ageMin! : 1
+      const max = hasMax ? ageMax! : 100
+
+      if (min <= max) {
+        usia = Array.from({ length: max - min + 1 }, (_, i) => min + i)
+      }
     }
 
     const next: Kriteria = { region, status, usia, jenis_kelamin }
@@ -51,14 +60,23 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
     }
   }, [region, status, ageMin, ageMax, jenis_kelamin])
 
-  const handleAdd = (value: string, setter: (val: string[]) => void, current: string[], reset: () => void) => {
+  const handleAdd = (
+    value: string,
+    setter: (val: string[]) => void,
+    current: string[],
+    reset: () => void
+  ) => {
     const trimmed = value.trim()
     if (!trimmed || current.includes(trimmed)) return
     setter([...current, trimmed])
     reset()
   }
 
-  const handleRemove = (index: number, setter: (val: string[]) => void, current: string[]) => {
+  const handleRemove = (
+    index: number,
+    setter: (val: string[]) => void,
+    current: string[]
+  ) => {
     setter(current.filter((_, i) => i !== index))
   }
 

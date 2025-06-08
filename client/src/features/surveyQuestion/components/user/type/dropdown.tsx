@@ -1,31 +1,44 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+'use client'
+
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 interface Props {
-  opsi: string[];
-  onChange: (opsi: string[]) => void;
-  disabled?: boolean;
+  opsi: string[]
+  onChange: (opsi: string[]) => void
+  disabled?: boolean
 }
 
 export function DropdownQuestion({ opsi, onChange, disabled = false }: Props) {
   const addOption = () => {
-    if (!disabled) onChange([...opsi, ""]);
-  };
+    if (!disabled) {
+      const newIndex = opsi.length + 1
+      onChange([...opsi, `Opsi ${newIndex}`])
+    }
+  }
 
   const removeOption = (index: number) => {
     if (!disabled) {
-      const newOptions = opsi.filter((_, i) => i !== index);
-      onChange(newOptions);
+      const newOptions = opsi.filter((_, i) => i !== index)
+      onChange(newOptions)
     }
-  };
+  }
 
   const updateOption = (index: number, value: string) => {
     if (!disabled) {
-      const newOptions = [...opsi];
-      newOptions[index] = value;
-      onChange(newOptions);
+      const newOptions = [...opsi]
+      newOptions[index] = value
+      onChange(newOptions)
     }
-  };
+  }
+
+  const handleBlur = (index: number, value: string) => {
+    if (!disabled && value.trim() === "") {
+      const newOptions = [...opsi]
+      newOptions[index] = `Opsi ${index + 1}`
+      onChange(newOptions)
+    }
+  }
 
   return (
     <div className="space-y-2">
@@ -36,6 +49,7 @@ export function DropdownQuestion({ opsi, onChange, disabled = false }: Props) {
           <Input
             value={opt}
             onChange={(e) => updateOption(i, e.target.value)}
+            onBlur={(e) => handleBlur(i, e.target.value)}
             placeholder={`Opsi ${i + 1}`}
             className="md:w-1/2 w-full sm:text-sm text-xs"
             disabled={disabled}
@@ -53,5 +67,5 @@ export function DropdownQuestion({ opsi, onChange, disabled = false }: Props) {
         </Button>
       )}
     </div>
-  );
+  )
 }

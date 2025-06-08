@@ -1,31 +1,44 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+'use client'
+
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 interface Props {
-  options: string[];
-  onChange: (options: string[]) => void;
-  disabled?: boolean;
+  options: string[]
+  onChange: (options: string[]) => void
+  disabled?: boolean
 }
 
 export function ScaleQuestion({ options, onChange, disabled = false }: Props) {
   const addOption = () => {
-    if (!disabled && options.length < 10) onChange([...options, ""]);
-  };
+    if (!disabled && options.length < 10) {
+      const newIndex = options.length + 1
+      onChange([...options, `Label ${newIndex}`])
+    }
+  }
 
   const removeOption = (index: number) => {
     if (!disabled && options.length > 2) {
-      const newOptions = options.filter((_, i) => i !== index);
-      onChange(newOptions);
+      const newOptions = options.filter((_, i) => i !== index)
+      onChange(newOptions)
     }
-  };
+  }
 
   const updateOption = (index: number, value: string) => {
     if (!disabled) {
-      const newOptions = [...options];
-      newOptions[index] = value;
-      onChange(newOptions);
+      const newOptions = [...options]
+      newOptions[index] = value
+      onChange(newOptions)
     }
-  };
+  }
+
+  const handleBlur = (index: number, value: string) => {
+    if (!disabled && value.trim() === "") {
+      const newOptions = [...options]
+      newOptions[index] = `Label ${index + 1}`
+      onChange(newOptions)
+    }
+  }
 
   return (
     <div className="space-y-2">
@@ -36,6 +49,7 @@ export function ScaleQuestion({ options, onChange, disabled = false }: Props) {
           <Input
             value={opt}
             onChange={(e) => updateOption(i, e.target.value)}
+            onBlur={(e) => handleBlur(i, e.target.value)}
             placeholder={`Label ${i + 1}`}
             className="md:w-1/2 w-full sm:text-sm text-xs"
             disabled={disabled}
@@ -48,10 +62,15 @@ export function ScaleQuestion({ options, onChange, disabled = false }: Props) {
         </div>
       ))}
       {!disabled && options.length < 10 && (
-        <Button variant="outline" size="sm" className="sm:text-sm text-xs" onClick={addOption}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="sm:text-sm text-xs"
+          onClick={addOption}
+        >
           Tambah Label
         </Button>
       )}
     </div>
-  );
+  )
 }

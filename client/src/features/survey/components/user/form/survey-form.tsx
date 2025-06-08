@@ -85,7 +85,6 @@ export function SurveyForm({
 
       <section className="border border-black bg-accent-1 md:px-5 px-3 md:py-3 py-1 rounded-xl flex flex-col gap-3">
         <h2 className="text-xl font-semibold mb-2">Informasi Umum</h2>
-
         <FormGroup label="Judul Survei" htmlFor="judul">
           <Input
             id="judul"
@@ -93,10 +92,10 @@ export function SurveyForm({
             onChange={(e) => handleChange('judul', e.target.value)}
             placeholder="Contoh: Survei Kepuasan Pelanggan 2025"
             className="sm:text-sm text-xs"
+            maxLength={255}
             disabled={disabled}
           />
         </FormGroup>
-
         <FormGroup label="Deskripsi Survei" htmlFor="deskripsi">
           <textarea
             id="deskripsi"
@@ -104,7 +103,12 @@ export function SurveyForm({
             onChange={(e) => handleChange('deskripsi', e.target.value)}
             rows={4}
             placeholder="Tuliskan tujuan dan isi singkat dari survei ini..."
-            className="w-full sm:text-sm text-xs border rounded-lg p-3"
+            className="w-full sm:text-sm text-xs border rounded-lg p-3 resize-none overflow-hidden"
+            onInput={(e) => {
+              const target = e.target as HTMLTextAreaElement
+              target.style.height = 'auto'
+              target.style.height = `${target.scrollHeight}px`
+            }}
             disabled={disabled}
           />
         </FormGroup>
@@ -112,7 +116,6 @@ export function SurveyForm({
 
       <section className="border border-black bg-accent-1 md:px-5 px-3 md:py-3 py-1 rounded-xl flex flex-col gap-3">
         <h2 className="text-xl font-semibold mb-2">Ketentuan Survei</h2>
-
         <DateRangeSection
           startDate={localForm.tanggal_mulai || ''}
           endDate={localForm.tanggal_berakhir || ''}
@@ -122,7 +125,6 @@ export function SurveyForm({
           }}
           disabled={disabled}
         />
-
         <FormGroup label="Jumlah Responden" htmlFor="jumlah_responden">
           <Input
             id="jumlah_responden"

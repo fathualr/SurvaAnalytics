@@ -40,12 +40,16 @@ export function QuestionSection({ surveyId, isEditable }: QuestionSectionProps) 
     })
   }
 
-  const handleUpdateQuestion = (id: string, updates: Partial<UpdateSurveyQuestionPayload>) => {
-    updateQuestion.mutate({ id, payload: updates }, {
-      onSuccess: () => toast.success('Perubahan pertanyaan disimpan'),
-      onError: () => toast.error('Gagal menyimpan perubahan'),
-    })
-  }
+const handleUpdateQuestion = (id: string, updates: Partial<UpdateSurveyQuestionPayload>) => {
+  const toastId = toast.loading("Menyimpan perubahan...")
+  updateQuestion.mutate(
+    { id, payload: updates },
+    { 
+      onSuccess: () => {toast.success("Perubahan pertanyaan disimpan", { id: toastId })},
+      onError: () => {toast.error("Gagal menyimpan perubahan", { id: toastId })},
+    }
+  )
+}
 
   const handleDeleteQuestion = (id: string) => {
     deleteQuestion.mutate(id, {
