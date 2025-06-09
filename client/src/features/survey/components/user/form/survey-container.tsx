@@ -15,6 +15,7 @@ import { QuestionSection } from '@/features/surveyQuestion/components/user/quest
 import SubmitButton from '@/features/surveyVerification/components/user/submit-button'
 import { useSurveyQuestions } from '@/features/surveyQuestion/hooks/useUserSurveyQuestion'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { CreateSurveyPaymentButton } from '@/features/surveyPayment/components/payment-button'
 
 interface SurveyContainerProps {
   surveyId: string
@@ -111,6 +112,10 @@ export function SurveyContainer({ surveyId }: SurveyContainerProps) {
         {(survey.status === 'draft' || survey.status === 'rejected') &&
           totalQuestions > 0 && (
             <SubmitButton surveiId={surveyId} />
+        )}
+
+        {survey.status === 'payment_pending' && (
+          <CreateSurveyPaymentButton surveyId={surveyId} />
         )}
       </div>
 
