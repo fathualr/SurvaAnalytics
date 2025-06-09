@@ -24,8 +24,8 @@ export const emailVerification = async (email) => {
     }
 
     const timeSinceLastSent = Date.now() - new Date(existingUser.email_confirmation_sent_at || 0).getTime();
-    if (timeSinceLastSent < 3 * 60 * 1000) {
-      throw { status: 429, message: 'OTP has already been sent. Please wait a few minutes before trying again.'};
+    if (timeSinceLastSent < 60 * 1000) {
+      return { email ,message: "OTP has already been sent. Please wait a few minutes before trying again" };
     }
 
     await generateAndSendOTP(existingUser);
