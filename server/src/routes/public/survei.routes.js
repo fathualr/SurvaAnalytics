@@ -4,5 +4,6 @@ import * as publicSurveiController from '../../controllers/public/survei.control
 const router = express.Router();
 
 router.get('/', publicSurveiController.getPublishedSurveis);
+router.get('/:id', publicSurveiController.getPublishedSurvei);
 
 export default router;

@@ -15,3 +15,12 @@ export const getPublishedSurveis = async (req, res) => {
     resFail(res, error.message, error.status);
   }
 };
+
+export const getPublishedSurvei = async (req, res) => {
+  try {
+    const survei = await surveiService.show(req.params.id);
+    resSuccess(res, `Survei details for ID ${req.params.id} retrieved successfully`, survei);
+  } catch (error) {
+    resFail(res, error.message, error.status);
+  }
+};
