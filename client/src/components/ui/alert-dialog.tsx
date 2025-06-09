@@ -120,11 +120,15 @@ function AlertDialogDescription({
 
 function AlertDialogAction({
   className,
+  asChild,
   ...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Action>) {
+}: React.ComponentProps<typeof AlertDialogPrimitive.Action> & {
+  asChild?: boolean
+}) {
   return (
     <AlertDialogPrimitive.Action
-      className={cn(buttonVariants(), className)}
+      asChild={asChild}
+      className={cn(!asChild && buttonVariants(), className)}
       {...props}
     />
   )
