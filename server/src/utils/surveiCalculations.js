@@ -10,3 +10,21 @@ export const kalkulasiJumlahTagihanSurvei = (konfigurasi, survei, jumlahPertanya
 
   return hargaDasar + hargaPertanyaan + hargaResponden + hargaDurasi;
 };
+
+export const kalkulasiHadiahPoinSurvei = ({ paidAmount, jumlahResponden }) => {
+  const jml = Number(jumlahResponden);
+  const nominal = Number(paidAmount);
+  if (!jml || jml <= 0) throw new Error('Jumlah responden tidak valid');
+
+  const minBiayaPerResponden = 500;
+  if (nominal < jml * minBiayaPerResponden) {
+    throw new Error('Pembayaran terlalu kecil dibanding jumlah responden');
+  }
+
+  const poinPerRp = 0.1;
+  const rewardPercent = 0.2;
+  const rewardPerResponden = (nominal / jml) * rewardPercent;
+  const rawPoin = Math.floor(rewardPerResponden * poinPerRp);
+
+  return rawPoin;
+};
