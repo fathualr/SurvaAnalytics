@@ -30,6 +30,13 @@ const validateKriteria = (kriteria, profilResponden) => {
   if (!kriteria || Object.keys(kriteria).length === 0) return;
 
   const unmetCriteria = Object.entries(kriteria).reduce((acc, [key, expected]) => {
+    if (
+      expected == null || 
+      (Array.isArray(expected) && expected.length === 0)
+    ) {
+      return acc;
+    }
+
     const actual = profilResponden?.[key];
     const isValid = Array.isArray(expected)
       ? expected.includes(actual)

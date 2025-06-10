@@ -4,7 +4,7 @@ import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
 
 export const index = async (queryParams) => {
   const { where, order, pagination } = parseQuery(queryParams, {
-    allowedFilters: ['id_umum', 'status', 'judul']
+    allowedFilters: ['id_umum', 'status', 'judul', 'tanggal_mulai', 'tanggal_berakhir']
   });
 
   const { count, rows } = await Survei.findAndCountAll({
