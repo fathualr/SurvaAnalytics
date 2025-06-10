@@ -51,6 +51,8 @@ export const show = async (surveiId) => {
       },
       {
         model: PertanyaanSurvei,
+        separate: true,
+        order: [['index', 'ASC']],
       }
     ]
   });
