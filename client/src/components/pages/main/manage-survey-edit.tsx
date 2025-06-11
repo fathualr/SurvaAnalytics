@@ -1,5 +1,6 @@
 'use client'
 
+import { NavSurvey } from '@/components/umum/nav-survey';
 import { NavUmum } from '@/components/umum/nav-umum';
 import { SurveyContainer } from '@/features/survey/components/user/form/survey-container'
 
@@ -16,6 +17,7 @@ export function ManageSurveyEditPage({ surveyId }: SurveyEditorMainPageProps) {
         <h1 className="text-3xl md:text-4xl font-bold mb-4">
           Edit Survei
           <span className="block text-sm text-muted-foreground">Id: {surveyId}</span>
+          <NavSurvey surveyId={surveyId} />
         </h1>
     
         <SurveyContainer surveyId={surveyId} />

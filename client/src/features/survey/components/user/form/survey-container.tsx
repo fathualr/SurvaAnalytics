@@ -94,45 +94,43 @@ export function SurveyContainer({ surveyId }: SurveyContainerProps) {
   }
 
   return (
-    <>
-      <div className="flex justify-between">
-        <ConfirmDialog
-          title="Hapus Survei"
-          description="Survei akan dihapus secara permanen."
-          actionLabel="Ya, Hapus"
-          isLoading={deleteSurvey.isPending}
-          onConfirm={() => deleteSurvey.mutate(surveyId)}
-          actionClassName="bg-red-400 hover:bg-red-500"
-        >
-          <Button className="w-fit sm:text-sm text-xs mb-2 bg-red-400" variant="destructive">
-            Hapus Survei
-          </Button>
-        </ConfirmDialog>
+    <div className="flex-grow">
+      <div className="grid bg-accent-1 rounded-xl sm:p-10 p-5 lg:gap-4 gap-2 border border-black sm:text-sm text-xs">
+        <div className="flex flex-wrap justify-between">
+          <ConfirmDialog
+            title="Hapus Survei"
+            description="Survei akan dihapus secara permanen."
+            actionLabel="Ya, Hapus"
+            isLoading={deleteSurvey.isPending}
+            onConfirm={() => deleteSurvey.mutate(surveyId)}
+            actionClassName="bg-red-400 hover:bg-red-500"
+          >
+            <Button className="sm:w-fit w-full sm:text-sm text-xs mb-2 bg-red-400" variant="destructive">
+              Hapus Survei
+            </Button>
+          </ConfirmDialog>
 
-        {(survey.status === 'draft' || survey.status === 'rejected') &&
-          totalQuestions > 0 && (
-            <SubmitButton surveiId={surveyId} />
-        )}
+          {(survey.status === 'draft' || survey.status === 'rejected') &&
+            totalQuestions > 0 && (
+              <SubmitButton surveiId={surveyId} />
+          )}
 
-        {survey.status === 'payment_pending' && (
-          <CreateSurveyPaymentButton surveyId={surveyId} />
-        )}
-      </div>
-
-      <div className="flex-grow">
-        <div className="grid bg-accent-1 rounded-xl sm:p-10 p-5 lg:gap-5 gap-3 border border-black sm:text-sm text-xs">
-          <SurveyForm
-            surveyId={surveyId}
-            initialData={initialForm}
-            onAutoSave={(formData: any) =>
-              updateSurvey.mutate({ id: surveyId, data: formData })
-            }
-            disabled={!isEditable}
-          />
-          <h2 className="text-xl font-semibold p-3 mx-auto">Pertanyaan Survei</h2>
-          <QuestionSection surveyId={surveyId} isEditable={isEditable} />
+          {survey.status === 'payment_pending' && (
+            <CreateSurveyPaymentButton surveyId={surveyId} />
+          )}
         </div>
+
+        <SurveyForm
+          surveyId={surveyId}
+          initialData={initialForm}
+          onAutoSave={(formData: any) =>
+            updateSurvey.mutate({ id: surveyId, data: formData })
+          }
+          disabled={!isEditable}
+        />
+        <h2 className="text-xl font-semibold p-3 mx-auto">Pertanyaan Survei</h2>
+        <QuestionSection surveyId={surveyId} isEditable={isEditable} />
       </div>
-    </>
+    </div>
   )
 }

@@ -15,7 +15,7 @@ const SubmitButton = ({ surveiId }: { surveiId: string }) => {
       actionClassName="bg-primary-2/80 hover:bg-primary-1"
     >
       <Button
-        className="bg-primary-2/80 hover:bg-primary-1 font-semibold hover:opacity-80"
+        className="sm:w-fit w-full bg-primary-2/80 hover:bg-primary-1 font-semibold hover:opacity-80"
         disabled={isPending}
       >
         {isPending ? 'Mengirim...' : 'Submit & Verifikasi'}

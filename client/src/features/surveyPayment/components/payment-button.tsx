@@ -28,7 +28,7 @@ export const CreateSurveyPaymentButton = ({ surveyId }: Props) => {
 
   return (
     <Button
-      className="bg-secondary-1 hover:bg-secondary-1 text-[#232323] font-semibold hover:opacity-80"
+      className="sm:w-fit w-full bg-secondary-1 hover:bg-secondary-1 text-[#232323] font-semibold hover:opacity-80"
       onClick={handleClick}
       disabled={isPending}
     >
