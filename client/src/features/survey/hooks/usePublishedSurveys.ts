@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { surveyService } from '@/features/survey/api/public';
-import { SurveyListResponse } from '@/features/survey/types';
+import { SurveyDetailResponse, SurveyListResponse } from '../types';
 
 export interface UsePublishedSurveysOptions {
   page?: number;
@@ -37,6 +37,40 @@ export const usePublishedSurveys = (options: UsePublishedSurveysOptions = {}) =>
   return {
     surveys: data?.data || [],
     meta: data?.meta,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    errorMessage: error?.message || data?.message,
+    status: data?.status,
+    refetch,
+  };
+};
+
+export const usePublishedSurveyDetail = (id?: string) => {
+  const {
+    data,
+    error,
+    isLoading,
+    isFetching,
+    refetch,
+    isError,
+  } = useQuery<SurveyDetailResponse>({
+    queryKey: ['published-survey-detail', id],
+    queryFn: () => {
+      if (!id) {
+        throw new Error('Survey ID is required');
+      }
+      return surveyService.getPublishedSurvey(id);
+    },
+    enabled: !!id,
+    staleTime: 1000 * 60,
+    refetchOnWindowFocus: true,
+    retry: 2,
+  });
+
+  return {
+    survey: data?.data,
     isLoading,
     isFetching,
     isError,

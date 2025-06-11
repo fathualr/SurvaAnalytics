@@ -5,17 +5,23 @@ import Image from 'next/image';
 import { SurveyDialog } from './survey-dialog';
 
 interface SurveyCardProps {
+  surveiId: string;
   judul: string;
   deskripsi?: string;
   hadiah_poin: string;
   image: string;
-  Umum: { nama: string; [key: string]: any };
+  Umum: {
+    id: string;
+    nama: string;
+    [key: string]: any;
+  };
   kriteria: Record<string, any>;
   tanggal_mulai: string;
   tanggal_berakhir: string;
 }
 
 export function SurveyCard({
+  surveiId,
   judul,
   deskripsi,
   hadiah_poin,
@@ -44,6 +50,7 @@ export function SurveyCard({
         <p className="md:text-md sm:text-sm text-xs font-medium">{hadiah_poin} pts</p>
         <div className="flex justify-end mt-auto pt-2">
           <SurveyDialog
+            surveiId={surveiId}
             judul={judul}
             deskripsi={deskripsi}
             hadiah_poin={hadiah_poin}

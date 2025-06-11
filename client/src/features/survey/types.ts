@@ -10,7 +10,19 @@ export type SurveiStatus =
 export interface Umum {
   id: string
   nama: string
-};
+  profil_klien: Record<string, any>
+}
+
+export interface PertanyaanSurvei {
+  id: string
+  id_survei: string
+  teks_pertanyaan: string
+  tipe_pertanyaan: string
+  opsi: string[]
+  is_required: boolean
+  tipe_visualisasi: string
+  index: number
+}
 
 export interface Survei {
   id: string
@@ -40,6 +52,15 @@ export interface SurveyListResponse {
     per_page: number
   }
 };
+
+export interface SurveyDetailResponse {
+  status: string
+  message: string
+  data: Survei & {
+    Umum?: Umum
+    PertanyaanSurveis: PertanyaanSurvei[]
+  }
+}
 
 export interface CreateUserSurveiPayload {
   judul: string

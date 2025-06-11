@@ -10,21 +10,22 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { StartSurveyButton } from '@/features/surveyResponseSubmission/components/start-survey-button';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 
 interface SurveyDialogProps {
+  surveiId: string;
   judul: string;
   deskripsi?: string;
   hadiah_poin: string;
-  Umum?: {
-    nama: string;
-    [key: string]: any;
-  };
+  Umum?: { id: string; nama: string; [key: string]: any };
   kriteria: Record<string, any>;
   tanggal_mulai: string;
   tanggal_berakhir: string;
 }
 
 export function SurveyDialog({
+  surveiId,
   judul,
   deskripsi,
   hadiah_poin,
@@ -33,6 +34,9 @@ export function SurveyDialog({
   tanggal_mulai,
   tanggal_berakhir,
 }: SurveyDialogProps) {
+  const { user, isLoggedIn } = useAuth(); // ⬅️ auth check dilakukan di sini
+  const isOwner = user?.id === Umum?.id;
+
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString('id-ID', {
@@ -54,9 +58,7 @@ export function SurveyDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-3xl rounded-xl p-6 bg-primary-2 border-none">
         <DialogHeader className="gap-0">
-          <DialogTitle className="text-2xl text-accent-1 font-semibold">
-            {judul}
-          </DialogTitle>
+          <DialogTitle className="text-2xl text-accent-1 font-semibold">{judul}</DialogTitle>
           <DialogDescription className="text-sm text-secondary-1 font-semibold space-y-3">
             <span className="block">
               Dibuat oleh: <span className="font-bold">{Umum?.nama || '-'}</span>
@@ -88,12 +90,11 @@ export function SurveyDialog({
         )}
 
         <DialogFooter className="mt-4">
-          <Button
-            variant="outline"
-            className="bg-accent-1 text-primary-2 font-bold text-lg px-6 py-2 rounded-md hover:bg-primary-2 hover:text-accent-1"
-          >
-            Mulai
-          </Button>
+          <StartSurveyButton
+            surveiId={surveiId}
+            isOwner={isOwner}
+            isLoggedIn={isLoggedIn}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

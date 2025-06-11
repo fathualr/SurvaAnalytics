@@ -69,10 +69,15 @@ export function SurveyList({
             return (
               <SurveyCard
                 key={survey.id}
+                surveiId={survey.id}
                 judul={survey.judul}
                 deskripsi={survey.deskripsi}
                 hadiah_poin={survey.hadiah_poin}
-                Umum={survey.Umum || { nama: 'Anonim' }}
+                Umum={{
+                  id: survey.Umum?.id || '',
+                  nama: survey.Umum?.nama || 'Anonim',
+                  ...survey.Umum
+                }}
                 kriteria={survey.kriteria}
                 tanggal_mulai={survey.tanggal_mulai}
                 tanggal_berakhir={survey.tanggal_berakhir}
