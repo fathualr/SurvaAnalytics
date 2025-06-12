@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const validVisualisasi = ['pie', 'bar', 'line', 'doughnut', 'radar', 'text', 'wordcloud', 'sentiment_analysis'];
+const validVisualisasi = ['pie', 'bar', 'doughnut', 'radar', 'text', 'wordcloud', 'sentiment_analysis'];
 const validTipe = ['pilihan_ganda', 'essay', 'checkbox', 'dropdown', 'skala'];
 
 export const createPertanyaanSurveiSchema = Joi.object({

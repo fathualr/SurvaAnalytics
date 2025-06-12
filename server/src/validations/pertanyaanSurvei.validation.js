@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 const validTipe = ['pilihan_ganda', 'essay', 'checkbox', 'dropdown', 'skala'];
-const validVisualisasi = ['pie', 'bar', 'line', 'doughnut', 'radar', 'text', 'wordcloud', 'sentiment_analysis'];
+const validVisualisasi = ['pie', 'bar', 'doughnut', 'radar', 'text', 'wordcloud', 'sentiment_analysis'];
 
 export const createPertanyaanSurveiSchema = Joi.object({
   teks_pertanyaan: Joi.string().min(3).max(500).required(),

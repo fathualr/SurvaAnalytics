@@ -38,7 +38,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
-        isIn: [['pie', 'bar', 'line', 'doughnut', 'radar', 'text', 'wordcloud', 'sentiment_analysis']]
+        isIn: [['pie', 'bar', 'doughnut', 'radar', 'text', 'wordcloud', 'sentiment_analysis']]
       }
     },
     index: {
