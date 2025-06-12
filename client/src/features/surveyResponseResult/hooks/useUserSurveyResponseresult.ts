@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { responSurveiService } from '../api';
 import {
   ResponSurvei,
@@ -91,5 +91,27 @@ export const useResponSurveiSummary = (surveiId: string, enabled = true) => {
     queryKey: ['respon-survei-summary', surveiId],
     queryFn: () => responSurveiService.getSummary(surveiId),
     enabled: !!surveiId && enabled,
+  });
+};
+
+export const useExportResponSurvei = (
+  surveiId: string,
+  judul: string
+) => {
+  return useMutation({
+    mutationFn: async (format: 'csv' | 'xlsx') => {
+      const blob = await responSurveiService.export(surveiId, format);
+      const url = window.URL.createObjectURL(blob);
+      const timestamp = new Date().toISOString().slice(0, 19).replace(/[-T:]/g, '');
+      const sanitizedJudul = judul.trim().replace(/\s+/g, '_').replace(/[^\w\-]/g, '').toLowerCase();
+      const fileName = `SurvaAnalytics:${sanitizedJudul}_${timestamp}.${format}`;
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    },
   });
 };
