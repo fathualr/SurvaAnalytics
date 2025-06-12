@@ -4,14 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserSurvey } from '@/features/survey/hooks/useUserSurveys';
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 interface NavSurveyProps {
   surveyId: string;
 }
 
 export function NavSurvey({ surveyId }: NavSurveyProps) {
+  const { isLoggedIn, loading: authLoading } = useAuth();
+  const shouldFetch = isLoggedIn && !authLoading;
   const pathname = usePathname();
-  const { data: survey, isLoading, isError } = useUserSurvey(surveyId);
+  const { data: survey, isLoading, isError } = useUserSurvey(surveyId, shouldFetch);
 
   const allowedStatuses = ['published', 'closed', 'archived'];
 
