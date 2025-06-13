@@ -59,7 +59,9 @@ export const AnalysisList = ({ surveyId }: AnalysisListProps) => {
           />
 
           <CardContent className="flex justify-center p-0 text-sm w-full h-full min-h-[250px] max-h-[300px]">
-            <VisualRenderer summary={summary} />
+            <div className="container max-w-[600px]">
+              <VisualRenderer summary={summary} />
+            </div>
           </CardContent>
         </Card>
       ))}

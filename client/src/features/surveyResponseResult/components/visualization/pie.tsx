@@ -21,6 +21,7 @@ export default function PieChart({ summary }: PieChartProps) {
   const summaryData = summary.summary as Record<string, number>;
   const labels = Object.keys(summaryData);
   const values = Object.values(summaryData);
+  const total = values.reduce((acc, val) => acc + val, 0);
   const backgroundColor = generateSoftColorPalette(labels.length);
 
   const data = {
@@ -38,16 +39,35 @@ export default function PieChart({ summary }: PieChartProps) {
     plugins: {
       legend: {
         position: 'right' as const,
+        align: 'start' as const,
+        labels: {
+          boxWidth: 12,
+          boxHeight: 12,
+        },
       },
       datalabels: {
         color: '#000',
-        formatter: (value: number) => value,
+        formatter: (_: number, context: any) => {
+          const val = context.dataset.data[context.dataIndex];
+          const percentage = ((val / total) * 100).toFixed(1);
+          return `${percentage}%`;
+        },
         font: {
           weight: 'bold' as const,
+        },
+      },
+      tooltip: {
+        callbacks: {
+          title: (context: any[]) => context[0].label ?? '',
+          label: (context: any) => {
+            const val = context.raw ?? 0;
+            const percentage = ((val / total) * 100).toFixed(1);
+            return `${val} (${percentage}%)`;
+          },
         },
       },
     },
   };
 
-  return <Pie className="w-full" data={data} options={options} plugins={[ChartDataLabels]} />;
+  return <Pie data={data} options={options} plugins={[ChartDataLabels]} />;
 }

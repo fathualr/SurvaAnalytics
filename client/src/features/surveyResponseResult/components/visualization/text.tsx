@@ -10,7 +10,7 @@ export default function TextAnswersChart({ summary }: TextAnswersChartProps) {
   const answers = summary.summary as string[];
 
   return (
-    <div className="w-full max-h-[300px] overflow-y-auto space-y-2 pr-2">
+    <div className="w-full max-h-[300px] overflow-y-auto rounded-xl py-3 space-y-2 pr-2">
       {answers.length === 0 ? (
         <p className="text-gray-500 italic">Belum ada jawaban</p>
       ) : (
