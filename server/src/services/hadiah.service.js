@@ -3,8 +3,10 @@ const { Hadiah, sequelize } = db;
 import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
 
 export const index = async (queryParams) => {
-  const { where, order, pagination } = parseQuery(queryParams);
-
+  const { where, order, pagination } = parseQuery(queryParams, {
+    allowedFilters: ['stok']
+  });
+  
   const { count, rows } = await Hadiah.findAndCountAll({
     where: {
       ...where,

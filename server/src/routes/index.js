@@ -21,6 +21,7 @@ import userResponSurveiResultRoutes from './users/responSurveiResult.routes.js';
 import userPenukaranHadiahRoutes from './users/penukaranHadiah.routes.js';
 
 import publicSurveiRoutes from './public/survei.routes.js';
+import publicHadiahRoutes from './public/hadiah.routes.js';
 
 const router = Router();
 
@@ -46,5 +47,6 @@ router.use('/users/survei', userResponSurveiResultRoutes)
 router.use('/users/penukaran-hadiah', userPenukaranHadiahRoutes)
 
 router.use('/public/survei', publicSurveiRoutes)
+router.use('/public/hadiah', publicHadiahRoutes)
 
 export default router;
