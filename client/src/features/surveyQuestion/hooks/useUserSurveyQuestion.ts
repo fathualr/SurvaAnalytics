@@ -96,6 +96,7 @@ export const useUpdateVisualizationType = (surveiId: string) => {
     }) => questionSurveyAPI.updateVisualizationType(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['question-survey', surveiId] });
+      queryClient.invalidateQueries({ queryKey: ['respon-survei-summary', surveiId] });
     },
   });
 };
