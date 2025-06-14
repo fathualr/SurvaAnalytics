@@ -14,7 +14,7 @@ export default function PointField() {
       type="text"
       placeholder="Nilai Poin"
       readOnly
-      value={isLoading ? 'Memuat...' : `${profile?.Umum?.poin ?? '0'} Poin`}
+      value={isLoading ? 'Memuat...' : `Poin anda: ${parseInt(profile?.Umum?.poin ?? '0', 10).toLocaleString()}`}
       className="md:max-w-xs"
     />
   );
