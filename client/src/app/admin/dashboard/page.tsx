@@ -1,27 +1,27 @@
-import { ChartAreaLinearDaily } from "@/components/ui/dashboard-chart";
+import { DashboardChart } from "@/components/admin/dashboard-chart";
 
 export default function DashboardPage() {
   return (
-      <div className=" pl-2 pt-3 bg-white">
-        <h2 className="text-2xl font-semibold">Dashboard</h2>
+    <section className="grid text-primary-1 gap-3 font-semibold">
+      <h1 className="text-3xl font-bold">Dashboard</h1>
 
-        {/* Card info */}
-        <div className="flex flex-row gap-4 my-6">
-          <div className="w-full bg-[#F2F9FF] border-3 border-[#3E82CD] p-6 rounded-lg text-center">
-            <p className="text-lg ">Total User</p>
-            <p className="text-3xl font-bold mt-2">100</p>
-          </div>
-          <div className="w-full bg-[#F2F9FF] border-3 border-[#3E82CD] p-6 rounded-lg text-center">
-            <p className="text-lg ">Total Survei</p>
-            <p className="text-3xl font-bold mt-2">20</p>
-          </div>
-          <div className="w-full bg-[#F2F9FF] border-3 border-[#3E82CD] p-6 rounded-lg text-center">
-            <p className="text-lg ">Total Respon</p>
-            <p className="text-3xl font-bold mt-2">80</p>
-          </div>
+      <div className="grid grid-cols-3 gap-3">
+        <div className="col-span-1 content-center text-center border shadow h-40 rounded-md">
+          <p className="text-lg">Total Pengguna</p>
+          <p className="text-3xl font-bold mt-2">x</p>
         </div>
-      <ChartAreaLinearDaily></ChartAreaLinearDaily>
-        
+        <div className="col-span-1 content-center text-center border shadow h-40 rounded-md">
+          <p className="text-lg">Total Survei</p>
+          <p className="text-3xl font-bold mt-2">x</p>
+        </div>
+        <div className="col-span-1 content-center text-center border shadow h-40 rounded-md">
+          <p className="text-lg">Total Respon</p>
+          <p className="text-3xl font-bold mt-2">x</p>
+        </div>
+        <div className="col-span-3">
+          <DashboardChart />
+        </div>
       </div>
+    </section>
   );
 }

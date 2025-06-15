@@ -1,5 +1,5 @@
-import Navbar from '@/components/ui/navbar';
-import Footer from '@/components/ui/footer';
+import Navbar from '@/components/umum/navbar';
+import Footer from '@/components/umum/footer';
 import { Toaster } from 'sonner';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
