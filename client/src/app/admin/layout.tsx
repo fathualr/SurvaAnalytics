@@ -6,9 +6,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <SidebarProvider>
       <AdminSidebar />
-      <div className="flex-grow">
+      <div className="flex-grow min-w-0">
         <AdminHeader />
-        <main className="flex flex-1 flex-col p-3 bg-accent-1">
+        <main className="flex flex-grow flex-col p-3 bg-accent-1 min-h-[calc(100%-64px)]">
           {children}
         </main>
       </div>

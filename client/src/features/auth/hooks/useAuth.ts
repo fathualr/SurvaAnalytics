@@ -10,6 +10,7 @@ import { api } from '@/lib/api';
 import { profileService } from '@/features/profile/api';
 
 let channel: BroadcastChannel | null = null;
+let isRefreshing = false;
 
 export const useAuth = () => {
   const router = useRouter();
@@ -85,8 +86,10 @@ export const useAuth = () => {
   };
 
   const refreshToken = async () => {
-    if (!accessToken) return;
+    const token = useAuthStore.getState().accessToken;
+    if (!token || isRefreshing) return;
 
+    isRefreshing = true;
     try {
       const response = await authService.refreshToken();
       if (response.status === 'success' && response.data?.accessToken) {
@@ -98,6 +101,8 @@ export const useAuth = () => {
       }
     } catch {
       await logout();
+    } finally {
+      isRefreshing = false;
     }
   };
 
