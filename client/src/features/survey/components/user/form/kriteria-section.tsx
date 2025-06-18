@@ -40,20 +40,23 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
     }
 
     let usia: number[] | undefined = undefined
-
     const hasMin = typeof ageMin === 'number'
     const hasMax = typeof ageMax === 'number'
 
     if (hasMin || hasMax) {
       const min = hasMin ? ageMin! : 1
       const max = hasMax ? ageMax! : 100
-
       if (min <= max) {
         usia = Array.from({ length: max - min + 1 }, (_, i) => min + i)
       }
     }
 
-    const next: Kriteria = { region, status, usia, jenis_kelamin }
+    const next: Kriteria = {
+      region: region.length > 0 ? region : undefined,
+      status: status.length > 0 ? status : undefined,
+      usia,
+      jenis_kelamin,
+    }
 
     if (!isEqual(next, kriteria)) {
       onChange(next)
