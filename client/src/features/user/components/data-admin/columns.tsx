@@ -3,8 +3,9 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Pengguna } from "../../types"
 import { Button } from "@/components/ui/button"
-import { Eye, Pencil, Trash } from "lucide-react"
+import { Eye, Pencil } from "lucide-react"
 import Link from "next/link"
+import { ButtonDeletePengguna } from "./button-delete"
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends unknown, TValue> {
@@ -60,11 +61,7 @@ export const getColumns = (page: number, limit: number): ColumnDef<Pengguna>[] =
               <Pencil className="w-4 h-4 text-primary-1" />
             </Button>
           </Link>
-          <Link href={`/admin/manage-admin/delete/${pengguna.id}`}>
-            <Button variant="outline" size="icon">
-              <Trash className="w-4 h-4 text-red-500" />
-            </Button>
-          </Link>
+          <ButtonDeletePengguna userId={pengguna.id} />
         </div>
       )
     },

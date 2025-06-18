@@ -27,7 +27,7 @@ export const penggunaService = {
     id: string,
     payload: UpdatePenggunaPayload,
   ): Promise<Pengguna> => {
-    const response = await api.put(`/api/pengguna/${id}`, payload);
+    const response = await api.patch(`/api/pengguna/${id}`, payload);
     return response.data.data;
   },
 

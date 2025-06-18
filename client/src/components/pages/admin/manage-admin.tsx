@@ -12,7 +12,7 @@ export function ManageAdminPage() {
         href="/admin/manage-admin/add"
         className="rounded-md bg-primary-2 text-accent-1 border w-[120px] text-center text-sm p-2 hover:bg-accent-1 hover:text-primary-1 transition-all"
       >
-        Buat Data
+        Tambah Data
       </Link>
 
       <DataTableAdmin />
