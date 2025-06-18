@@ -14,7 +14,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
-import { useDeletePengguna } from '../../hooks/useUser';
+import { useDeletePengguna } from '../hooks/useUser';
 import { Trash } from 'lucide-react';
 
 interface ButtonDeletePenggunaProps {

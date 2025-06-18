@@ -5,7 +5,7 @@ import { Pengguna } from "../../types"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil } from "lucide-react"
 import Link from "next/link"
-import { ButtonDeletePengguna } from "./button-delete"
+import { ButtonDeletePengguna } from "../button-delete"
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends unknown, TValue> {

@@ -85,7 +85,6 @@ export interface CreateAdminPayload {
 
 export interface CreateUmumPayload {
   nama: string;
-  usia: number;
   profil_responden?: ProfilResponden;
   profil_klien?: ProfilKlien;
   poin?: string;
@@ -94,6 +93,7 @@ export interface CreateUmumPayload {
 export interface UpdatePenggunaPayload {
   email?: string;
   password?: string;
+  email_confirmed?: boolean;
   role?: 'admin' | 'umum';
   admin?: Partial<CreateAdminPayload>;
   umum?: Partial<CreateUmumPayload>;

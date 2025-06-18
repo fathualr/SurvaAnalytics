@@ -40,6 +40,7 @@ export const updatePenggunaSchema = Joi.object({
   email: Joi.string().email().max(255).optional(),
   password: Joi.string().min(8).max(255).optional(),
   role: Joi.string().valid('admin', 'umum'),
+  email_confirmed: Joi.boolean().optional(),
 
   admin: Joi.object({
     nama_admin: Joi.string().max(255).optional(),
