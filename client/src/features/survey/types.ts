@@ -7,10 +7,16 @@ export type SurveiStatus =
   | 'archived'
   | 'rejected'
 
+export interface Pengguna {
+  id: string
+  email: string
+}
+
 export interface Umum {
   id: string
   nama: string
   profil_klien: Record<string, any>
+  Pengguna?: Pengguna
 }
 
 export interface PertanyaanSurvei {
@@ -75,4 +81,8 @@ export interface CreateUserSurveiPayload {
 export interface UpdateUserSurveiPayload extends Partial<CreateUserSurveiPayload> {
   status?: SurveiStatus
   umpan_balik?: string
+}
+
+export interface CreateAdminSurveiPayload extends CreateUserSurveiPayload {
+  id_umum: string;
 }

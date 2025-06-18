@@ -1,5 +1,5 @@
 import db from '../models/index.js';
-const { Survei, PertanyaanSurvei, Umum, sequelize } = db;
+const { Survei, PertanyaanSurvei, Umum, Pengguna, sequelize } = db;
 import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
 
 export const index = async (queryParams) => {
@@ -15,6 +15,12 @@ export const index = async (queryParams) => {
       { 
         model: Umum,
         attributes: ['id', 'nama', 'profil_klien'],
+        include : [
+          {
+            model: Pengguna,
+            attributes: ['id', 'email']
+          }
+        ]
       }
     ],
     order,
