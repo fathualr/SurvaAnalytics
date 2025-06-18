@@ -1,4 +1,3 @@
-
 import {
   flexRender,
   getCoreRowModel,
@@ -24,7 +23,7 @@ export default function DataTableUser() {
   const { isLoggedIn, loading: authLoading } = useAuth()
   const shouldFetch = isLoggedIn && !authLoading
 
-  const { penggunas, meta, isLoading, isError, error } = usePenggunas({
+  const { penggunas = [], meta, isLoading, isError, error } = usePenggunas({
     page,
     limit,
     filters: { role: "admin", sort: "created_at" },
@@ -37,8 +36,21 @@ export default function DataTableUser() {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  if (isLoading) return <p>Loading...</p>
-  if (isError) return <p>Error: {error?.message}</p>
+  if (authLoading) {
+    return <p className="p-4 text-center">Memuat autentikasi...</p>
+  }
+
+  if (!isLoggedIn) {
+    return null
+  }
+
+  if (isLoading) {
+    return <p className="p-4 text-center">Memuat data...</p>
+  }
+
+  if (isError) {
+    return <p className="p-4 text-center text-red-500">Error: {error?.message}</p>
+  }
 
   const totalPages = meta?.total_pages ?? 1
 
@@ -63,7 +75,7 @@ export default function DataTableUser() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
