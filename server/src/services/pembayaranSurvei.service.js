@@ -161,3 +161,18 @@ export const show = async (surveiId) => {
   if (!pembayaranSurvei) throw { status: 404, message: 'Pembayaran survei not found' };
   return pembayaranSurvei;
 };
+
+export const destroy = async (pembayaranSurveiId) => {
+  const transaction = await sequelize.transaction();
+
+  try {
+    const pembayaranSurvei = await PembayaranSurvei.findByPk(pembayaranSurveiId, { transaction });
+    if (!pembayaranSurvei) throw { status: 404, message: 'Pembayaran survei not found' };
+
+    await pembayaranSurvei.destroy({ transaction });
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
