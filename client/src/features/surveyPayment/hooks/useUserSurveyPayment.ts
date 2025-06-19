@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { surveyPaymentService } from '../api';
+import { surveyPaymentService } from '../api/user';
 import {
   SurveyPayment,
   SurveyPaymentListResponse,

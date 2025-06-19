@@ -2,7 +2,7 @@ import { api } from '@/lib/api';
 import {
   SurveyPayment,
   SurveyPaymentListResponse,
-} from './types';
+} from '../types';
 
 export const surveyPaymentService = {
   getAll: async (params?: Record<string, any>): Promise<SurveyPaymentListResponse> => {

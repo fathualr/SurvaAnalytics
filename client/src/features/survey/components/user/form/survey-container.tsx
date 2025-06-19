@@ -15,7 +15,7 @@ import { QuestionSection } from '@/features/surveyQuestion/components/user/quest
 import SubmitButton from '@/features/surveyVerification/components/user/submit-button'
 import { useSurveyQuestions } from '@/features/surveyQuestion/hooks/useUserSurveyQuestion'
 import { useAuth } from '@/features/auth/hooks/useAuth'
-import { CreateSurveyPaymentButton } from '@/features/surveyPayment/components/payment-button'
+import { CreateSurveyPaymentButton } from '@/features/surveyPayment/components/user/payment-button'
 
 interface SurveyContainerProps {
   surveyId: string

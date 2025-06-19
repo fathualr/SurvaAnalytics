@@ -28,3 +28,36 @@ export interface SurveyPaymentListResponse {
     per_page: number
   }
 }
+
+export interface Pengguna {
+  id: string
+  email: string
+}
+
+export interface Umum {
+  id: string
+  nama: string
+  Pengguna: Pengguna
+}
+
+export interface Survei {
+  id: string
+  judul: string
+}
+
+export interface AdminSurveyPayment extends SurveyPayment {
+  Umum: Umum | null
+  Survei: Survei | null
+}
+
+export interface AdminSurveyPaymentListResponse {
+  status: string
+  message: string
+  data: AdminSurveyPayment[]
+  meta: {
+    total_items: number
+    total_pages: number
+    current_page: number
+    per_page: number
+  }
+}
