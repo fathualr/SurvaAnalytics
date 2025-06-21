@@ -195,7 +195,7 @@ export function AdminSidebar() {
 
             <SidebarMenuItem className="rounded-sm">
               <SidebarMenuButton asChild tooltip="Harga Survei" className="text-accent-1 hover:text-primary-1 active:text-primary-1 h-10 transition">
-                <Link href="/admin/configuration-price" className="flex items-center gap-2">
+                <Link href="/admin/configuration/survey-price" className="flex items-center gap-2">
                   <Calculator />
                   Harga Survei
                 </Link>
