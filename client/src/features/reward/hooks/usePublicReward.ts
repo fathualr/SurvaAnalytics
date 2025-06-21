@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { hadiahService } from '../api';
+import { hadiahService } from '../api/public';
 import { HadiahListResponse } from '../types';
 
 export interface UseHadiahsOptions {

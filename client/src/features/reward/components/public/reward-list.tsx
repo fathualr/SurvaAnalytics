@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import { useHadiahs } from '../../hooks/usePublicHadiah';
+import { useHadiahs } from '../../hooks/usePublicReward';
 import { RewardCard } from './reward-card';
 import { Button } from '@/components/ui/button';
 import { Pagination } from '@/components/umum/pagination';

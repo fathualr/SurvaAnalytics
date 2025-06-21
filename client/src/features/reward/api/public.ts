@@ -1,5 +1,5 @@
 import { api } from '@/lib/api';
-import { HadiahListResponse } from './types';
+import { HadiahListResponse } from '../types';
 
 export const hadiahService = {
   getAll: async (params?: Record<string, any>): Promise<HadiahListResponse> => {

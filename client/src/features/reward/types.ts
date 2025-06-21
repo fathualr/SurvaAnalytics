@@ -19,3 +19,12 @@ export interface HadiahListResponse {
     per_page: number;
   };
 }
+
+export interface CreateHadiahPayload {
+  nama: string;
+  deskripsi?: string;
+  stok: number;
+  harga_poin: number;
+}
+
+export interface UpdateHadiahPayload extends Partial<CreateHadiahPayload> {}
