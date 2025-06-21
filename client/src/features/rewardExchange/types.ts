@@ -34,3 +34,7 @@ export interface RewardExchangeListResponse {
 export interface CreateRewardExchangePayload {
   id_hadiah: string;
 }
+
+export interface CreateAdminRewardExchangePayload extends CreateRewardExchangePayload {
+  id_umum: string
+}

@@ -3,7 +3,7 @@ import {
   RewardExchange,
   RewardExchangeListResponse,
   CreateRewardExchangePayload,
-} from './types';
+} from '../types';
 
 export const rewardExchangeService = {
   getAll: async (params?: Record<string, any>): Promise<RewardExchangeListResponse> => {

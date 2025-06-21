@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { rewardExchangeService } from '../api';
+import { rewardExchangeService } from '../api/user';
 import {
   RewardExchange,
   CreateRewardExchangePayload,
