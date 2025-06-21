@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import RewardExchangePreview from '@/features/rewardExchange/components/confirmation-exchange-button';
+import RewardExchangePreview from '@/features/rewardExchange/components/user/confirmation-exchange-button';
 
 interface RewardCardProps {
   reward: Hadiah;
