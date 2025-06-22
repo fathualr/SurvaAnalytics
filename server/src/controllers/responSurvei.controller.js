@@ -13,6 +13,18 @@ export const getResponSurveis = async (req, res) => {
   }
 };
 
+export const getAllResponSurvei = async (req, res) => {
+  try {
+    const result = await responSurveiService.indexAll(req.query);
+    const message = result.data.length > 0
+      ? 'Respon survei retrieved successfully'
+      : 'No respon survei found';
+    resSuccess(res, message, result);
+  } catch (error) {
+    resFail(res, error.message, error.status);
+  }
+};
+
 export const getResponSurvei = async (req, res) => {
   try {
     const responSurvei = await responSurveiService.show(req.params.id);

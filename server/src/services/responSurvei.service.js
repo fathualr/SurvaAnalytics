@@ -39,6 +39,36 @@ export const index = async (surveiId = null, queryParams) => {
   };
 };
 
+export const indexAll = async (queryParams) => {
+  const { where, order, pagination } = parseQuery(queryParams, {
+    allowedFilters: ['id_umum', 'id_survei', 'is_completed']
+  });
+
+  const { count, rows } = await ResponSurvei.findAndCountAll({
+    where,
+    include: [
+      {
+        model: Umum,
+        attributes: ['id', 'nama'],
+        include: [
+          {
+            model: Pengguna,
+            attributes: ['id', 'email']
+          }
+        ]
+      }
+    ],
+    order,
+    ...pagination,
+    distinct: true
+  });
+
+  return {
+    data: rows,
+    ...metaQueryFormat({ count }, pagination)
+  };
+};
+
 export const show = async (responSurveiId) => {
   const responSurvei = await ResponSurvei.findByPk(responSurveiId, {
     include: [
