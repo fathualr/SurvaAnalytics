@@ -61,7 +61,11 @@ export async function exportSurveyResponses({ surveiId, format = 'csv' }) {
           include: { model: Pengguna, attributes: ['email'] }
         }
       },
-      { model: PertanyaanSurvei }
+      { 
+        model: PertanyaanSurvei,
+        separate: true,
+        order: [['index', 'ASC']],
+      }
     ]
   });
 

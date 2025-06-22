@@ -32,10 +32,10 @@ export const VisualRenderer = ({ summary }: ChartRendererProps) => {
       return <RadarChart summary={summary} />;
     case 'text':
       return <TextAnswersChart summary={summary} />;
-    // case 'wordcloud':
-    //   return <WordCloud summary={summary} />;
-    // case 'sentiment_analysis':
-    //   return <SentimentAnalysis summary={summary} />;
+    case 'wordcloud':
+      return <WordCloud texts={summary.summary as string[]} />;
+    case 'sentiment_analysis':
+      return <SentimentAnalysis texts={summary.summary as string[]} />;
     default:
       return <div className="text-sm text-muted-foreground italic">Visualisasi tidak tersedia.</div>;
   }
@@ -46,5 +46,5 @@ const BarChart = dynamic(() => import('./visualization/bar'));
 const DoughnutChart = dynamic(() => import('./visualization/doughnut'));
 const RadarChart = dynamic(() => import('./visualization/radar'));
 const TextAnswersChart = dynamic(() => import('./visualization/text'));
-// const WordCloud = dynamic(() => import('./wordcloud'));
-// const SentimentAnalysis = dynamic(() => import('./sentiment-analysis'));
+const WordCloud = dynamic(() => import('./visualization/wordcloud'));
+const SentimentAnalysis = dynamic(() => import('./visualization/sentiment-analysis'));

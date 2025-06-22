@@ -3,8 +3,13 @@ import { useAuthStore } from '@/features/auth/store';
 import { authService } from '@/features/auth/api';
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_SERVER_API_BASE_URL,
   withCredentials: true,
+  timeout: 10000,
+});
+
+export const pythonApi = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_PYTHON_SERVICE_API_BASE_URL,
   timeout: 10000,
 });
 
