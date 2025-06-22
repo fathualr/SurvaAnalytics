@@ -11,6 +11,20 @@ interface DateRangeSectionProps {
   disabled?: boolean;
 }
 
+function formatDateUTC(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+
+function getDateOnlyUTC(date: Date): Date {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+}
+
+function addDaysUTC(date: Date, days: number): Date {
+  const newDate = new Date(date);
+  newDate.setUTCDate(newDate.getUTCDate() + days);
+  return getDateOnlyUTC(newDate);
+}
+
 export function DateRangeSection({
   startDate,
   endDate,
@@ -22,24 +36,12 @@ export function DateRangeSection({
   const [error, setError] = useState('');
   const [duration, setDuration] = useState<number | null>(null);
 
-  const formatDate = (date: Date) => date.toISOString().split('T')[0];
-
-  const addDays = (date: Date, days: number) => {
-    const result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-  };
-
-  const getDateOnly = (date: Date) =>
-    new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-  const today = getDateOnly(new Date());
-  const minStartDate = formatDate(addDays(today, 4));
+  const todayUTC = getDateOnlyUTC(new Date());
+  const minStartDate = formatDateUTC(addDaysUTC(todayUTC, 3));
 
   useEffect(() => {
-    const startDateObj = getDateOnly(new Date(start));
-    const endDateObj = getDateOnly(new Date(end));
-    const now = getDateOnly(new Date());
+    const startDateObj = getDateOnlyUTC(new Date(start));
+    const endDateObj = getDateOnlyUTC(new Date(end));
 
     if (disabled) {
       const diffTime = endDateObj.getTime() - startDateObj.getTime();
@@ -49,7 +51,7 @@ export function DateRangeSection({
       return;
     }
 
-    const isStartValid = startDateObj >= addDays(now, 3);
+    const isStartValid = startDateObj >= addDaysUTC(todayUTC, 3);
     const isEndValid = endDateObj > startDateObj;
 
     if (!isStartValid) {
@@ -79,6 +81,9 @@ export function DateRangeSection({
           onChange={(e) => setStart(e.target.value)}
           disabled={disabled}
         />
+        <p className="text-xs text-muted-foreground mt-1">
+          Minimal: {minStartDate}
+        </p>
       </FormGroup>
 
       <FormGroup label="Tanggal Berakhir" htmlFor="end-date">
@@ -86,7 +91,7 @@ export function DateRangeSection({
           id="end-date"
           type="date"
           value={end}
-          min={formatDate(addDays(new Date(start), 1))}
+          min={formatDateUTC(addDaysUTC(new Date(start), 1))}
           className="sm:text-sm text-xs"
           onChange={(e) => setEnd(e.target.value)}
           disabled={disabled}

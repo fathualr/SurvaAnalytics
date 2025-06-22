@@ -1,9 +1,9 @@
 import Joi from 'joi';
 
-function getDateOnly(date) {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+function getDateOnlyUTC(date) {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
 }
-const minStartDate = getDateOnly(new Date(Date.now() + 3 * 86400000))
+const minStartDate = getDateOnlyUTC(new Date(Date.now() + 3 * 86400000));
 
 export const createUserSurveiSchema = Joi.object({
   judul: Joi.string().max(255).required(),
