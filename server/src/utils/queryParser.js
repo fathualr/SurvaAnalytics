@@ -2,7 +2,7 @@ export const parseQuery = (query = {}, options = {}) => {
   const {
     defaultSort = '-created_at',
     allowedFilters = [],
-    maxLimit = 100,
+    maxLimit = 1000,
     defaultLimit = 10
   } = options;
 
