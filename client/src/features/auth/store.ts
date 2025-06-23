@@ -6,10 +6,12 @@ interface AuthState {
   accessToken: string | null;
   user: UserProfile | null;
   hydrated: boolean;
+  isLoggingOut: boolean;
   setAccessToken: (token: string) => void;
   clearAccessToken: () => void;
   setUser: (user: UserProfile | null) => void;
   setHydrated: () => void;
+  setIsLoggingOut: (status: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -18,6 +20,7 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       user: null,
       hydrated: false,
+      isLoggingOut: false,
       setAccessToken: (token) => set({ accessToken: token }),
       clearAccessToken: () => set({ accessToken: null, user: null }),
       setUser: (user) => {
@@ -26,6 +29,7 @@ export const useAuthStore = create<AuthState>()(
         set({ user: { id, email, role, Admin, Umum } });
       },
       setHydrated: () => set({ hydrated: true }),
+      setIsLoggingOut: (status) => set({ isLoggingOut: status }),
     }),
     {
       name: 'auth-storage',
@@ -34,7 +38,7 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
       }),
       onRehydrateStorage: () => (state) => {
-        state?.setHydrated(); // penting!
+        state?.setHydrated();
       },
     }
   )

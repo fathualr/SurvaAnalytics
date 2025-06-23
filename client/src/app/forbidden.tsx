@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: 'Tidak memiliki akses ke halaman ini',
 };
 
-export default function NotFound() {
+export default function Forbidden() {
   return <ForbiddenPage />;
 }

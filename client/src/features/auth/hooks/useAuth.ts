@@ -26,6 +26,8 @@ export const useAuth = () => {
     user,
     setUser,
     hydrated,
+    isLoggingOut,
+    setIsLoggingOut,
   } = useAuthStore();
 
   const login = useMutation({
@@ -69,19 +71,37 @@ export const useAuth = () => {
   });
 
   const logout = async () => {
+    setIsLoggingOut(true);
+
     try {
       await authService.logout();
     } catch {
-      router.push('/login');
     } finally {
-      clearAccessToken();
-      setUser(null);
-      delete api.defaults.headers.common['Authorization'];
-      queryClient.clear();
-
-      channel?.postMessage('logout');
-
       router.push('/login');
+
+      setTimeout(() => {
+        clearAccessToken();
+        setUser(null);
+        delete api.defaults.headers.common['Authorization'];
+        queryClient.clear();
+        channel?.postMessage('logout');
+        setIsLoggingOut(false);
+      }, 500);
+
+    // try {
+    //   await authService.logout();
+    // } catch {
+    //   router.replace('/login');
+    // } finally {
+    //   clearAccessToken();
+    //   setUser(null);
+    //   delete api.defaults.headers.common['Authorization'];
+    //   queryClient.clear();
+
+    //   channel?.postMessage('logout');
+
+    //   router.replace('/login');
+    //   setIsLoggingOut(false);
     }
   };
 
@@ -179,5 +199,6 @@ export const useAuth = () => {
     refreshToken,
     setError,
     hydrated,
+    isLoggingOut,
   };
 };
