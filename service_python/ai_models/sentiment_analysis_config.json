@@ -1,0 +1,9 @@
+{
+  "model_name_or_path": "Fathualr/sentiment-analysis-dataset-product-review",
+  "task": "text-classification",
+  "label_mapping": {
+    "LABEL_0": "negative",
+    "LABEL_1": "neutral",
+    "LABEL_2": "positive"
+  }
+}
