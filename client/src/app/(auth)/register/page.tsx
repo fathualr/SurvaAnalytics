@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { RegisterPage } from '@/components/pages/auth/register';
 
 export const metadata: Metadata = {
-  title: 'Daftar Akun',
-  description: 'Mendaftar akun dan dapatkan hak fitur aplikasi.',
+  title: 'Surva. - Register',
+  description: 'Create a new account to get started with our application.',
 };
 
 export default function Register() {

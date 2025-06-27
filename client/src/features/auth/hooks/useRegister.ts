@@ -123,6 +123,7 @@ export const useRegister = () => {
     },
     completeAccount: {
       mutate: completeAccount.mutate,
+      mutateAsync: completeAccount.mutateAsync,
       isPending: completeAccount.isPending,
     },
   };

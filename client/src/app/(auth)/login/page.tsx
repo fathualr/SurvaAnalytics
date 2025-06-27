@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { LoginPage } from '@/components/pages/auth/login';
 
 export const metadata: Metadata = {
-  title: 'Masuk Akun',
-  description: 'Masuk dengan akun yang telah terdaftar pada aplikasi.',
+  title: 'Surva. - Login',
+  description: 'Sign in with your registered account to access the application.',
 };
 
 export default function Register() {
