@@ -2,248 +2,211 @@ import { Metadata } from 'next';
 import Image from "next/image"
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog"
-import { Card, CardContent, CardTitle } from "@/components/ui/card"
-import { GridBackgroundDemo } from "@/components/ui/grid-background"
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards"
-
+import { GridBackgroundDemo } from '@/components/ui/grid-background';
 
 export const metadata: Metadata = {
   title: 'Surva.',
   description: 'Aplikasi analisis cerdas untuk hasil survei.'
 };
 
-
 export default function Home() {
   return (
     <main className="flex flex-col w-full overflow-hidden min-h-screen">
       
       <GridBackgroundDemo>
-        {/* Hero Section */}
-        <section className="py-16 my-auto min-h-screen md:h-screen h-full grid md:grid-cols-2 grid-cols-1 md:px-20 sm:px-10 px-5">
-          <div className="col-span-1 md:row-start-1 row-start-2 flex flex-col m-auto md:gap-10 gap-8 md:items-start items-center md:text-left text-center">
-            <h1 className="block font-bold md:text-6xl text-5xl">
-              <span className="block">Survei sekejap,</span>
-              <span className="mt-2 block">Insight Melekat!</span>
-            </h1>
-            <div className="md:text-xl sm:text-lg text-md">
-              <span className="block">
-                Dapatkan data penting dalam hitungan detik!
-              </span>
-              <span>
-                Aplikasi surva analytic yang cepat, mudah, dan akurat untuk membantumu mengambil keputusan terbaik.
-              </span>
-            </div>
-            <Link
-              href="/explore"
-              className="flex justify-center items-center w-full max-w-[300] h-[70] border border-secondary-1 bg-secondary-1 rounded-tr-3xl rounded-bl-3xl hover:rounded-tr-none hover:rounded-bl-none hover:rounded-tl-3xl hover:rounded-br-3xl transition-all duration-150"
-            >
-              <p className="font-semibold text-center text-3xl text-accent-1">Mulai</p>
-            </Link>
-          </div>
-          <div className="col-span-1 row-start-1 p-10 w-full h-full flex items-center justify-center">
-            <Image 
-              src="/images/landing-page/hero-1.png" 
-              alt="Hero" 
-              width={0}
-              height={0}
-              sizes="100vw"
-              className="w-full h-auto md:max-h-[600px] max-h-[400px] object-contain"
-            />
-          </div>
-        </section>
-      </GridBackgroundDemo>
+      <section
+        className="pt-20 md:pt-24 pb-16 min-h-screen grid grid-cols-1 md:grid-cols-2 items-center md:px-20 sm:px-10 px-5 from-primary-1 via-primary-2 to-primary-3 text-foreground"
+      >
+        <div className="col-span-1 md:row-start-1 row-start-2 flex flex-col gap-8 md:items-start items-center text-center md:text-left">
+          <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl leading-tight">
+            <span>Quick Surveys,</span>
+            <br />
+            <span className="text-primary-foreground">Instant Insights!</span>
+          </h1>
+          <p className="text-md sm:text-lg md:text-xl max-w-xl font-medium">
+            <span className="block">
+              Get critical data in just seconds!
+            </span>
+            <span className="block">
+              A fast, simple, and accurate survey analytics platform to help you make the best decisions.
+            </span>
+          </p>
+          <Link
+            href="/explore"
+            className="inline-flex items-center justify-center px-8 py-4 text-2xl font-semibold
+              rounded-tr-3xl rounded-bl-3xl
+              bg-glass-background border border-glass-border
+              backdrop-blur-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.1)]
+              text-primary-background
+              transition-all hover:shadow-[0_6px_24px_rgba(0,0,0,0.15)]
+              hover:backdrop-blur-[14px] hover:brightness-110"
+                      style={{
+          background: 'var(--glass-background)',
+          borderColor: 'var(--glass-border)',
+          boxShadow: 'var(--glass-shadow)',
+          backdropFilter: 'var(--glass-blur)',
+        }}
+          >
+            Get Started
+          </Link>
+        </div>
 
-      {/* About / What is Surva */}
-      <section className="py-10 md:px-20 sm:px-10 px-5 grid md:grid-cols-2 grid-cols-1">
-        <div className="col-span-1 w-full flex justify-center">
-          <Image 
-            src="/images/landing-page/hero-2.png" 
-            alt="Hero" 
+        <div className="select-none col-span-1 row-start-1 flex items-center justify-center mt-10 md:mt-0">
+          <Image
+            src="/images/landing-page/hero-1.png"
+            alt="Survey analytics visual"
             width={0}
             height={0}
             sizes="100vw"
             className="w-full h-auto md:max-h-[600px] max-h-[400px] object-contain"
+            priority
           />
         </div>
-        <div className="col-span-1 grid content-center h-full md:pr-10 md:gap-8 gap-6 md:text-left text-center">
-          <h2 className="md:text-5xl text-4xl font-semibold">What is Surva?</h2>
-          <p className="md:text-lg  sm:text-md text-justify">
-            SurvaAnalytics adalah aplikasi berbasis web yang dikembangkan untuk menyederhanakan proses pembuatan, penyebaran, dan analisis survei secara menyeluruh. Latar belakang dari proyek ini adalah kebutuhan akan solusi efisien dalam pengumpulan dan pengolahan data survei, yang sering kali terhambat oleh rendahnya tingkat partisipasi responden, pencarian responden yang relevan, serta keterbatasan dalam analisis data.
+      </section>
+      </GridBackgroundDemo>
+
+      <section className="py-16 md:px-20 sm:px-10 px-5 grid grid-cols-1 md:grid-cols-2 md:gap-6 items-center text-foreground">
+        <div className="select-none flex justify-center items-center w-full h-full">
+          <Image
+            src="/images/landing-page/hero-2.png"
+            alt="Surva Analytics Illustration"
+            width={0}
+            height={0}
+            sizes="50vw"
+            className="w-full h-auto max-w-xl md:max-h-[500px] object-contain rounded-2xl"
+            priority
+          />
+        </div>
+        <div className="space-y-6 md:pr-10 text-center md:text-left font-medium">
+          <h2 className="text-4xl sm:text-5xl font-bold leading-tight">
+            What is <span className="text-primary">Surva?</span>
+          </h2>
+          <p className="text-md sm:text-lg leading-relaxed py-6 rounded-xl text-justify">
+            <strong>SurvaAnalytics</strong> is a web-based application designed to simplify the entire process of creating, distributing, and analyzing surveys. It addresses common challenges such as low respondent participation, difficulty in reaching the right audience, and limited capabilities in data analysis and visualization—offering a streamlined and intuitive solution for data-driven decision-making.
           </p>
         </div>
       </section>
 
-      {/* How Surva Works */}
-      <section className="flex flex-col py-15 md:px-20 sm:px-10 px-5 md:gap-20 gap-10">
-        <h2 className="md:text-5xl text-4xl font-semibold text-center">
-          How Surva Works?
+      <section className="flex flex-col py-20 md:px-20 sm:px-10 px-5 gap-16 text-foreground">
+        <h2 className="text-4xl md:text-5xl font-bold text-center">
+          How Surva Works
         </h2>
 
-        <div className="flex justify-center md:gap-15 gap-5">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Card className="w-full max-w-[280px] h-[300px] overflow-hidden p-0 flex flex-col items-center rounded-lg shadow-md gap-0 cursor-pointer">
-                <div className="w-full h-[200px] flex items-center justify-center bg-accent-1 p-0">
-                  <Image
-                    src="/images/landing-page/survey-tools.png"
-                    alt="Survey & Tools"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    className="w-full object-cover p-0"
-                  />
-                </div>
-                <CardContent className="grid items-center bg-secondary-1 py-3 text-center w-full h-full">
-                  <CardTitle className="font-bold text-accent-1 text-2xl">
-                    Survey & Tools
-                  </CardTitle>
-                </CardContent>
-              </Card>
-            </DialogTrigger>
-            <DialogContent className="md:p-4 p-2">
-              <DialogHeader>
-                <DialogTitle>Survey & Tools</DialogTitle>
-                <div className="max-h-120 h-auto overflow-auto md:p-2 p-1">
-                  <div className="grid justify-items-center">
-                    <Image
-                      src="/images/landing-page/survey-tools.png"
-                      alt="Survey & Tools"
-                      width={120}
-                      height={120}
-                      sizes="50vw"
-                      className="object-cover p-0"
-                    />
-                  </div>
-                  <div className="space-y-3 text-left text-sm">
-                    <p><strong>Apa itu Survey & Tools?</strong><br />
-                    Fitur ini menyediakan berbagai survei yang dapat diisi pengguna, serta alat bantu (tools) untuk mempermudah aktivitas Anda dalam platform kami.</p>
-                    <p><strong>Mengapa fitur ini penting?</strong><br />
-                    Dengan mengisi survei, Anda membantu kami memahami kebutuhan pengguna dan meningkatkan kualitas layanan. Tools yang tersedia juga mempermudah pekerjaan, seperti pengumpulan data atau analisis sederhana.</p>
-                    <p><strong>Bagaimana cara menggunakannya?</strong><br />
-                    1. Klik menu "Survey & Tools" di dashboard.<br />
-                    2. Pilih survei yang ingin Anda isi atau tools yang ingin digunakan.<br />
-                    3. Ikuti instruksi pada masing-masing halaman dengan teliti.<br />
-                    4. Setelah selesai, pastikan Anda menyimpan atau mengirim data Anda jika diperlukan.</p>
-                    <p><em>Tips:</em> Cek secara rutin untuk melihat survei baru dan tools yang diperbarui.</p>
-                  </div>
-                </div>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <Card className="w-full max-w-[280px] h-[300px] overflow-hidden p-0 flex flex-col items-center rounded-lg shadow-md gap-0 cursor-pointer">
-                <div className="w-full h-[200px] flex items-center justify-center bg-accent-1 p-0">
-                  <Image
-                    src="/images/landing-page/payment.png"
-                    alt="Payment"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    className="w-full object-cover p-0"
-                  />
-                </div>
-                <CardContent className="grid items-center bg-secondary-1 py-3 text-center w-full h-full">
-                  <CardTitle className="font-bold text-accent-1 text-2xl">
-                    Payment
-                  </CardTitle>
-                </CardContent>
-              </Card>
-            </DialogTrigger>
-            <DialogContent className="md:p-4 p-2">
-              <DialogHeader>
-                <DialogTitle>Payment</DialogTitle>
-                <div className="max-h-120 h-auto overflow-auto md:p-2 p-1">
-                  <div className="grid justify-items-center">
-                    <Image
-                      src="/images/landing-page/payment.png"
-                      alt="Payment"
-                      width={120}
-                      height={120}
-                      sizes="50vw"
-                      className="object-cover p-0"
-                    />
-                  </div>
-                  <div className="space-y-3 text-left text-sm">
-                    <p><strong>Apa itu fitur Payment?</strong><br />
-                    Fitur ini memungkinkan Anda melakukan pembayaran langsung melalui aplikasi, baik untuk langganan, produk, maupun layanan tertentu.</p>
-                    <p><strong>Mengapa Anda perlu menggunakannya?</strong><br />
-                    Dengan fitur ini, proses pembayaran menjadi lebih cepat, aman, dan terintegrasi dengan layanan yang Anda gunakan.</p>
-                    <p><strong>Langkah-langkah penggunaannya:</strong><br />
-                    1. Masuk ke halaman "Payment" dari dashboard Anda.<br />
-                    2. Pilih jenis pembayaran atau tagihan yang ingin dibayar.<br />
-                    3. Pilih metode pembayaran (transfer bank, e-wallet, kartu kredit, dll).<br />
-                    4. Ikuti instruksi pembayaran hingga selesai.<br />
-                    5. Anda akan menerima konfirmasi otomatis setelah pembayaran berhasil.</p>
-                    <p><em>Catatan:</em> Pastikan informasi akun Anda sudah diperbarui agar pembayaran tidak tertunda.</p>
-                  </div>
-                </div>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+          {[
+            {
+              title: "Smart Data Collection",
+              description:
+                "Collect responses from target users easily with engaging surveys and real-time tracking.",
+              image: "/images/landing-page/pie-analytics.png",
+            },
+            {
+              title: "Instant Rewards",
+              description:
+                "Users can earn instant rewards by completing surveys. This increases participation rates effectively.",
+              image: "/images/landing-page/rewards.png",
+            },
+            {
+              title: "Integrated Analytics",
+              description:
+                "Analyze responses directly in your dashboard with built-in visual reports and summaries.",
+              image: "/images/landing-page/dashboard-graph.png",
+            },
+          ].map((card, i) => (
+            <div
+              key={i}
+              className="w-full max-w-[300px] h-[380px] rounded-2xl overflow-hidden border backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl cursor-pointer flex flex-col"
+              style={{
+                background: 'var(--glass-background)',
+                borderColor: 'var(--glass-border)',
+                boxShadow: 'var(--glass-shadow)',
+                backdropFilter: 'var(--glass-blur)',
+              }}
+            >
+              <div className="h-[200px] w-full overflow-hidden border-b" style={{ borderColor: 'var(--glass-border)' }}>
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="p-4 flex flex-col gap-2">
+                <h3 className="text-lg font-bold">{card.title}</h3>
+                <p className="text-sm text-muted-foreground font-medium leading-snug">{card.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
-
       </section>
 
-      {/* Opinion Form Section */}
-      <section className="py-15 md:px-20 sm:px-10 px-5 grid md:grid-cols-2 grid-cols-1 md:gap-none gap-5 bg-gradient-to-r from-primary-3 to-primary-1">
-        <div className="col-span-1 grid content-center h-full md:gap-8 gap-6 text-accent-1">
-          <h2 className="md:text-4xl text-3xl font-semibold">We still need your opinion </h2>
-          <p className="md:text-lg sm:text-md">
-            Kami selalu ingin meningkatkan pengalaman Anda di Surva. Berikan opini, saran, atau masukan Anda tentang platform ini, dan bantu kami menjadi lebih baik!
+      <section
+        className="py-20 md:px-20 sm:px-10 px-5 grid md:grid-cols-2 grid-cols-1 gap-12 
+          bg-gradient-to-br from-background via-background/80 to-secondary-1/40 
+          dark:from-background dark:via-background/80 dark:to-secondary-1/20 
+          text-foreground transition-colors duration-300"
+      >
+        <div className="col-span-1 flex flex-col justify-center gap-6">
+          <h2 className="md:text-4xl text-3xl font-bold">
+            We still need your opinion
+          </h2>
+          <p className="md:text-lg text-base text-muted-foreground">
+            We’re always improving your experience on Surva. Share your opinion, suggestion, or feedback to help us grow better!
           </p>
         </div>
 
-        <div className="col-span-1 grid content-center h-full md:pl-10">
-          <div className="bg-accent-1 rounded-lg p-6 text-black w-full mx-auto shadow-md">
-            <h4 className="text-lg font-bold mb-4 text-center">Opinion letters</h4>
+        <div className="col-span-1 flex justify-center">
+          <div
+            className="w-full max-w-md rounded-2xl border border-glass-border bg-glass-bg p-6 shadow-xl backdrop-blur-xl transition"
+            style={{
+              boxShadow: 'var(--glass-shadow)',
+              backdropFilter: 'var(--glass-blur)',
+            }}
+          >
+            <h4 className="text-xl font-semibold mb-4 text-center text-foreground">Opinion Form</h4>
             <form className="flex flex-col gap-4">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-1">
+                <label htmlFor="email" className="block text-sm font-medium mb-1 text-foreground">
                   Email
                 </label>
                 <input
                   type="email"
                   id="email"
-                  className="w-full border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFBF68]"
-                  placeholder="pengguna@email.com"
+                  className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition"
+                  placeholder="user@email.com"
                 />
               </div>
+
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-1">
+                <label htmlFor="subject" className="block text-sm font-medium mb-1 text-foreground">
                   Subject
                 </label>
                 <input
-                  type="subject"
+                  type="text"
                   id="subject"
-                  className="w-full border border-gray-400 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFBF68]"
-                  placeholder="Laporan"
+                  className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition"
+                  placeholder="Feedback, Suggestion, etc."
                 />
               </div>
+
               <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-1">
+                <label htmlFor="message" className="block text-sm font-medium mb-1 text-foreground">
                   Message
                 </label>
                 <textarea
                   id="message"
                   rows={4}
-                  className="w-full border border-gray-400 rounded-md px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-[#FFBF68]"
-                  placeholder="Tuliskan masukan kamu di sini..."
+                  className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary transition"
+                  placeholder="Write your thoughts here..."
                 />
               </div>
+
               <Button
-                variant="ghost"
                 type="submit"
-                className="bg-[#FFBF68] hover:bg-[#e6a94d] text-white font-semibold px-5 py-2 rounded-md transition-colors"
+                className="mt-2 bg-secondary  hover:bg-secondary/90 font-semibold px-5 py-2 rounded-lg transition-all"
               >
                 Send
               </Button>
@@ -252,74 +215,89 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonial Section */}
-      <section className="flex flex-col items-center py-15 md:px-20 sm:px-10 px-5 md:gap-15 gap-5">
-        <h2 className="text-center md:text-4xl text-3xl font-semibold">
+      <section className="flex flex-col items-center py-20 md:px-20 sm:px-10 px-5 gap-10 text-foreground">
+        <h2 className="text-center md:text-4xl text-3xl font-bold">
           Our Clients Know Best
         </h2>
-        <div className="antialiased overflow-hidden">
-          <InfiniteMovingCards
-            items={[
-              {
-                quote: "Aplikasi ini sangat membantu saya dalam menyebarkan survei riset skripsi. Respondennya cepat terkumpul!",
-                name: "Andi Pratama",
-                title: "Mahasiswa Politeknik",
-              },
-              {
-                quote: "Platform ini mempercepat proses pengumpulan data pelanggan kami. Sangat direkomendasikan untuk riset pasar!",
-                name: "Dina Ayu",
-                title: "Analis Pasar di Kantor",
-              },
-              {
-                quote: "Antarmukanya simpel, distribusi surveinya efektif, dan hasilnya bisa langsung diekspor. Sangat efisien!",
-                name: "Rudi Kurniawan",
-                title: "Peneliti Independen",
-              },
-              {
-                quote: "Kami menggunakan aplikasi ini untuk survei kepuasan pengguna. Fitur penyebarannya sangat memudahkan.",
-                name: "Sari Meilani",
-                title: "Manajer Produk di Perusahaan",
-              },
-              {
-                quote: "Sangat membantu untuk menyebarkan survei secara luas dan mendapatkan insight berkualitas dari responden nyata.",
-                name: "Yusuf Hakim",
-                title: "Konsultan Data",
-              },
-            ]}
-            direction="right"
-            speed="slow"
-          />
-          <InfiniteMovingCards
-            items={[
-              {
-                quote: "Aplikasi ini sangat membantu saya dalam menyebarkan survei riset skripsi. Respondennya cepat terkumpul!",
-                name: "Andi Pratama",
-                title: "Mahasiswa Politeknik",
-              },
-              {
-                quote: "Platform ini mempercepat proses pengumpulan data pelanggan kami. Sangat direkomendasikan untuk riset pasar!",
-                name: "Dina Ayu",
-                title: "Analis Pasar di Kantor",
-              },
-              {
-                quote: "Antarmukanya simpel, distribusi surveinya efektif, dan hasilnya bisa langsung diekspor. Sangat efisien!",
-                name: "Rudi Kurniawan",
-                title: "Peneliti Independen",
-              },
-              {
-                quote: "Kami menggunakan aplikasi ini untuk survei kepuasan pengguna. Fitur penyebarannya sangat memudahkan.",
-                name: "Sari Meilani",
-                title: "Manajer Produk di Perusahaan",
-              },
-              {
-                quote: "Sangat membantu untuk menyebarkan survei secara luas dan mendapatkan insight berkualitas dari responden nyata.",
-                name: "Yusuf Hakim",
-                title: "Konsultan Data",
-              },
-            ]}
-            direction="left"
-            speed="slow"
-          />
+
+        <div className="w-full space-y-8">
+          <div className="overflow-hidden">
+            <InfiniteMovingCards
+              direction="right"
+              speed="slow"
+              items={[
+                {
+                  quote:
+                    "Surva helped me collect thesis survey responses quickly. Everything was intuitive and professional!",
+                  name: "Andi Pratama",
+                  title: "Undergraduate Student",
+                },
+                {
+                  quote:
+                    "This platform significantly accelerated our customer data collection. Highly recommended for market research!",
+                  name: "Dina Ayu",
+                  title: "Market Analyst",
+                },
+                {
+                  quote:
+                    "The UI is simple, survey distribution is smooth, and the results are exportable in seconds. Super efficient!",
+                  name: "Rudi Kurniawan",
+                  title: "Independent Researcher",
+                },
+                {
+                  quote:
+                    "We used Surva to run user satisfaction surveys. The broadcast and response management tools are outstanding.",
+                  name: "Sari Meilani",
+                  title: "Product Manager",
+                },
+                {
+                  quote:
+                    "It's a great platform to reach broad audiences and gain real, high-quality insights from verified users.",
+                  name: "Yusuf Hakim",
+                  title: "Data Consultant",
+                },
+              ]}
+            />
+          </div>
+
+          <div className="overflow-hidden">
+            <InfiniteMovingCards
+              direction="left"
+              speed="slow"
+              items={[
+                {
+                  quote:
+                    "I was impressed by the analytic breakdowns provided after each survey. Very insightful and beautiful visualizations.",
+                  name: "Natalie Chen",
+                  title: "UX Research Lead",
+                },
+                {
+                  quote:
+                    "No coding needed, yet I was able to launch a complete survey campaign and get actionable insights within a day.",
+                  name: "Ahmad Rizky",
+                  title: "Startup Founder",
+                },
+                {
+                  quote:
+                    "We replaced our old tools with Surva because of its speed and convenience. A game-changer for survey distribution.",
+                  name: "Maria Lopez",
+                  title: "HR Coordinator",
+                },
+                {
+                  quote:
+                    "As a lecturer, I find Surva perfect for quick polls during lectures. Students respond instantly and results are visual.",
+                  name: "Dr. Kevin W.",
+                  title: "University Lecturer",
+                },
+                {
+                  quote:
+                    "Surva’s dashboard is sleek and real-time. It changed how we engage with our remote community for feedback.",
+                  name: "Eka Sasmita",
+                  title: "Community Manager",
+                },
+              ]}
+            />
+          </div>
         </div>
       </section>
 
