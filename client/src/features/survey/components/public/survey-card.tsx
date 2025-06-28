@@ -61,7 +61,10 @@ export function SurveyCard({
       <DialogTrigger asChild>
         <Card
           className="cursor-pointer overflow-hidden h-[280px] p-0 flex flex-col gap-0 border border-glass-border bg-glass-bg backdrop-blur-xl shadow-lg transition hover:shadow-xl hover:scale-[1.02]"
-          style={{ boxShadow: 'var(--glass-shadow)' }}
+          style={{
+            borderColor: 'var(--glass-border)',
+            boxShadow: 'var(--glass-shadow)',
+          }}
         >
           <div className="relative flex flex-grow items-center justify-center h-40 overflow-hidden">
             <div

@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { Newspaper , LayoutGrid, Coins } from 'lucide-react';
 
 const navItems = [
-  { href: '/explore', label: 'Survey Menu', icon: LayoutGrid },
-  { href: '/manage-survey', label: 'Manage Surveys', icon: Newspaper  },
+  { href: '/explore', label: 'Explore Survey', icon: LayoutGrid },
+  { href: '/manage-survey', label: 'Manage Survey', icon: Newspaper  },
   { href: '/exchange', label: 'Point Exchange', icon: Coins },
 ];
 
@@ -29,6 +29,7 @@ export function NavUmum() {
                   radial-gradient(circle at bottom right, rgba(255, 160, 90, 0.15), transparent 70%)`
                 ,
                 backdropFilter: 'var(--glass-blur)',
+                borderColor: 'var(--glass-border)',
               }}
             >
               <Icon className="w-4 h-4 text-foreground" />

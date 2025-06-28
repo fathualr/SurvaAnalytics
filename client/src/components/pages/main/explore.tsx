@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { SurveyList } from '@/features/survey/components/public/survey-list';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { NavUmum } from "@/components/umum/nav-umum";
 
 export function ExplorePage() {

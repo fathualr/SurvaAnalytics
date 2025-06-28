@@ -109,7 +109,11 @@ const Navbar = () => {
             </div>
           ) : (
             <Link href="/login">
-              <Button className="text-background font-semibold bg-primary-2 hover:bg-primary-3 shadow-sm">
+              <Button 
+                variant="ghost"
+                className="backdrop-blur-md border border-glass-border text-background bg-muted-foreground
+                  shadow-md hover:shadow-lg"
+              >
                 Sign In
               </Button>
             </Link>
