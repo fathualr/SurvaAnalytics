@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { ExplorePage } from '@/components/pages/main/explore';
 
 export const metadata: Metadata = {
-  title: 'Menu Survei',
-  description: 'Lihat daftar survei yang tersedia dan mulai berpartisipasi.',
+  title: 'Surva. - Explore',
+  description: 'Browse available surveys and start participating.',
 };
 
 export default function Explore() {

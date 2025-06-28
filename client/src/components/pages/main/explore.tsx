@@ -22,11 +22,11 @@ export function ExplorePage() {
       <NavUmum />
 
       <section className="flex flex-col flex-grow">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
-          Daftar Survei
+        <h1 className="text-3xl md:text-4xl font-bold my-4">
+          Explore Survey
         </h1>
 
-        <div className="flex flex-row gap-5 mb-6">
+        {/* <div className="flex flex-row gap-5 mb-6">
           <Input
             type="text"
             placeholder="Cari survei"
@@ -41,7 +41,7 @@ export function ExplorePage() {
           >
             Cari
           </Button>
-        </div>
+        </div> */}
 
         <SurveyList
           page={page}

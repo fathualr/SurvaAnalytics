@@ -20,16 +20,20 @@ export function StartSurveyButton({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const { data: draft, isLoading: draftLoading, refetch } = useResponseSurveySubmissionDraft(surveiId, false);
+  const { data: draft, isLoading: draftLoading, refetch } = useResponseSurveySubmissionDraft(
+    surveiId,
+    false
+  );
 
   const handleStart = async () => {
     if (!isLoggedIn) {
       router.push(`/login`);
-      toast.error('Silakan login terlebih dahulu untuk mengikuti survei.');
+      toast.error('Please log in first to participate in the survey.');
+      return;
     }
 
     if (isOwner) {
-      toast.error('Kamu tidak bisa mengikuti survei milik sendiri.');
+      toast.error('You cannot participate in your own survey.');
       return;
     }
 
@@ -38,14 +42,14 @@ export function StartSurveyButton({
 
       const res = await refetch();
       if (!res?.data) {
-        throw new Error('Gagal membuat atau mengambil draft survei');
+        throw new Error('Failed to create or fetch survey draft.');
       }
 
-      toast.success('Memulai');
+      toast.success('Survey started.');
       router.push(`/survey/viewform/${surveiId}`);
     } catch (err: any) {
       const message = err?.response?.data?.message || err?.message || '';
-      toast.error(message || 'Gagal memulai survei.');
+      toast.error(message || 'Failed to start the survey.');
     } finally {
       setLoading(false);
     }
@@ -53,14 +57,14 @@ export function StartSurveyButton({
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       onClick={handleStart}
-      className="bg-accent-1 text-primary-2 font-bold text-lg px-6 py-2 rounded-md hover:bg-primary-2 hover:text-accent-1"
       disabled={loading || draftLoading}
+      className="px-6 py-2 rounded-md font-semibold text-base transition 
+        backdrop-blur-md border border-glass-border text-foreground bg-background
+        shadow-md hover:shadow-lg"
     >
-      {loading ? 'Memulai...' : 'Mulai'}
+      {loading ? 'Starting...' : 'Start Survey'}
     </Button>
   );
 }
-
-// test
