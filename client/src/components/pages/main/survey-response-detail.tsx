@@ -1,6 +1,6 @@
 'use client'
 
-import { NavSurvey } from "@/components/umum/nav-survey";
+import { SurveyBreadcrumbNav } from "@/components/umum/breadcrumb-survey";
 import { NavUmum } from "@/components/umum/nav-umum";
 import { ResponseDetail } from "@/features/surveyResponseResult/components/response-detail";
 
@@ -15,14 +15,18 @@ export function SurveyResponseDetailPage({ surveyId, responSurveyId }: SurveyRes
       <NavUmum />
 
       <section className="flex flex-col flex-grow">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
-          Respon Survei
-          <span className="block text-sm text-muted-foreground">Id: {responSurveyId}</span>
-          <NavSurvey surveyId={surveyId} />
-        </h1>
+        <div className="font-bold my-4">
+          <h1 className="text-3xl md:text-4xl ">
+            Response Survey
+          </h1>
+          <p className="block text-xs text-foreground/80 italic">
+            Response Survey ID:{' '}
+            <span className="not-italic">{responSurveyId}</span>
+          </p>
+          <SurveyBreadcrumbNav surveyId={surveyId} />
+        </div>
 
         <ResponseDetail surveyId={surveyId} responSurveyId={responSurveyId} />
-
       </section>
     </main>
   );

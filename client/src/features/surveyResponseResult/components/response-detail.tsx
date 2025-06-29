@@ -49,13 +49,15 @@ export function ResponseDetail({ surveyId, responSurveyId }: Props) {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (isLoadingPertanyaan || isLoadingRespon || !shouldFetch) {
-    return <div className="h-20 bg-muted animate-pulse rounded-md" />;
+    return <div className="h-20 bg-glass-bg animate-pulse rounded-lg" />;
   }
 
   if (isErrorPertanyaan || isErrorRespon || !responSurvei) {
     return (
-      <div className="text-red-600 bg-red-100 border border-red-200 px-4 py-3 rounded">
-        Gagal memuat detail: {error?.message || 'Terjadi kesalahan.'}
+      <div
+        className="text-red-600 bg-red-100 dark:bg-red-900/10 border border-red-300 dark:border-red-700 px-4 py-3 rounded-md"
+      >
+        Failed to load detail: {error?.message || 'Something went wrong.'}
       </div>
     );
   }
@@ -64,23 +66,40 @@ export function ResponseDetail({ surveyId, responSurveyId }: Props) {
 
   return (
     <div className="space-y-6">
-      <Card className="flex flex-col flex-grow bg-accent-1 rounded-xl sm:p-5 p-3 lg:gap-5 gap-3 border border-black sm:text-sm text-xs">
-        <DetailItem label="Nama" value={Umum.nama} />
+      <Card
+        className="flex flex-col bg-glass-bg backdrop-blur-md rounded-xl p-5 gap-3 border border-glass-border shadow-md text-foreground text-sm"
+        style={{
+          background: 'var(--glass-background)',
+          borderColor: 'var(--glass-border)',
+          backdropFilter: 'var(--glass-blur)',
+        }}
+      >
+        <DetailItem label="Name" value={Umum.nama} />
         <DetailItem label="Email" value={Umum.Pengguna.email} />
-        <DetailItem label="Profil" value={`${profil_metadata.status} • ${profil_metadata.region} • ${profil_metadata.usia} th • ${profil_metadata.jenis_kelamin}`}/>
-        <DetailItem label="Diisi" value={formatDateTime(created_at)} />
+        <DetailItem
+          label="Profile"
+          value={`${profil_metadata.status} • ${profil_metadata.region} • ${profil_metadata.usia} y.o • ${profil_metadata.jenis_kelamin}`}
+        />
+        <DetailItem label="Submitted At" value={formatDateTime(created_at)} />
       </Card>
 
-      <Card className="flex flex-col flex-grow bg-accent-1 rounded-xl sm:p-5 p-3 lg:gap-5 gap-3 border border-black sm:text-sm text-xs">
-        <h3 className="font-semibold text-base">Jawaban Survei</h3>
+      <Card
+        className="flex flex-col bg-glass-bg backdrop-blur-md rounded-xl p-5 gap-4 border border-glass-border shadow-md text-foreground text-sm"
+        style={{
+          background: 'var(--glass-background)',
+          borderColor: 'var(--glass-border)',
+          backdropFilter: 'var(--glass-blur)',
+        }}
+      >
+        <h3 className="font-semibold text-base">Survey Answers</h3>
 
-        <ul className="space-y-3 text-sm">
+        <ul className="space-y-3">
           {pertanyaans
             .sort((a, b) => a.index - b.index)
             .map((pertanyaan, index) => {
               const jawaban = respon[pertanyaan.id] ?? respon[pertanyaan.teks_pertanyaan];
               return (
-                <li key={pertanyaan.id} className="border-b pb-2">
+                <li key={pertanyaan.id} className="border-b border-border pb-2">
                   <div className="text-muted-foreground font-medium mb-1">
                     {index + 1}. <span className="italic">{pertanyaan.teks_pertanyaan}</span>
                   </div>
@@ -88,12 +107,14 @@ export function ResponseDetail({ surveyId, responSurveyId }: Props) {
                 </li>
               );
             })}
-            
-            <div className="text-muted-foreground text-xs">
-              Menampilkan {pertanyaans.length} dari {totalCount} jawaban
-            </div>
 
-          {isFetchingNextPage && <li className="text-muted-foreground">Memuat lagi...</li>}
+          <div className="text-muted-foreground text-xs pt-3">
+            Showing {pertanyaans.length} of {totalCount} answers
+          </div>
+
+          {isFetchingNextPage && (
+            <li className="text-muted-foreground text-sm italic">Loading more...</li>
+          )}
         </ul>
       </Card>
     </div>
