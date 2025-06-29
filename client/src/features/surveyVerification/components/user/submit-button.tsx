@@ -1,3 +1,5 @@
+'use client';
+
 import { useUserSubmitSurveyVerification } from '@/features/surveyVerification/hooks/useUserSurveyVerification';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/umum/confirm-dialog';
@@ -7,19 +9,31 @@ const SubmitButton = ({ surveiId }: { surveiId: string }) => {
 
   return (
     <ConfirmDialog
-      title="Ajukan Verifikasi Survei?"
-      description="Setelah diajukan, kamu tidak bisa mengedit survei ini. Pastikan semua data sudah benar."
-      actionLabel="Yakin & Kirim"
+      title="Submit Survey for Verification?"
+      description="Once submitted, you won't be able to edit this survey. Make sure all data is accurate."
+      actionLabel="Yes, Submit"
       isLoading={isPending}
       onConfirm={() => mutate(surveiId)}
-      actionClassName="bg-primary-2/80 hover:bg-primary-1"
+      actionClassName="
+        bg-primary-2/30 hover:bg-primary-2/50 
+        text-foreground border border-glass-border 
+        backdrop-blur-md shadow-sm transition"
     >
-      <Button
-        className="sm:w-fit w-full bg-primary-2/80 hover:bg-primary-1 font-semibold hover:opacity-80"
-        disabled={isPending}
-      >
-        {isPending ? 'Mengirim...' : 'Submit & Verifikasi'}
-      </Button>
+    <Button
+      className="w-full sm:w-fit text-sm font-semibold rounded-md px-4 py-2 
+        bg-primary-2/30 hover:bg-primary-2/50 
+        text-foreground border border-glass-border 
+        backdrop-blur-md shadow-md transition duration-200 ease-in-out 
+        disabled:opacity-60 disabled:cursor-not-allowed"
+      style={{
+        backdropFilter: 'var(--glass-blur)',
+        borderColor: 'var(--glass-border)',
+      }}
+      disabled={isPending}
+    >
+  {isPending ? 'Submitting...' : 'Submit for Verification'}
+</Button>
+
     </ConfirmDialog>
   );
 };

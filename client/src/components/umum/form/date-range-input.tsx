@@ -55,10 +55,10 @@ export function DateRangeSection({
     const isEndValid = endDateObj > startDateObj;
 
     if (!isStartValid) {
-      setError('Tanggal mulai minimal 3 hari dari hari ini.');
+      setError('Start date must be at least 3 days from today.');
       setDuration(null);
     } else if (!isEndValid) {
-      setError('Tanggal berakhir harus 1 hari setelah tanggal mulai.');
+      setError('End date must be at least 1 day after the start date.');
       setDuration(null);
     } else {
       setError('');
@@ -71,45 +71,47 @@ export function DateRangeSection({
 
   return (
     <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-5">
-      <FormGroup label="Tanggal Mulai" htmlFor="start-date">
+      <FormGroup label="Start Date" htmlFor="start-date">
         <Input
           id="start-date"
           type="date"
           value={start}
           min={minStartDate}
-          className="sm:text-sm text-xs w-full"
+          className="sm:text-sm text-xs w-full bg-background/40 backdrop-blur-sm border border-glass-border text-foreground"
           onChange={(e) => setStart(e.target.value)}
           disabled={disabled}
         />
         <p className="text-xs text-muted-foreground mt-1">
-          Minimal: {minStartDate}
+          Minimum: {minStartDate}
         </p>
       </FormGroup>
 
-      <FormGroup label="Tanggal Berakhir" htmlFor="end-date">
+      <FormGroup label="End Date" htmlFor="end-date">
         <Input
           id="end-date"
           type="date"
           value={end}
           min={formatDateUTC(addDaysUTC(new Date(start), 1))}
-          className="sm:text-sm text-xs"
+          className="sm:text-sm text-xs w-full bg-background/40 backdrop-blur-sm border border-glass-border text-foreground"
           onChange={(e) => setEnd(e.target.value)}
           disabled={disabled}
         />
       </FormGroup>
 
-      <FormGroup label="Total Durasi (hari)" htmlFor="duration">
+      <FormGroup label="Total Duration (days)" htmlFor="duration">
         <Input
           id="duration"
           type="text"
-          className="sm:text-sm text-xs"
-          value={duration ? `${duration} hari` : ''}
+          className="sm:text-sm text-xs w-full bg-background/40 backdrop-blur-sm border border-glass-border text-foreground"
+          value={duration ? `${duration} days` : ''}
           readOnly
           disabled
         />
       </FormGroup>
 
-      {error && <p className="text-sm text-red-600 col-span-full">{error}</p>}
+      {error && (
+        <p className="text-sm text-destructive col-span-full">{error}</p>
+      )}
     </div>
   );
 }

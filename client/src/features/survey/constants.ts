@@ -1,5 +1,5 @@
 export const defaultSurveyPayload = {
-  judul: "Survei Baru",
+  judul: "New Survey",
   deskripsi: "",
   kriteria: {},
   jumlah_responden: "1",

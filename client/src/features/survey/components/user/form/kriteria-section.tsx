@@ -1,53 +1,60 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
-import { isEqual } from 'lodash'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { FormGroup } from '@/components/umum/form/form-group'
-import { Plus, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react';
+import { isEqual } from 'lodash';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { FormGroup } from '@/components/umum/form/form-group';
+import { Plus, X } from 'lucide-react';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
 interface Kriteria {
-  region?: string[]
-  status?: string[]
-  usia?: number[]
-  jenis_kelamin?: string
+  region?: string[];
+  status?: string[];
+  usia?: number[];
+  jenis_kelamin?: string;
 }
 
 interface KriteriaSectionProps {
-  kriteria: Kriteria
-  onChange: (updated: Kriteria) => void
-  disabled?: boolean
+  kriteria: Kriteria;
+  onChange: (updated: Kriteria) => void;
+  disabled?: boolean;
 }
 
 export function KriteriaSection({ kriteria, onChange, disabled = false }: KriteriaSectionProps) {
-  const [region, setRegion] = useState<string[]>(kriteria.region || [])
-  const [regionInput, setRegionInput] = useState('')
+  const [region, setRegion] = useState<string[]>(kriteria.region || []);
+  const [regionInput, setRegionInput] = useState('');
 
-  const [status, setStatus] = useState<string[]>(kriteria.status || [])
-  const [statusInput, setStatusInput] = useState('')
+  const [status, setStatus] = useState<string[]>(kriteria.status || []);
+  const [statusInput, setStatusInput] = useState('');
 
-  const [ageMin, setAgeMin] = useState<number | undefined>(kriteria.usia?.[0])
-  const [ageMax, setAgeMax] = useState<number | undefined>(kriteria.usia?.[kriteria.usia.length - 1])
-  const [jenis_kelamin, setJenisKelamin] = useState<string | undefined>(kriteria.jenis_kelamin)
+  const [ageMin, setAgeMin] = useState<number | undefined>(kriteria.usia?.[0]);
+  const [ageMax, setAgeMax] = useState<number | undefined>(kriteria.usia?.[kriteria.usia.length - 1]);
+  const [jenis_kelamin, setJenisKelamin] = useState<string | undefined>(kriteria.jenis_kelamin);
 
-  const didMount = useRef(false)
+  const didMount = useRef(false);
 
   useEffect(() => {
     if (!didMount.current) {
-      didMount.current = true
-      return
+      didMount.current = true;
+      return;
     }
 
-    let usia: number[] | undefined = undefined
-    const hasMin = typeof ageMin === 'number'
-    const hasMax = typeof ageMax === 'number'
+    let usia: number[] | undefined = undefined;
+    const hasMin = typeof ageMin === 'number';
+    const hasMax = typeof ageMax === 'number';
 
     if (hasMin || hasMax) {
-      const min = hasMin ? ageMin! : 1
-      const max = hasMax ? ageMax! : 100
+      const min = hasMin ? ageMin! : 1;
+      const max = hasMax ? ageMax! : 100;
       if (min <= max) {
-        usia = Array.from({ length: max - min + 1 }, (_, i) => min + i)
+        usia = Array.from({ length: max - min + 1 }, (_, i) => min + i);
       }
     }
 
@@ -56,12 +63,12 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
       status: status.length > 0 ? status : undefined,
       usia,
       jenis_kelamin,
-    }
+    };
 
     if (!isEqual(next, kriteria)) {
-      onChange(next)
+      onChange(next);
     }
-  }, [region, status, ageMin, ageMax, jenis_kelamin])
+  }, [region, status, ageMin, ageMax, jenis_kelamin]);
 
   const handleAdd = (
     value: string,
@@ -69,64 +76,64 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
     current: string[],
     reset: () => void
   ) => {
-    const trimmed = value.trim()
-    if (!trimmed || current.includes(trimmed)) return
-    setter([...current, trimmed])
-    reset()
-  }
+    const trimmed = value.trim();
+    if (!trimmed || current.includes(trimmed)) return;
+    setter([...current, trimmed]);
+    reset();
+  };
 
   const handleRemove = (
     index: number,
     setter: (val: string[]) => void,
     current: string[]
   ) => {
-    setter(current.filter((_, i) => i !== index))
-  }
+    setter(current.filter((_, i) => i !== index));
+  };
 
   const handleAgeInput = (value: string, setter: (n: number | undefined) => void) => {
-    const number = parseInt(value, 10)
-    if (value === '') setter(undefined)
-    else if (!isNaN(number) && number >= 1 && number <= 100) setter(number)
-  }
+    const number = parseInt(value, 10);
+    if (value === '') setter(undefined);
+    else if (!isNaN(number) && number >= 1 && number <= 100) setter(number);
+  };
 
   return (
     <fieldset className="grid md:grid-cols-2 grid-cols-1 gap-5">
-      <FormGroup label="Region Domisili" htmlFor="region-input">
+      <FormGroup label="Region" htmlFor="region-input">
         <div className="flex gap-2">
           <Input
             id="region-input"
             value={regionInput}
             onChange={(e) => setRegionInput(e.target.value)}
-            className="w-48 sm:text-sm text-xs"
-            placeholder="Tambah region"
+            className="w-full sm:text-sm text-xs bg-background/40 backdrop-blur-sm"
+            placeholder="Add region"
             disabled={disabled}
           />
           <Button
             type="button"
             variant="outline"
-            className="text-[#232323] hover:opacity-80"
+            className="hover:opacity-80 backdrop-blur-sm bg-background/50 border border-glass-border text-foreground"
             onClick={() =>
               handleAdd(regionInput, setRegion, region, () => setRegionInput(''))
             }
             disabled={disabled}
           >
-            <Plus />
+            <Plus className="w-4 h-4" />
           </Button>
         </div>
         <div className="flex flex-wrap gap-2 mt-2">
           {region.map((item, index) => (
             <span
               key={index}
-              className="border rounded px-2 py-1 sm:text-sm text-xs flex items-center"
+              className="bg-background/30 backdrop-blur-md text-foreground border border-glass-border rounded px-2 py-1 sm:text-sm text-xs flex items-center"
             >
               {item}
               {!disabled && (
                 <button
                   type="button"
-                  className="ml-2 text-red-500"
+                  className="cursor-pointer ml-2 text-red-500"
                   onClick={() => handleRemove(index, setRegion, region)}
                 >
-                  <X />
+                  <X className="w-4 h-4" />
                 </button>
               )}
             </span>
@@ -134,42 +141,42 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
         </div>
       </FormGroup>
 
-      <FormGroup label="Status Latar Belakang" htmlFor="status-input">
+      <FormGroup label="Background Status" htmlFor="status-input">
         <div className="flex gap-2">
           <Input
             id="status-input"
             value={statusInput}
             onChange={(e) => setStatusInput(e.target.value)}
-            className="w-48 sm:text-sm text-xs"
-            placeholder="Tambah status"
+            className="w-full sm:text-sm text-xs bg-background/40 backdrop-blur-sm"
+            placeholder="Add status"
             disabled={disabled}
           />
           <Button
             type="button"
             variant="outline"
-            className="text-[#232323] hover:opacity-80"
+            className="hover:opacity-80 backdrop-blur-sm bg-background/50 border border-glass-border text-foreground"
             onClick={() =>
               handleAdd(statusInput, setStatus, status, () => setStatusInput(''))
             }
             disabled={disabled}
           >
-            <Plus />
+            <Plus className="w-4 h-4" />
           </Button>
         </div>
         <div className="flex flex-wrap gap-2 mt-2">
           {status.map((item, index) => (
             <span
               key={index}
-              className="border rounded px-2 py-1 sm:text-sm text-xs flex items-center"
+              className="bg-background/30 backdrop-blur-md text-foreground border border-glass-border rounded px-2 py-1 sm:text-sm text-xs flex items-center"
             >
               {item}
               {!disabled && (
                 <button
                   type="button"
-                  className="ml-2 text-red-500"
+                  className="cursor-pointer ml-2 text-red-500"
                   onClick={() => handleRemove(index, setStatus, status)}
                 >
-                  <X />
+                  <X className="w-4 h-4" />
                 </button>
               )}
             </span>
@@ -177,13 +184,13 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
         </div>
       </FormGroup>
 
-      <FormGroup label="Umur (rentang usia)" htmlFor="umur-min">
-        <div className="flex gap-4 items-center ">
+      <FormGroup label="Age Range" htmlFor="age-min">
+        <div className="flex gap-4 items-center">
           <Input
-            id="umur-min"
+            id="age-min"
             type="number"
             placeholder="Min"
-            className="w-20 sm:text-sm text-xs"
+            className="w-full sm:text-sm text-xs bg-background/40 backdrop-blur-sm"
             min={1}
             max={100}
             value={ageMin ?? ''}
@@ -194,7 +201,7 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
           <Input
             type="number"
             placeholder="Max"
-            className="w-20 sm:text-sm text-xs"
+            className="w-full sm:text-sm text-xs bg-background/40 backdrop-blur-sm"
             min={1}
             max={100}
             value={ageMax ?? ''}
@@ -204,30 +211,30 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
         </div>
         {ageMin && ageMax && ageMin > ageMax && (
           <p className="text-sm text-red-500 mt-1">
-            Umur minimum tidak boleh lebih besar dari maksimum.
+            Minimum age must not be greater than maximum age.
           </p>
         )}
       </FormGroup>
 
-      <FormGroup label="Jenis Kelamin" htmlFor="jenis_kelamin">
-        <select
-          id="jenis_kelamin"
-          className="border bg-none rounded px-2 py-1 sm:text-sm text-xs"
-          value={jenis_kelamin ?? ''}
-          onChange={(e) => setJenisKelamin(e.target.value || undefined)}
+      <FormGroup label="Gender" htmlFor="jenis_kelamin">
+        <Select
+          value={jenis_kelamin ?? 'all'}
+          onValueChange={(val) => setJenisKelamin(val === 'all' ? undefined : val)}
           disabled={disabled}
         >
-          <option className="text-[#232323]" value="">
-            Semua
-          </option>
-          <option className="text-[#232323]" value="laki-laki">
-            Laki-laki
-          </option>
-          <option className="text-[#232323]" value="perempuan">
-            Perempuan
-          </option>
-        </select>
+          <SelectTrigger
+            id="jenis_kelamin"
+            className="w-full bg-background/40 border border-glass-border backdrop-blur-sm text-foreground"
+          >
+            <SelectValue placeholder="Select gender" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="laki-laki">Male</SelectItem>
+            <SelectItem value="perempuan">Female</SelectItem>
+          </SelectContent>
+        </Select>
       </FormGroup>
     </fieldset>
-  )
+  );
 }

@@ -17,22 +17,27 @@ export const CreateSurveyPaymentButton = ({ surveyId }: Props) => {
         if (payment.invoice_url) {
           window.open(payment.invoice_url, '_blank');
         } else {
-          toast('Tidak ada invoice URL.');
+          toast.error('No invoice URL found.');
         }
       },
       onError: (error: any) => {
-        toast(error?.message || 'Gagal membuat pembayaran.');
+        toast.error(error?.message || 'Failed to create payment.');
       },
     });
   };
 
   return (
     <Button
-      className="sm:w-fit w-full bg-secondary-1 hover:bg-secondary-1 text-[#232323] font-semibold hover:opacity-80"
       onClick={handleClick}
       disabled={isPending}
+      className="w-full sm:w-fit px-4 py-2 text-sm font-semibold rounded-md transition 
+        bg-secondary-1/30 dark:bg-secondary-1/20 text-foreground hover:bg-secondary-1/40 dark:hover:bg-secondary-1/30 
+        border border-glass-border backdrop-blur-md shadow-sm"
+      style={{
+        borderColor: 'var(--glass-border)',
+      }}
     >
-      {isPending ? 'Memproses...' : 'Bayar & Publish Survei'}
+      {isPending ? 'Processing...' : 'Pay & Publish Survey'}
     </Button>
   );
 };

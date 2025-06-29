@@ -1,4 +1,4 @@
 export const defaultSurveyQuestionPayload = {
-  teks_pertanyaan: 'Pertanyaan survei baru',
-  opsi: ["opsi 1", "opsi 2", "opsi 3"],
+  teks_pertanyaan: 'New Survey Question',
+  opsi: ["Option 1", "Option 2", "Option 3"],
 }

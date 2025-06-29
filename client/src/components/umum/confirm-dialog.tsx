@@ -24,9 +24,9 @@ interface ConfirmDialogProps {
 
 export function ConfirmDialog({
   children,
-  title = 'Konfirmasi Tindakan',
-  description = 'Tindakan ini tidak dapat dibatalkan.',
-  actionLabel = 'Lanjut',
+  title = 'Confirm Action',
+  description = 'This action cannot be undone.',
+  actionLabel = 'Continue',
   isLoading = false,
   onConfirm,
   actionClassName = '',
@@ -34,19 +34,38 @@ export function ConfirmDialog({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent
+        className="rounded-xl border border-glass-border bg-glass-bg backdrop-blur-xl shadow-xl text-foreground"
+        style={{
+          background: 'var(--glass-background)',
+          borderColor: 'var(--glass-border)',
+          boxShadow: 'var(--glass-shadow)',
+          backdropFilter: 'var(--glass-blur)',
+        }}
+      >
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          <AlertDialogTitle className="text-xl font-bold">{title}</AlertDialogTitle>
+          <AlertDialogDescription className="text-sm text-muted-foreground">
+            {description}
+          </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel className="cursor-pointer">Batal</AlertDialogCancel>
+        <AlertDialogFooter className="pt-4">
+          <AlertDialogCancel
+            className="px-4 py-2 rounded-md font-medium text-sm border border-glass-border 
+              bg-background/30 backdrop-blur-sm text-foreground hover:bg-background/40 hover:text-foreground transition"
+            style={{ borderColor: 'var(--glass-border)' }}
+          >
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
             disabled={isLoading}
-            className={`cursor-pointer ${actionClassName}`}
+            className={`px-4 py-2 rounded-md font-semibold text-sm transition 
+              bg-secondary-1/30 hover:bg-secondary-1/40 text-foreground border border-glass-border backdrop-blur-md 
+              ${actionClassName}`}
+            style={{ borderColor: 'var(--glass-border)' }}
           >
-            {isLoading ? 'Memproses...' : actionLabel}
+            {isLoading ? 'Processing...' : actionLabel}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

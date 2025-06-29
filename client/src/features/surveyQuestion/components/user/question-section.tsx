@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
-import { QuestionCard } from '@/features/surveyQuestion/components/user/question-card'
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { QuestionCard } from '@/features/surveyQuestion/components/user/question-card';
 import {
   useInfiniteSurveyQuestions,
   useCreateSurveyQuestion,
   useUpdateSurveyQuestion,
   useDeleteSurveyQuestion,
-} from '@/features/surveyQuestion/hooks/useUserSurveyQuestion'
-import { SurveyQuestion, UpdateSurveyQuestionPayload } from '@/features/surveyQuestion/types'
-import { defaultSurveyQuestionPayload } from '@/features/surveyQuestion/constants'
+} from '@/features/surveyQuestion/hooks/useUserSurveyQuestion';
+import { SurveyQuestion, UpdateSurveyQuestionPayload } from '@/features/surveyQuestion/types';
+import { defaultSurveyQuestionPayload } from '@/features/surveyQuestion/constants';
 
 interface QuestionSectionProps {
-  surveyId: string
-  isEditable: boolean
+  surveyId: string;
+  isEditable: boolean;
 }
 
 export function QuestionSection({ surveyId, isEditable }: QuestionSectionProps) {
@@ -27,70 +27,75 @@ export function QuestionSection({ surveyId, isEditable }: QuestionSectionProps) 
     fetchNextPage,
     isError,
     error,
-  } = useInfiniteSurveyQuestions(surveyId)
+  } = useInfiniteSurveyQuestions(surveyId);
 
-  const createQuestion = useCreateSurveyQuestion(surveyId)
-  const updateQuestion = useUpdateSurveyQuestion(surveyId)
-  const deleteQuestion = useDeleteSurveyQuestion(surveyId)
+  const createQuestion = useCreateSurveyQuestion(surveyId);
+  const updateQuestion = useUpdateSurveyQuestion(surveyId);
+  const deleteQuestion = useDeleteSurveyQuestion(surveyId);
 
   const handleAddQuestion = () => {
     createQuestion.mutate(defaultSurveyQuestionPayload, {
-      onSuccess: () => toast.success('Pertanyaan berhasil ditambahkan'),
-      onError: () => toast.error('Gagal menambahkan pertanyaan'),
-    })
-  }
+      onSuccess: () => toast.success('Question added successfully.'),
+      onError: () => toast.error('Failed to add question.'),
+    });
+  };
 
-const handleUpdateQuestion = (id: string, updates: Partial<UpdateSurveyQuestionPayload>) => {
-  const toastId = toast.loading("Menyimpan perubahan...")
-  updateQuestion.mutate(
-    { id, payload: updates },
-    { 
-      onSuccess: () => {toast.success("Perubahan pertanyaan disimpan", { id: toastId })},
-      onError: () => {toast.error("Gagal menyimpan perubahan", { id: toastId })},
-    }
-  )
-}
+  const handleUpdateQuestion = (id: string, updates: Partial<UpdateSurveyQuestionPayload>) => {
+    const toastId = toast.loading('Saving changes...');
+    updateQuestion.mutate(
+      { id, payload: updates },
+      {
+        onSuccess: () => toast.success('Changes saved.', { id: toastId }),
+        onError: () => toast.error('Failed to save changes.', { id: toastId }),
+      }
+    );
+  };
 
   const handleDeleteQuestion = (id: string) => {
     deleteQuestion.mutate(id, {
-      onSuccess: () => toast.success('Pertanyaan dihapus'),
-      onError: () => toast.error('Gagal menghapus pertanyaan'),
-    })
-  }
+      onSuccess: () => toast.success('Question deleted.'),
+      onError: () => toast.error('Failed to delete question.'),
+    });
+  };
 
-  const allQuestions = data?.pages.flatMap(page => page.data) ?? []
+  const allQuestions = data?.pages.flatMap((page) => page.data) ?? [];
 
   if (isLoading) {
-    return <div className="text-xs w-full text-center">Memuat pertanyaan survei...</div>
+    return (
+      <div className="text-xs w-full text-center text-muted-foreground">
+        Loading survey questions...
+      </div>
+    );
   }
 
   if (isError) {
     return (
       <div className="text-xs w-full text-center text-red-500">
-        Gagal memuat pertanyaan: {error?.message || 'Unknown error'}
+        Failed to load questions: {error?.message || 'Unknown error'}
       </div>
-    )
+    );
   }
 
   if (allQuestions.length === 0) {
     return (
-      <div className="text-xs w-full text-center">
-        Belum ada pertanyaan. Tambahkan pertanyaan pertama Anda.
-        <div className="mt-2">
+      <div className="text-xs w-full text-center text-foreground">
+        No questions yet. Add your first question.
+        <div className="mt-3">
           <Button
             variant="outline"
+            className="bg-glass-bg border-glass-border backdrop-blur-md text-foreground"
             onClick={handleAddQuestion}
             disabled={createQuestion.isPending || !isEditable}
           >
-            {createQuestion.isPending ? 'Menambahkan...' : 'Tambah Pertanyaan'}
+            {createQuestion.isPending ? 'Adding...' : 'Add Question'}
           </Button>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-4 mt-4">
       {allQuestions.map((q: SurveyQuestion) => (
         <QuestionCard
           key={q.id}
@@ -110,31 +115,32 @@ const handleUpdateQuestion = (id: string, updates: Partial<UpdateSurveyQuestionP
       ))}
 
       {hasNextPage && (
-        <div className="flex flex-col w-full items-center gap-2 mb-4">
-          <span className="text-xs text-muted-foreground">
-            Menampilkan {allQuestions.length} dari {totalCount} pertanyaan
-            ({totalCount - allQuestions.length} belum ditampilkan)
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-xs text-muted-foreground text-center">
+            Showing {allQuestions.length} of {totalCount} questions
+            ({totalCount - allQuestions.length} hidden)
           </span>
           <Button
             variant="outline"
+            className="bg-glass-bg border-glass-border backdrop-blur-md hover:text-foreground"
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
-            className="w-fit sm:text-sm text-xs"
           >
-            {isFetchingNextPage ? 'Memuat...' : 'Muat lebih banyak'}
+            {isFetchingNextPage ? 'Loading...' : 'Load More'}
           </Button>
         </div>
       )}
 
-      <Button
-        variant="outline"
-        className="w-fit mb-4 sm:text-sm text-xs"
-        onClick={handleAddQuestion}
-        disabled={createQuestion.isPending}
-        hidden={!isEditable}
-      >
-        {createQuestion.isPending ? 'Menambahkan...' : 'Tambah Pertanyaan'}
-      </Button>
-    </>
-  )
+      {isEditable && (
+        <Button
+          variant="ghost"
+          className="w-fit bg-glass-bg border-glass-border backdrop-blur-md text-foreground self-center mt-4"
+          onClick={handleAddQuestion}
+          disabled={createQuestion.isPending}
+        >
+          {createQuestion.isPending ? 'Adding...' : 'Add Question'}
+        </Button>
+      )}
+    </div>
+  );
 }
