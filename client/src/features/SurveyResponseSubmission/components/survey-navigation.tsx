@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { NumberListQuestions } from './number-list-questions';
+import { CheckCheck } from 'lucide-react';
 
 interface Question {
   id: string;
@@ -47,15 +49,11 @@ export function SurveyNavigation({
   const isDisabled = requiredUnanswered.length > 0;
 
   const handleNext = () => {
-    if (!isFinalStep) {
-      setCurrentStep(currentStep + 1);
-    }
+    if (!isFinalStep) setCurrentStep(currentStep + 1);
   };
 
   const handlePrev = () => {
-    if (!isFirstStep) {
-      setCurrentStep(currentStep - 1);
-    }
+    if (!isFirstStep) setCurrentStep(currentStep - 1);
   };
 
   return (
@@ -63,11 +61,15 @@ export function SurveyNavigation({
       <div className="flex justify-between items-center gap-2">
         <Button
           onClick={handlePrev}
-          className="bg-primary-2 hover:bg-primary-2/80 text-white w-full max-w-[120px] px-4 py-2 rounded-md"
+          className="sm:w-full max-w-[120px]
+            bg-background/80
+            text-foreground hover:bg-foreground/40 dark:hover:bg-foreground/30 
+            border border-glass-border backdrop-blur-md transition
+          "
           disabled={isFirstStep}
         >
           <span className="block sm:hidden">&lt;</span>
-          <span className="hidden sm:block">&lt; Sebelumnya</span>
+          <span className="hidden sm:block">&lt; Previous</span>
         </Button>
 
         <NumberListQuestions
@@ -80,54 +82,71 @@ export function SurveyNavigation({
         {!isFinalStep ? (
           <Button
             onClick={handleNext}
-            className="bg-primary-2 hover:bg-primary-2/80 text-white w-full max-w-[120px] px-4 py-2 rounded-md"
+            className="sm:w-full max-w-[120px]
+              bg-background/80
+              text-foreground hover:bg-foreground/40 dark:hover:bg-foreground/30 
+              border border-glass-border backdrop-blur-md transition
+            "
           >
             <span className="block sm:hidden">&gt;</span>
-            <span className="hidden sm:block">Selanjutnya &gt;</span>
+            <span className="hidden sm:block">Next &gt;</span>
           </Button>
         ) : (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button
-                className="bg-secondary-1 hover:bg-secondary-1/80 text-[#232323] w-full max-w-[120px] px-6 py-2 rounded-md"
+                className="sm:w-full max-w-[120px]
+                  bg-secondary-1/80 text-foreground hover:bg-secondary-1/50 
+                  border border-glass-border backdrop-blur-md transition
+                "
                 disabled={isDisabled}
                 onClick={() => {
                   if (!isDisabled) setOpen(true);
                 }}
               >
-                Selesai
+                <span className="flex items-center gap-1 sm:hidden"><CheckCheck /></span>
+                <span className="hidden sm:flex items-center gap-1">Finish <CheckCheck /></span>
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-md rounded-xl border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] shadow-lg">
               <DialogHeader>
-                <DialogTitle>Yakin ingin mengirim jawaban?</DialogTitle>
+                <DialogTitle className="text-foreground">
+                  Are you sure you want to submit?
+                </DialogTitle>
+                <DialogDescription className="text-muted-foreground text-sm">
+                  You won’t be able to change your answers after submission.
+                </DialogDescription>
               </DialogHeader>
 
               {isDisabled ? (
-                <p className="text-red-500 font-medium">
-                  ⚠️ Masih ada {requiredUnanswered.length} pertanyaan wajib yang belum dijawab.
+                <p className="text-destructive font-medium text-sm">
+                  ⚠️ {requiredUnanswered.length} required question(s) are still unanswered.
                 </p>
               ) : (
-                <p className="text-gray-600">
-                  Semua pertanyaan wajib telah dijawab. Pertanyaan tidak wajib dapat dilewati.
+                <p className="text-muted-foreground text-sm">
+                  All required questions are answered. You can skip optional ones.
                 </p>
               )}
 
               {optionalUnanswered.length > 0 && (
-                <div className="mt-3 text-sm text-gray-700">
-                  <p>Pertanyaan tidak wajib yang belum dijawab:</p>
-                  <ul className="mt-1 list-disc list-inside max-h-32 overflow-auto text-gray-500">
-                    {optionalUnanswered.map((q) => (
-                      <li key={q.id}>{q.teks_pertanyaan}</li>
-                    ))}
-                  </ul>
-                </div>
+                <ul className="mt-3 list-disc list-inside max-h-32 overflow-auto text-sm text-muted-foreground">
+                  <li className="font-medium mb-1 text-foreground/80">Optional questions not yet answered:</li>
+                  {optionalUnanswered.map((q) => (
+                    <li key={q.id}>{q.teks_pertanyaan}</li>
+                  ))}
+                </ul>
               )}
 
               <DialogFooter className="mt-6">
-                <Button variant="outline" onClick={() => setOpen(false)}>
-                  Batal
+                <Button
+                  className="px-4 py-2 rounded-md font-medium text-sm border border-glass-border 
+                    bg-background/30 backdrop-blur-sm text-foreground hover:bg-background/40 hover:text-foreground transition
+                  "
+                  style={{ borderColor: 'var(--glass-border)' }}
+                  onClick={() => setOpen(false)}
+                >
+                  Cancel
                 </Button>
                 <Button
                   onClick={() => {
@@ -136,7 +155,7 @@ export function SurveyNavigation({
                   }}
                   className="bg-secondary-1 hover:bg-secondary-1/80 text-[#232323]"
                 >
-                  Kirim
+                  Submit
                 </Button>
               </DialogFooter>
             </DialogContent>

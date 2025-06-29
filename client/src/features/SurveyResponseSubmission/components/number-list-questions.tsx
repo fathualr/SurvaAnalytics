@@ -24,31 +24,39 @@ export function NumberListQuestions({
     <div className="flex justify-center w-full">
       <Popover>
         <PopoverTrigger asChild>
-          <Button className="bg-accent-1 border text-[#232323] hover:bg-accent-1/30">
-              <span className="block sm:hidden">Navigasi</span>
-              <span className="hidden sm:block">Navigasi Pertanyaan</span>
+          <Button className="bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] border-[var(--glass-border)] text-foreground hover:bg-muted/40 rounded-lg px-4 py-2">
+            <span className="block sm:hidden">Navigate</span>
+            <span className="hidden sm:block">Question Navigation</span>
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="max-h-40 md:w-160 sm:w-120 w-60 overflow-y-auto space-y-2 z-9">
+        <PopoverContent className="max-h-40 md:w-160 sm:w-120 w-60 overflow-y-auto z-10 bg-[var(--glass-bg)] border-[var(--glass-border)] backdrop-blur-[var(--glass-blur)] text-foreground rounded-xl p-4 shadow-lg">
           <div className="grid md:grid-cols-10 grid-cols-5 gap-2">
-            {questions.map((q, idx) => (
-              <Button
-                key={q.id}
-                size="sm"
-                variant="ghost"
-                className={`rounded border text-xs px-0 py-2 ${
-                  idx === currentStep
-                    ? 'bg-primary-2 text-white'
-                    : answers[q.id]
-                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                }`}
-                onClick={() => onNavigate(idx)}
-              >
-                {idx + 1}
-              </Button>
-            ))}
+            {questions.map((q, idx) => {
+              const isCurrent = idx === currentStep;
+              const isAnswered = answers[q.id];
+
+              return (
+                <Button
+                  key={q.id}
+                  size="sm"
+                  variant="ghost"
+                  className={`
+                    text-xs font-medium px-0 py-2 rounded-md border transition-all
+                    ${
+                      isCurrent
+                        ? 'bg-foreground/10 border-foreground text-foreground'
+                        : isAnswered
+                          ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-200 dark:border-green-700 hover:bg-green-200/60 dark:hover:bg-green-800/60'
+                          : 'bg-[var(--glass-bg)] border-[var(--glass-border)] text-muted-foreground hover:bg-muted/30'
+                    }
+                  `}
+                  onClick={() => onNavigate(idx)}
+                >
+                  {idx + 1}
+                </Button>
+              );
+            })}
           </div>
         </PopoverContent>
       </Popover>

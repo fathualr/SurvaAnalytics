@@ -12,20 +12,22 @@ export function FinishedSurvey({ points }: SurveyFinishScreenProps) {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col flex-grow items-center justify-center">
+    <div
+      className="flex flex-col flex-grow items-center justify-center"
+    >
       <CircleCheck className="w-16 h-16 text-green-600 mb-4" />
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">Terima kasih!</h1>
-      <p className="text-gray-600 mb-4">
-        Partisipasimu telah berhasil dikirim.
+      <h1 className="text-2xl font-bold text-foreground mb-2">Thank you!</h1>
+      <p className="text-muted-foreground mb-4">
+        Your responses have been successfully submitted.
       </p>
-      <p className="text-lg font-semibold text-primary-2 mb-6">
-        Kamu mendapatkan <span className="text-green-600">{points}</span> poin!
+      <p className="text-lg font-semibold text-foreground mb-6">
+        You've earned <span className="text-green-600">{points}</span> points!
       </p>
       <Button
         onClick={() => router.push('/explore')}
-        className="bg-primary-2 hover:bg-primary-2/80 text-white px-6 py-2 rounded-md"
+        className="bg-foreground text-background hover:bg-foreground/90 rounded-lg px-6 py-2"
       >
-        Kembali
+        Back to Explore
       </Button>
     </div>
   );

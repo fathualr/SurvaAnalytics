@@ -41,7 +41,7 @@ export function StartSurveyButton({
       setLoading(true);
 
       const res = await refetch();
-      if (!res?.data) {
+      if (!res.data || res.status !== 'success') {
         throw new Error('Failed to create or fetch survey draft.');
       }
 

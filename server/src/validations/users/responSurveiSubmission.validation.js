@@ -8,9 +8,10 @@ export const saveDraftSchema = Joi.object({
         Joi.string().allow(''),
         Joi.number(),
         Joi.array().items(Joi.string()),
-        Joi.boolean()
+        Joi.boolean(),
+        Joi.valid(null)
       )
     )
-    .required()
+    .optional()
     .min(1)
 });

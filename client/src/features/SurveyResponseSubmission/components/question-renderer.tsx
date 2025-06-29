@@ -1,4 +1,15 @@
+'use client';
+
 import { PertanyaanSurvei } from '@/features/survey/types';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Check, Circle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface QuestionRendererProps {
   question: PertanyaanSurvei;
@@ -10,56 +21,84 @@ export function QuestionRenderer({ question, value, onChange }: QuestionRenderer
   const { teks_pertanyaan, tipe_pertanyaan, opsi, is_required } = question;
 
   const safeString = (val: any) => (typeof val === 'string' ? val : '');
-  const safeArray = (val: any) => (Array.isArray(val) ? val : []);
 
   return (
-    <div className="w-full h-full flex-grow flex flex-col justify-center rounded-md">
-      <label className="font-medium block mb-2">
+    <div className="w-full flex flex-col gap-4 text-foreground">
+      <label className="font-medium text-base leading-relaxed">
         {teks_pertanyaan}
-        {is_required && <span className="text-red-500 ml-1">*</span>}
+        {is_required && <span className="text-destructive ml-1">*</span>}
       </label>
 
+      {/* Pilihan Ganda */}
       {tipe_pertanyaan === 'pilihan_ganda' && (
         <div className="space-y-2">
-          {opsi.map((opt) => (
-            <label
-              key={opt}
-              className={`block border p-2 rounded-sm cursor-pointer ${
-                safeString(value) === opt ? 'border-blue-500 bg-blue-100' : 'border-gray-300'
-              }`}
-            >
-              <input
-                type="radio"
-                name={question.id}
-                value={opt}
-                checked={safeString(value) === opt}
-                onChange={() => onChange(opt)}
-                className="hidden"
-              />
-              {opt}
-            </label>
-          ))}
-        </div>
-      )}
-
-      {tipe_pertanyaan === 'checkbox' && (
-        <div className="space-y-2">
           {opsi.map((opt) => {
-            const selected = safeArray(value);
+            const isSelected = safeString(value) === opt;
             return (
               <label
                 key={opt}
-                className={`block border p-2 rounded-sm cursor-pointer ${
-                  selected.includes(opt) ? 'border-blue-500 bg-blue-100' : 'border-gray-300'
-                }`}
+                className={`
+                  flex items-center gap-3 px-4 py-2 rounded-xl cursor-pointer transition-all
+                  border backdrop-blur-[var(--glass-blur)]
+                  ${isSelected
+                    ? 'bg-secondary-1/25 dark:bg-secondary-1/15 border-[var(--glass-border)]'
+                    : 'bg-[var(--glass-bg)] border-[var(--glass-border)] hover:bg-muted/40'
+                  }
+                `}
               >
+                <span
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition
+                    ${isSelected ? 'bg-foreground/70 border-foreground' : 'border-muted-foreground'}`}
+                >
+                  {isSelected && <Circle className="w-2.5 h-2.5 text-foreground/30" />}
+                </span>
+                <input
+                  type="radio"
+                  name={question.id}
+                  value={opt}
+                  checked={isSelected}
+                  onChange={() => onChange(opt)}
+                  className="hidden"
+                />
+                {opt}
+              </label>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Checkbox */}
+      {tipe_pertanyaan === 'checkbox' && (
+        <div className="space-y-2">
+          {opsi.map((opt) => {
+            const selected = Array.isArray(value) ? value : [];
+            const isChecked = selected.includes(opt);
+            return (
+              <label
+                key={opt}
+                className={`
+                  flex items-center gap-3 px-4 py-2 rounded-xl cursor-pointer transition-all
+                  border backdrop-blur-[var(--glass-blur)]
+                  ${isChecked
+                    ? 'bg-secondary-1/25 dark:bg-secondary-1/15 border-[var(--glass-border)]'
+                    : 'bg-[var(--glass-bg)] border-[var(--glass-border)] hover:bg-muted/40'
+                  }
+                `}
+              >
+                <span
+                  className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition
+                    ${isChecked ? 'bg-foreground/70 border-foreground' : 'border-muted-foreground'}`}
+                >
+                  {isChecked && <Check className="w-3.5 h-3.5 text-foreground/30" />}
+                </span>
                 <input
                   type="checkbox"
-                  checked={selected.includes(opt)}
+                  checked={isChecked}
                   onChange={(e) => {
                     const set = new Set(selected);
                     e.target.checked ? set.add(opt) : set.delete(opt);
-                    onChange(Array.from(set));
+                    const updated = Array.from(set);
+                    onChange(updated.length > 0 ? updated : null); // ⬅️ gunakan null jika kosong
                   }}
                   className="hidden"
                 />
@@ -70,52 +109,79 @@ export function QuestionRenderer({ question, value, onChange }: QuestionRenderer
         </div>
       )}
 
+      {/* Dropdown */}
       {tipe_pertanyaan === 'dropdown' && (
-        <select
-          className="w-full border rounded-sm p-2 bg-white"
-          value={safeString(value)}
-          onChange={(e) => onChange(e.target.value)}
-        >
-          <option value="" disabled hidden>
-            Pilih salah satu
-          </option>
-          {opsi.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+        <Select value={safeString(value)} onValueChange={onChange}>
+          <SelectTrigger
+            className={`
+              w-full px-4 py-2 rounded-lg border text-base transition-colors
+              bg-[var(--glass-bg)] border-[var(--glass-border)] backdrop-blur-[var(--glass-blur)]
+              hover:bg-muted/40 text-foreground
+            `}
+          >
+            <SelectValue placeholder="Select an option" />
+          </SelectTrigger>
+          <SelectContent
+            className="bg-[var(--glass-bg)] border-[var(--glass-border)] backdrop-blur-[var(--glass-blur)] text-foreground"
+          >
+            {opsi.map((opt) => (
+              <SelectItem key={opt} value={opt}>
+                {opt}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       )}
 
+      {/* Skala */}
       {tipe_pertanyaan === 'skala' && (
-        <div className="flex justify-around space-x-2">
-          {opsi.map((opt) => (
-            <label
-              key={opt}
-              className={`w-10 h-10 rounded-full flex items-center justify-center border cursor-pointer ${
-                safeString(value) === opt ? 'border-blue-500 bg-blue-100' : 'border-gray-300'
-              }`}
-            >
-              <input
-                type="radio"
-                name={question.id}
-                value={opt}
-                checked={safeString(value) === opt}
-                onChange={() => onChange(opt)}
-                className="hidden"
-              />
-              {opt}
-            </label>
-          ))}
+        <div className="flex flex-col gap-3">
+          <div className="text-sm text-center text-muted-foreground px-1">
+            <span>{opsi[0]}</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            {opsi.map((opt, index) => {
+              const isSelected = safeString(value) === opt;
+              return (
+                <Button
+                  key={index}
+                  type="button"
+                  onClick={() => onChange(opt)}
+                  className={`
+                    w-full text-left text-sm font-medium rounded-xl px-4 py-3 transition-all
+                    border backdrop-blur-[var(--glass-blur)] text-foreground
+                    ${isSelected
+                      ? 'bg-secondary-1/25 dark:bg-secondary-1/15 border-[var(--glass-border)]'
+                      : 'bg-[var(--glass-bg)] border-[var(--glass-border)] hover:bg-muted/40'
+                    }
+                  `}
+                >
+                  {opt}
+                </Button>
+              );
+            })}
+          </div>
+          <div className="text-sm text-center text-muted-foreground px-1">
+            <span>{opsi[opsi.length - 1]}</span>
+          </div>
         </div>
       )}
 
+      {/* Essay */}
       {tipe_pertanyaan === 'essay' && (
         <textarea
-          className="w-full border rounded-sm p-3"
+          className={`
+            w-full rounded-xl px-4 py-3 resize-none
+            border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)]
+            text-foreground placeholder:text-muted-foreground transition-all
+            focus:outline-none focus:ring-1 focus:ring-secondary-1/40
+          `}
           value={safeString(value)}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="Tulis jawaban Anda..."
+          onChange={(e) => {
+            const val = e.target.value.trim();
+            onChange(val.length > 0 ? val : null); // ⬅️ kirim null jika kosong
+          }}
+          placeholder="Write your answer here..."
           rows={4}
         />
       )}
