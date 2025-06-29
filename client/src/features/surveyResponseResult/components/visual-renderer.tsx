@@ -9,16 +9,25 @@ interface ChartRendererProps {
 
 export const VisualRenderer = ({ summary }: ChartRendererProps) => {
   if (!summary) {
-    return <div className="text-sm text-muted-foreground italic">Data tidak tersedia.</div>;
+    return (
+      <div className="text-sm text-muted-foreground italic text-center">
+        Data is not available.
+      </div>
+    );
   }
 
-  const isObjectSummary = typeof summary.summary === 'object' && !Array.isArray(summary.summary);
+  const isObjectSummary =
+    typeof summary.summary === 'object' && !Array.isArray(summary.summary);
   const isEmpty =
     (isObjectSummary && Object.keys(summary.summary).length === 0) ||
     (Array.isArray(summary.summary) && summary.summary.length === 0);
 
   if (isEmpty) {
-    return <div className="text-sm text-muted-foreground italic text-center">Belum ada respons untuk pertanyaan ini.</div>;
+    return (
+      <div className="text-sm text-muted-foreground italic text-center">
+        No responses available for this question.
+      </div>
+    );
   }
 
   switch (summary.tipe_visualisasi) {
@@ -37,7 +46,11 @@ export const VisualRenderer = ({ summary }: ChartRendererProps) => {
     case 'sentiment_analysis':
       return <SentimentAnalysis texts={summary.summary as string[]} />;
     default:
-      return <div className="text-sm text-muted-foreground italic">Visualisasi tidak tersedia.</div>;
+      return (
+        <div className="text-sm text-muted-foreground italic text-center">
+          Visualization not available.
+        </div>
+      );
   }
 };
 

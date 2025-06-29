@@ -89,8 +89,13 @@ export const useResponSurvei = (
 export const useResponSurveiSummary = (surveiId: string, enabled = true) => {
   return useQuery<ResponSummary[]>({
     queryKey: ['respon-survei-summary', surveiId],
-    queryFn: () => responSurveiService.getSummary(surveiId),
+    queryFn: () => 
+      responSurveiService.getSummary(surveiId),
     enabled: !!surveiId && enabled,
+    staleTime: 1000 * 60,
+    refetchInterval: 10000,
+    refetchOnWindowFocus: true,
+    retry: 2,
   });
 };
 

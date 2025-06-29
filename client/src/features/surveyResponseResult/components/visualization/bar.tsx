@@ -12,6 +12,7 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ResponSummary } from '../../types';
 import { generateSoftColorPalette } from '../../utils/generateSoftColorPalette';
+import { useTheme } from 'next-themes';
 
 ChartJS.register(
   BarElement,
@@ -27,6 +28,9 @@ interface BarChartProps {
 }
 
 export default function BarChart({ summary }: BarChartProps) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
   const summaryData = summary.summary as Record<string, number>;
   const labels = Object.keys(summaryData);
   const values = Object.values(summaryData);
@@ -39,12 +43,16 @@ export default function BarChart({ summary }: BarChartProps) {
       {
         data: values,
         backgroundColor,
+        borderRadius: 4,
+        barPercentage: 0.6,
+        categoryPercentage: 0.7,
       },
     ],
   };
 
   const options = {
     maintainAspectRatio: false,
+    responsive: true,
     plugins: {
       legend: {
         display: false,
@@ -62,9 +70,12 @@ export default function BarChart({ summary }: BarChartProps) {
           weight: 'bold' as const,
         },
         offset: -7,
-        color: '#000',
+        color: isDark ? '#f4f4f5' : '#1f2937',
       },
       tooltip: {
+        backgroundColor: isDark ? '#1f2937' : '#f3f4f6',
+        titleColor: isDark ? '#f3f4f6' : '#1f2937',
+        bodyColor: isDark ? '#e4e4e7' : '#1f2937',
         callbacks: {
           title: (context: any[]) => context[0].label ?? '',
           label: (context: any) => {
@@ -76,10 +87,22 @@ export default function BarChart({ summary }: BarChartProps) {
       },
     },
     scales: {
+      x: {
+        ticks: {
+          color: isDark ? '#e4e4e7' : '#1f2937',
+        },
+        grid: {
+          color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+        },
+      },
       y: {
         beginAtZero: true,
         ticks: {
           precision: 0,
+          color: isDark ? '#e4e4e7' : '#1f2937',
+        },
+        grid: {
+          color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
         },
       },
     },

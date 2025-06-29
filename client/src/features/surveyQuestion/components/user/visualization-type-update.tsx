@@ -10,7 +10,10 @@ import {
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { useUpdateVisualizationType } from '../../hooks/useUserSurveyQuestion';
-import { UpdateVisualizationTypeSurveyQuestionPayload, VisualizationType } from '../../types';
+import {
+  UpdateVisualizationTypeSurveyQuestionPayload,
+  VisualizationType,
+} from '../../types';
 
 interface VisualizationTypeSelectProps {
   questionId: string;
@@ -42,15 +45,30 @@ export function VisualizationTypeSelect({
       : ['pie', 'bar', 'doughnut', 'radar'];
 
   return (
-    <div className="sm:max-w-xs w-full">
-      <Label htmlFor="chart-select" className="mb-2 block">
-        Pilih chart
+    <div className="md:max-w-xs w-full space-y-1">
+      <Label htmlFor="chart-select" className="text-foreground/80">
+        Select chart type
       </Label>
       <Select value={value} onValueChange={handleChange} disabled={isPending}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Pilih chart" />
+        <SelectTrigger
+          id="chart-select"
+          className="w-full border border-glass-border bg-glass-bg backdrop-blur-md shadow-sm text-foreground"
+          style={{
+            background: 'var(--glass-background)',
+            borderColor: 'var(--glass-border)',
+            backdropFilter: 'var(--glass-blur)',
+          }}
+        >
+          <SelectValue placeholder="Choose a chart" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent
+          className="bg-glass-bg border border-glass-border text-foreground backdrop-blur-md"
+          style={{
+            background: 'var(--glass-background)',
+            borderColor: 'var(--glass-border)',
+            backdropFilter: 'var(--glass-blur)',
+          }}
+        >
           {chartOptions.map((option) => (
             <SelectItem key={option} value={option}>
               {option

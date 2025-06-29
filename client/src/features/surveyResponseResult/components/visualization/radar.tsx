@@ -14,6 +14,7 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ResponSummary } from '../../types';
 import { generateSoftColorPalette } from '../../utils/generateSoftColorPalette';
+import { useTheme } from 'next-themes';
 
 ChartJS.register(
   RadarController,
@@ -22,7 +23,8 @@ ChartJS.register(
   LineElement,
   Filler,
   Tooltip,
-  Legend
+  Legend,
+  ChartDataLabels
 );
 
 interface RadarChartProps {
@@ -30,54 +32,76 @@ interface RadarChartProps {
 }
 
 export default function RadarChart({ summary }: RadarChartProps) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
   const summaryData = summary.summary as Record<string, number>;
   const labels = Object.keys(summaryData);
   const values = Object.values(summaryData);
   const total = values.reduce((acc, cur) => acc + cur, 0);
-  const backgroundColor = generateSoftColorPalette(labels.length);
+  const pointColors = generateSoftColorPalette(labels.length);
 
   const data = {
     labels,
     datasets: [
       {
+        label: 'Responses',
         data: values,
-        backgroundColor: 'rgba(15, 15, 15, 0.1)',
-        borderColor: 'rgba(15, 15, 15, 0.5)',
-        borderWidth: 1,
-        pointBackgroundColor: backgroundColor,
-        pointBorderColor: backgroundColor,
+        backgroundColor: isDark
+          ? 'rgba(255, 255, 255, 0.1)'
+          : 'rgba(0, 0, 0, 0.05)',
+        borderColor: isDark
+          ? 'rgba(255, 255, 255, 0.8)'
+          : 'rgba(0, 0, 0, 0.7)',
+        pointBackgroundColor: pointColors,
+        pointBorderColor: isDark
+          ? 'rgba(255, 255, 255, 0.8)'
+          : 'rgba(0, 0, 0, 0.6)',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
       },
     ],
   };
 
   const options = {
     maintainAspectRatio: false,
+    responsive: true,
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       tooltip: {
+        backgroundColor: isDark ? '#111827' : '#f9fafb',
+        titleColor: isDark ? '#f3f4f6' : '#111827',
+        bodyColor: isDark ? '#e5e7eb' : '#1f2937',
         callbacks: {
-          title: (context: any[]) => context[0].label ?? '',
           label: (context: any) => {
-            const value = context.raw ?? 0;
-            const percentage = total > 0 ? ((+value / total) * 100).toFixed(1) : '0';
-            return [`${value} (${percentage}%)`];
+            const val = context.raw ?? 0;
+            const percentage = ((val / total) * 100).toFixed(1);
+            return `${val} (${percentage}%)`;
           },
         },
       },
     },
     scales: {
       r: {
-        min: 0,
         beginAtZero: true,
-        ticks: {
-          precision: 0,
+        suggestedMax: Math.max(...values) + 1,
+        grid: {
+          color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)',
+        },
+        angleLines: {
+          color: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)',
         },
         pointLabels: {
-          font: {
-            weight: 'bold' as const,
-          },
+          color: isDark ? '#e5e7eb' : '#374151',
+          font: { weight: 600 as const },
+        },
+        ticks: {
+          display: true,
+          stepSize: 1,
+          precision: 0,
+          color: isDark ? '#e5e7eb' : '#374151',
+          backdropColor: 'transparent',
         },
       },
     },
