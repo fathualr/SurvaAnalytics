@@ -27,7 +27,7 @@ export function ThemeToggle() {
       size="icon"
       onClick={toggleTheme}
       aria-label="Toggle theme"
-      className="relative p-2 rounded-full bg-glass-background border border-glass-border backdrop-blur-md shadow-md transition-all hover:shadow-lg"
+      className="relative p-2 rounded-full bg-glass-background border border-glass-border backdrop-blur-md transition-all hover:shadow-lg"
     >
       <Sun
         className={`w-5 h-5 transition-transform duration-300 ease-in-out ${

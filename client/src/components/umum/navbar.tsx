@@ -39,7 +39,20 @@ const Navbar = () => {
   if (!mounted || !hydrated) {
     return (
       <nav className="fixed top-0 left-0 w-full h-16 z-50 backdrop-blur-md border-b border-[var(--glass-border)] bg-[var(--glass-bg)] shadow">
-        <div className="w-full h-full px-6 md:px-12 flex items-center justify-between" />
+        <div className="w-full h-full px-6 md:px-12 flex items-center justify-between" >
+          <Link href="/" className="hover:opacity-80 transition-opacity flex items-center">
+            <Image
+              src={logoSrc}
+              alt="Surva Logo"
+              width={0}
+              height={0}
+              sizes="50vw"
+              className="object-contain h-auto w-[120px]"
+              priority
+            />
+          </Link>
+          <ThemeToggle />
+        </div>
       </nav>
     );
   }
@@ -69,7 +82,7 @@ const Navbar = () => {
                 size="icon"
                 onClick={toggleDropdown}
                 aria-label="Toggle user menu"
-                className="cursor-pointer rounded-full border transition hover:bg-background"
+                className="cursor-pointer rounded-full bg-glass-background border border-glass-border backdrop-blur-md transition-all hover:shadow-lg"
               >
                 <User className="w-6 h-6" />
               </Button>
@@ -84,7 +97,7 @@ const Navbar = () => {
                       {user?.email || "user@example.com"}
                     </p>
                   </div>
-                  <ul className="py-3 border-t border-border space-y-1">
+                  <ul className="py-3 border-y border-border space-y-1">
                     <li>
                       <Link
                         href="/profile"
@@ -98,7 +111,8 @@ const Navbar = () => {
                   </ul>
                   <Button
                     variant="ghost"
-                    className="w-full mt-3 flex items-center justify-start gap-2 py-2 text-sm hover:bg-white/30 dark:hover:bg-white/10 transition"
+                    size="icon"
+                    className="w-full flex items-center justify-start mt-3 gap-2 px-2 py-2 text-sm hover:bg-white/30 dark:hover:bg-white/10 hover:text-foreground transition"
                     onClick={logout}
                   >
                     <LogOut className="w-4 h-4" />

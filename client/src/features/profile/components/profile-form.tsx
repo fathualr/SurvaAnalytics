@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Building2, SquareUserRound } from 'lucide-react';
 import { ProfileFormField } from '@/components/umum/form/profile-form-field';
 import { UserProfile } from '../types';
 import { updateProfileForm } from '../hooks/useProfile';
@@ -41,7 +42,6 @@ export function ProfileForm({
 
   useEffect(() => {
     if (!user) return;
-
     setFormData({
       nama: user.Umum?.nama ?? '',
       tanggal_lahir: user.Umum?.profil_responden?.tanggal_lahir ?? '',
@@ -79,142 +79,137 @@ export function ProfileForm({
   };
 
   if (isLoadingUser) {
-    return (
-      <div className="h-full w-full rounded animate-pulse" />
-    );
+    return <div className="h-96 w-full animate-pulse rounded-md bg-muted" />;
   }
 
   if (isError || !user) {
     return (
-      <div className="flex flex-col gap-4 items-center justify-center bg-red-50 border border-red-200 text-red-700 px-4 py-6 rounded">
-        <p>Gagal memuat profil pengguna.</p>
+      <div className="flex flex-col gap-4 items-center justify-center bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-700 text-red-800 dark:text-red-100 px-4 py-6 rounded-lg">
+        <p>Failed to load user profile.</p>
         <Button variant="destructive" onClick={onRetry}>
-          Coba Lagi
+          Retry
         </Button>
       </div>
     );
   }
 
   return (
-    <form className="space-y-4 text-sm" onSubmit={handleSubmit}>
-      <ProfileFormField
-        label="Email"
-        id="email"
-        value={user.email ?? ''}
-        readOnly
-      />
-      <Separator />
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <h3 className="text-base font-semibold text-foreground">Account</h3>
+      <ProfileFormField label="Email" id="email" value={user.email ?? ''} readOnly />
 
-      <div className="grid md:grid-cols-2 gap-8 w-full">
-        <div className="space-y-4">
-          <h2 className="flex items-center gap-2 text-base font-bold text-white">
-            <span className="inline-block w-1.5 h-5 bg-white rounded-sm" />
-            Profil Responden
-          </h2>
+      <Separator className="bg-foreground/30" />
 
-          <ProfileFormField
-            label="Nama"
-            id="nama"
-            value={formData.nama}
-            onChange={handleChange}
-            isEditing={isEditing}
-          />
-          <ProfileFormField
-            label="Tanggal Lahir"
-            id="tanggal_lahir"
-            type="date"
-            value={formData.tanggal_lahir}
-            onChange={handleChange}
-            isEditing={isEditing}
-          />
-          <ProfileFormField
-            label="Jenis Kelamin"
-            id="jenis_kelamin"
-            type="select"
-            value={formData.jenis_kelamin}
-            onChange={handleChange}
-            isEditing={isEditing}
-            options={[
-              { value: 'laki laki', label: 'Laki-laki' },
-              { value: 'perempuan', label: 'Perempuan' },
-            ]}
-          />
-          <ProfileFormField
-            label="Region"
-            id="region"
-            value={formData.region}
-            onChange={handleChange}
-            isEditing={isEditing}
-          />
-          <ProfileFormField
-            label="Status"
-            id="status"
-            value={formData.status}
-            onChange={handleChange}
-            isEditing={isEditing}
-          />
-        </div>
-
-        <div className="space-y-4 md:border-l md:pl-6 border-white/30">
-          <h2 className="flex items-center gap-2 text-base font-bold text-white">
-            <span className="inline-block w-1.5 h-5 bg-white rounded-sm" />
-            Profil Klien
-          </h2>
-
-          <ProfileFormField
-            label="Nama Klien"
-            id="nama_klien"
-            value={formData.nama_klien}
-            onChange={handleChange}
-            isEditing={isEditing}
-          />
-          <ProfileFormField
-            label="Kontak Klien"
-            id="kontak_klien"
-            value={formData.kontak_klien}
-            onChange={handleChange}
-            isEditing={isEditing}
-          />
-          <ProfileFormField
-            label="Alamat Klien"
-            id="alamat_klien"
-            value={formData.alamat_klien}
-            onChange={handleChange}
-            isEditing={isEditing}
-          />
-        </div>
+      <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
+        <SquareUserRound  className="w-5 h-5" />
+        Respondent Profile
+      </h3>
+      <div className="grid md:grid-cols-2 gap-4">
+        <ProfileFormField
+          label="Name"
+          id="nama"
+          value={formData.nama}
+          onChange={handleChange}
+          isEditing={isEditing}
+        />
+        <ProfileFormField
+          label="Date of Birth"
+          id="tanggal_lahir"
+          type="date"
+          value={formData.tanggal_lahir}
+          onChange={handleChange}
+          isEditing={isEditing}
+        />
+        <ProfileFormField
+          label="Gender"
+          id="jenis_kelamin"
+          type="select"
+          value={formData.jenis_kelamin}
+          onChange={handleChange}
+          isEditing={isEditing}
+          options={[
+            { value: 'laki laki', label: 'Male' },
+            { value: 'perempuan', label: 'Female' },
+          ]}
+        />
+        <ProfileFormField
+          label="Region"
+          id="region"
+          value={formData.region}
+          onChange={handleChange}
+          isEditing={isEditing}
+        />
+        <ProfileFormField
+          label="Status"
+          id="status"
+          value={formData.status}
+          onChange={handleChange}
+          isEditing={isEditing}
+        />
       </div>
 
-      <footer className="flex justify-end mt-10">
+      <Separator className="bg-foreground/30" />
+
+      <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
+        <Building2 className="w-5 h-5" />
+        Client Profile
+      </h3>
+      <div className="grid md:grid-cols-2 gap-4">
+        <ProfileFormField
+          label="Client Name"
+          id="nama_klien"
+          value={formData.nama_klien}
+          onChange={handleChange}
+          isEditing={isEditing}
+        />
+        <ProfileFormField
+          label="Client Contact"
+          id="kontak_klien"
+          value={formData.kontak_klien}
+          onChange={handleChange}
+          isEditing={isEditing}
+        />
+        <ProfileFormField
+          label="Client Address"
+          id="alamat_klien"
+          value={formData.alamat_klien}
+          onChange={handleChange}
+          isEditing={isEditing}
+        />
+      </div>
+
+      <Separator className="bg-foreground/30" />
+
+      <div className="flex justify-end gap-3">
         {isEditing ? (
-          <div className="flex gap-3">
+          <>
             <Button
               type="button"
               onClick={onEditToggle}
-              variant="outline"
-              className="cursor-pointer bg-accent-1 text-black hover:bg-primary-2 hover:text-accent-1"
+              variant="ghost"
+              className="backdrop-blur-md bg-foreground/10 border border-glass-border text-foreground hover:bg-foreground/20 shadow-md"
               disabled={isPending}
             >
-              Batal
+              Cancel
             </Button>
             <Button
               type="submit"
-              className="cursor-pointer bg-secondary-1 hover:bg-secondary-2 text-sm text-primary-1 font-semibold"
+              className="backdrop-blur-md bg-secondary-1/30 border border-secondary-1/40 text-foreground hover:bg-secondary-1/40 hover:border-secondary-1/50 transition-all duration-200 ease-in-out shadow-lg"
               disabled={isPending}
             >
-              {isPending ? 'Menyimpan...' : 'Simpan'}
+              {isPending ? 'Saving...' : 'Save'}
             </Button>
-          </div>
+          </>
         ) : (
           <Button
             type="button"
             onClick={onEditToggle}
-            className="cursor-pointer bg-secondary-1 hover:bg-secondary-2 text-sm text-primary-1 font-semibold"
+            className="backdrop-blur-md bg-foreground/10 border border-glass-border text-foreground hover:bg-foreground/20 shadow-md"
           >
-            Edit Profil
+            Edit Profile
           </Button>
         )}
-      </footer>
+      </div>
     </form>
   );
 }
