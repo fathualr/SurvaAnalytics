@@ -28,17 +28,17 @@ export default function RewardExchangePreview({
   const isNotEnough = remainingPoin < 0;
 
   const handleConfirm = () => {
-    if (!idHadiah) return toast.error('ID Hadiah tidak ditemukan');
+    if (!idHadiah) return toast.error('Reward ID not found.');
 
     createExchange.mutate(
       { id_hadiah: idHadiah },
       {
         onSuccess: () => {
-          toast.success('Penukaran hadiah berhasil!');
+          toast.success('Reward successfully redeemed!');
           onSuccessClose?.();
         },
         onError: (err: any) => {
-          toast.error(err?.response?.data?.message || 'Terjadi kesalahan saat menukar hadiah.');
+          toast.error(err?.response?.data?.message || 'An error occurred while redeeming.');
         },
       }
     );
@@ -54,29 +54,43 @@ export default function RewardExchangePreview({
   }
 
   return (
-    <div className="space-y-3 text-sm">
-      <div className="bg-gray-200 p-2 rounded-md">
-        <p>
-          <strong>Poin Anda:</strong> {currentPoin.toLocaleString()} Poin
-        </p>
-        <p>
-          <strong>Sisa Poin setelah penukaran:</strong>{' '}
-          <span className={isNotEnough ? 'text-red-500 font-semibold' : ''}>
-            {remainingPoin.toLocaleString()} Poin
+    <div
+      className="space-y-4 p-4 rounded-lg border border-glass-border bg-glass-bg backdrop-blur-xl text-sm text-foreground"
+      style={{
+        background: 'var(--glass-background)',
+        borderColor: 'var(--glass-border)',
+        backdropFilter: 'var(--glass-blur)',
+      }}
+    >
+      <div className="space-y-1">
+        <div className="flex justify-between">
+          <span className="font-medium">Your Points:</span>
+          <span className="font-semibold">{currentPoin.toLocaleString()} pts</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="font-medium">Remaining After Redemption:</span>
+          <span className={isNotEnough ? 'text-red-500 font-semibold' : 'font-semibold'}>
+            {remainingPoin.toLocaleString()} pts
           </span>
-        </p>
+        </div>
       </div>
 
       <Button
-        className="w-full bg-secondary-1 text-primary-1 hover:bg-secondary-2"
-        disabled={isNotEnough || createExchange.isPending}
         onClick={handleConfirm}
+        disabled={isNotEnough || createExchange.isPending}
+        className="w-full text-sm font-semibold rounded-md px-4 py-2
+          bg-secondary-1/50 dark:bg-secondary-1/40
+          text-foreground hover:bg-secondary-1/40 dark:hover:bg-secondary-1/30 
+          border border-glass-border backdrop-blur-md transition"
+        style={{
+          borderColor: 'var(--glass-border)',
+        }}
       >
         {createExchange.isPending
-          ? 'Memproses...'
+          ? 'Processing...'
           : isNotEnough
-          ? 'Poin Tidak Cukup'
-          : 'Konfirmasi Penukaran'}
+          ? 'Insufficient Points'
+          : 'Confirm Redemption'}
       </Button>
     </div>
   );

@@ -14,8 +14,8 @@ export function ExchangePage() {
       <NavUmum />
 
       <section className="flex flex-col flex-grow">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
-          Penukaran Poin
+        <h1 className="text-3xl md:text-4xl font-bold my-4">
+          Point Exchange
         </h1>
 
         <div className="mb-6">
