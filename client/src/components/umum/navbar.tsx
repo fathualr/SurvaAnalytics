@@ -58,7 +58,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="fixed top-0 left-0 w-full h-16 z-50 backdrop-blur-md border-b border-[var(--glass-border)] bg-[var(--glass-bg)] shadow-md transition-colors duration-300">
+    <nav className="fixed top-0 left-0 w-screen h-16 z-50 backdrop-blur-md border-b border-[var(--glass-border)] bg-[var(--glass-bg)] shadow-md transition-colors duration-300">
       <div className="w-full h-full px-6 md:px-12 flex items-center justify-between">
         <Link href="/" className="hover:opacity-80 transition-opacity flex items-center">
           <Image
@@ -124,9 +124,12 @@ const Navbar = () => {
           ) : (
             <Link href="/login">
               <Button 
-                variant="ghost"
-                className="backdrop-blur-md border border-glass-border text-background bg-muted-foreground
-                  shadow-md hover:shadow-lg"
+                className="backdrop-blur-md border border-glass-border text-foreground
+                  shadow-md hover:shadow-lg hover:opacity-80"
+                style={{
+                  background: 'var(--glass-background)',
+                  backdropFilter: 'var(--glass-blur)',
+                }}
               >
                 Sign In
               </Button>

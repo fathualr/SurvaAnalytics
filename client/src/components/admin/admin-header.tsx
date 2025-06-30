@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { useRef, useState, useEffect } from "react"
-import { useAuth } from '@/features/auth/hooks/useAuth';
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { CircleUserRound, IdCard, LogOut } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useRef, useState, useEffect } from "react";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { CircleUserRound, LogOut } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Separator } from "@/components/ui/separator";
 
 export function AdminHeader() {
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
   const { isLoggedIn, user, logout, hydrated } = useAuth();
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen)
-  }
+  const toggleDropdown = () => setIsOpen(!isOpen);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -23,75 +23,70 @@ export function AdminHeader() {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  if (!hydrated) return (
-    <header className="sticky top-0 w-full flex justify-between items-center gap-2 bg-primary-1 border border-y-0 border-r-0 border-l-accent-1/10 py-1 h-16 md:px-6 px-3 z-10">
-      <SidebarTrigger />
-      <div className="flex items-center gap-2">
-        <div className="flex flex-col justify-center relative" ref={dropdownRef}>
-          <button className="cursor-pointer flex justify-center items-center text-accent-1 hover:text-primary-1 hover:bg-accent-1 h-10 w-10 rounded-md transition">
-            <CircleUserRound className="h-8 w-8" />
-          </button>
+  if (!hydrated) {
+    return (
+      <header className="sticky top-0 w-full flex justify-between items-center bg-background border border-y-0 border-r-0 border-l-foreground/10 py-1 h-16 md:px-6 px-3 z-10">
+        <SidebarTrigger />
+        <div className="flex items-center gap-2">
+          <div className="relative" ref={dropdownRef}>
+            <button className="cursor-pointer flex items-center justify-center text-foreground hover:text-background hover:bg-muted-foreground h-8 w-8 rounded-full transition">
+              <CircleUserRound className="h-8 w-8" />
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
-  );
+      </header>
+    );
+  }
 
   return (
-    <header className="sticky top-0 w-full flex justify-between items-center gap-2 bg-primary-1 border border-y-0 border-r-0 border-l-accent-1/10 py-1 h-16 md:px-6 px-3 z-10">
+    <header className="sticky top-0 w-full flex justify-between items-center text-foreground bg-background border border-y-0 border-r-0 border-l-foreground/10 py-1 h-16 md:px-2 px-1 z-10">
       <SidebarTrigger />
 
       {isLoggedIn ? (
-        <div className="flex flex-col justify-center relative" ref={dropdownRef}>
-          <button onClick={toggleDropdown} className="cursor-pointer flex justify-center items-center text-accent-1 hover:text-primary-1 hover:bg-accent-1 h-10 w-10 rounded-md transition">
+        <div className="flex items-center justify-center gap-4 relative" ref={dropdownRef}>
+          <ThemeToggle />
+
+          <button
+            onClick={toggleDropdown}
+            className="cursor-pointer flex items-center justify-center text-foreground hover:text-background hover:bg-muted-foreground h-8 w-8 rounded-full transition"
+          >
             <CircleUserRound className="h-8 w-8" />
           </button>
 
           {isOpen && (
-            <div className="absolute right-0 top-10 mt-4 max-w-[220px] bg-primary-1 text-accent-1 rounded-lg shadow-md z-20 p-4">
-              <div>
-                <span className="block text-md font-semibold truncate whitespace-nowrap overflow-hidden">
-                  {user?.Admin?.nama_admin || 'Anonim'}
-                </span>
-                <span className="block text-xs truncate whitespace-nowrap overflow-hidden">
-                  {user?.email || '@email'}
-                </span>
+            <div className="absolute right-0 top-12 mt-2 w-60 bg-background text-foreground rounded-xl shadow-lg z-20 p-4 border border-[var(--glass-border)] backdrop-blur-md transition">
+              <div className="mb-3 space-y-0.5">
+                <p className="font-semibold text-md truncate">
+                  {user?.Admin?.nama_admin || "Anonymous"}
+                </p>
+                <p className="text-sm text-muted-foreground truncate">
+                  {user?.email || "user@example.com"}
+                </p>
               </div>
-              <ul className='gap-1 py-3 border-b font-medium'>
-                <li>
-                  <Link
-                    href="/admin/profile"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-accent-1 hover:text-primary-1 transition-all"
-                  >
-                    <IdCard />
-                    <span>Profile</span>
-                  </Link>
-                </li>
-              </ul>
+
+              <Separator className="bg-foreground/30" />
+
               <Button
-                variant="ghost"
-                className="font-medium text-base w-48 mt-2 py-2 hover:bg-accent-1 hover:text-primary-1 transition-all"
+                size="icon"
+                className="w-full flex items-center justify-start mt-3 gap-2 px-2 py-2 text-sm bg-background text-foreground hover:bg-muted-foreground hover:text-background transition"
                 onClick={logout}
               >
-                <LogOut />
-                <span>Logout</span>
+                <LogOut className="w-4 h-4" />
+                <span>Log out</span>
               </Button>
             </div>
           )}
         </div>
       ) : (
         <Link href="/login" passHref>
-          <Button className="cursor-pointer text-lg font-semibold bg-accent-1 text-primary-1 hover:bg-primary-3 hover:text-accent-1">
-            Masuk
+          <Button className="font-semibold text-lg bg-accent-1 text-primary-1 hover:bg-primary-3 hover:text-foreground">
+            Sign in
           </Button>
         </Link>
       )}
-
     </header>
-  )
+  );
 }
