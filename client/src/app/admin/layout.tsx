@@ -1,10 +1,19 @@
-import { SidebarProvider } from "@/components/ui/sidebar"
-import { AdminSidebar } from "@/components/admin/admin-sidebar"
-import { AdminHeader } from "@/components/admin/admin-header"
-import { Toaster } from "sonner"
-import { RequireAuth } from "@/guards/RequireAuth"
+'use client';
+
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { AdminHeader } from "@/components/admin/admin-header";
+import { Toaster } from "sonner";
+import { RequireAuth } from "@/guards/RequireAuth";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const { hydrated, loading } = useAuth();
+
+  if (!hydrated || loading) {
+    return null;
+  }
+
   return (
     <RequireAuth roles={['admin']}>
       <SidebarProvider>
@@ -19,5 +28,5 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </SidebarProvider>
     </RequireAuth>
-  )
+  );
 }
