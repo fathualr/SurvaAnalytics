@@ -9,11 +9,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <RequireAuth roles={['admin']}>
       <SidebarProvider>
         <AdminSidebar />
-        <div className="flex-grow min-w-0 bg-background">
+        <div className="flex-grow min-w-0">
           <AdminHeader />
           <Toaster />
-          <main className="flex flex-grow bg-foreground flex-col p-3 min-h-[calc(100%-64px)]">
-            <div className="bg-background fixed inset-0 -z-10 pointer-events-none w-full" />
+          <main className="flex flex-grow bg-background/70 flex-col p-3 min-h-[calc(100%-64px)]">
+            <div className="fixed inset-0 -z-10 pointer-events-none w-full" />
             {children}
           </main>
         </div>

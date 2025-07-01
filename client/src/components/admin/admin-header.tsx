@@ -42,7 +42,7 @@ export function AdminHeader() {
   }
 
   return (
-    <header className="sticky top-0 w-full flex justify-between items-center text-foreground bg-background border border-y-0 border-r-0 border-l-foreground/10 py-1 h-16 md:px-2 px-1 z-10">
+    <header className="sticky top-0 w-full flex justify-between items-center text-foreground bg-background border border-t-0 border-x-0 border-glass-border  py-1 h-16 md:px-2 px-1 z-10">
       <SidebarTrigger />
 
       {isLoggedIn ? (

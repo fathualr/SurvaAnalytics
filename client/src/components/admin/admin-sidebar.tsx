@@ -62,7 +62,7 @@ export function AdminSidebar() {
   const toggleMenu = useSidebarStore((s) => s.toggleMenu);
 
   return (
-    <Sidebar className="border-none font-medium" collapsible="icon">
+    <Sidebar className="border border-y-0 border-l-0 border-glass-border font-medium" collapsible="icon">
       <SidebarContent className="bg-background text-foreground">
         <SidebarGroup className="justify-center items-center py-0">
           <div className="flex justify-center items-center h-16 w-full">

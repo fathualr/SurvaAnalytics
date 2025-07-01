@@ -264,7 +264,7 @@ function SidebarTrigger({
     <button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      className={cn("cursor-pointer flex justify-center items-center text-foreground hover:text-background hover:bg-muted-foreground h-8 w-8 rounded-md transition", className)}
+      className={cn("cursor-pointer flex justify-center items-center text-foreground hover:text-background hover:bg-muted-foreground h-8 w-8 rounded-sm transition", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
