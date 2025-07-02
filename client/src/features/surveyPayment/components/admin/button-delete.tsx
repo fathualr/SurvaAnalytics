@@ -32,36 +32,36 @@ export const ButtonDeleteSurveyPayment = ({
   const handleDelete = async () => {
     try {
       await deletePayment(paymentId);
-      toast.success('Pembayaran survei berhasil dihapus');
+      toast.success('Survey payment successfully deleted');
       setOpen(false);
       onSuccess?.();
     } catch (err: any) {
-      toast.error(err?.message || 'Gagal menghapus pembayaran survei');
+      toast.error(err?.message || 'Failed to delete survey payment');
     }
   };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className="flex items-center justify-center bg-muted hover:bg-background">
           <Trash className="w-4 h-4 text-red-500" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Pembayaran Survei</AlertDialogTitle>
+          <AlertDialogTitle>Delete Survey Payment</AlertDialogTitle>
           <AlertDialogDescription>
-            Apakah kamu yakin ingin menghapus data pembayaran ini? Tindakan ini tidak dapat dibatalkan.
+            Are you sure you want to delete this payment record? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             disabled={isPending}
             className="bg-red-600 hover:bg-red-700 text-white"
           >
-            {isPending ? 'Menghapus...' : 'Hapus'}
+            {isPending ? 'Deleting...' : 'Delete'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

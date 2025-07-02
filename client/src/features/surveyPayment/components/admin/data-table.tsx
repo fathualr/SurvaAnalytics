@@ -17,7 +17,8 @@ import { getColumns } from "./columns"
 import { useAdminSurveyPayments } from "../../hooks/useAdminSurveyPayment"
 import { useAuth } from "@/features/auth/hooks/useAuth"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { Pagination } from "@/components/admin/pagination"
+import { Separator } from "@/components/ui/separator"
 
 export default function DataTableSurveyPayment() {
   const [page, setPage] = useState(1)
@@ -38,23 +39,45 @@ export default function DataTableSurveyPayment() {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  if (authLoading) return <p className="p-4 text-center">Memuat autentikasi...</p>
-  if (!isLoggedIn) return null
-  if (isLoading) return <p className="p-4 text-center">Memuat data...</p>
-  if (isError) return <p className="p-4 text-center text-red-500">Error: {error?.message}</p>
+  if (authLoading) {
+    return <p className="p-4 text-center text-muted-foreground">Authenticating...</p>
+  }
+
+  if (!isLoggedIn) {
+    return null
+  }
+
+  if (isLoading) {
+    return <p className="p-4 text-center text-muted-foreground">Loading payment data...</p>
+  }
+
+  if (isError) {
+    return <p className="p-4 text-center text-destructive">Failed to fetch data. {error?.message}</p>
+  }
 
   const totalPages = meta?.total_pages ?? 1
 
   return (
     <>
-      <div className="flex-grow">
+      <div
+        className="flex-grow rounded-lg border border-glass-border bg-glass-bg bg-background/80 backdrop-blur-md overflow-auto"
+        style={{
+          borderColor: "var(--glass-border)",
+          backdropFilter: "var(--glass-blur)",
+        }}
+      >
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="bg-primary-1 hover:bg-primary-1/80" key={headerGroup.id}>
+              <TableRow className="bg-background hover:bg-background/50" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead className="text-center text-accent-1" key={header.id}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  <TableHead className="text-center text-foreground" key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -63,51 +86,36 @@ export default function DataTableSurveyPayment() {
           <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
+                <TableRow className="hover:bg-background" key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-<TableCell
-  key={cell.id}
-  className={`align-middle text-center ${cell.column.columnDef.meta?.className ?? ""}`}
->
-  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-</TableCell>
-
+                    <TableCell
+                      key={cell.id}
+                      className={`align-middle text-center py-1 ${cell.column.columnDef.meta?.className ?? ""}`}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={getColumns(page, limit).length} className="h-24 text-center">
-                  Tidak ada data.
+                <TableCell
+                  colSpan={getColumns(page, limit).length}
+                  className="h-24 text-center text-muted-foreground"
+                >
+                  No payment data available.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex justify-between mt-4">
-        <p className="text-sm content-center">
-          Halaman <strong>{page}</strong> dari <strong>{totalPages}</strong>
-        </p>
-        <div className="flex justify-end gap-3 items-center">
-          <Button
-            variant="outline"
-            onClick={() => setPage((p) => Math.max(p - 1, 1))}
-            className="w-20 hover:text-primary-1"
-            disabled={page === 1}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-            className="w-20 hover:text-primary-1"
-            disabled={page === totalPages}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </>
   )
 }

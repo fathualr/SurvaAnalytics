@@ -4,8 +4,8 @@ import DataTableSurveyPayment from "@/features/surveyPayment/components/admin/da
 
 export function ManagePaymentPage() {
   return (
-    <section className="flex flex-col flex-grow text-primary-1 gap-5 font-semibold">
-      <h1 className="text-3xl font-bold">Data Pembayaran Survei</h1>
+    <section className="flex flex-col flex-grow text-foreground gap-4">
+      <h1 className="text-3xl font-bold">Survey Data - Payment</h1>
 
       <DataTableSurveyPayment />
     </section>
