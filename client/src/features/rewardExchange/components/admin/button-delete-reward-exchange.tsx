@@ -27,43 +27,41 @@ export const ButtonDeleteRewardExchange = ({
   onSuccess,
 }: ButtonDeleteRewardExchangeProps) => {
   const [open, setOpen] = useState(false);
-  const { mutateAsync: deleteRewardExchange, isPending } =
-    useAdminDeleteRewardExchange();
+  const { mutateAsync: deleteRewardExchange, isPending } = useAdminDeleteRewardExchange();
 
   const handleDelete = async () => {
     try {
       await deleteRewardExchange(rewardExchangeId);
-      toast.success("Penukaran hadiah berhasil dihapus");
+      toast.success("Reward exchange successfully deleted");
       setOpen(false);
       onSuccess?.();
     } catch (err: any) {
-      toast.error(err?.message || "Gagal menghapus penukaran hadiah");
+      toast.error(err?.message || "Failed to delete reward exchange");
     }
   };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className="border-glass-border bg-glass-bg text-foreground backdrop-blur-md hover:bg-background hover:text-foreground">
           <Trash className="w-4 h-4 text-red-500" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Penukaran Hadiah</AlertDialogTitle>
+          <AlertDialogTitle>Delete Reward Exchange</AlertDialogTitle>
           <AlertDialogDescription>
-            Apakah kamu yakin ingin menghapus penukaran hadiah ini? Tindakan
-            ini tidak dapat dibatalkan.
+            Are you sure you want to delete this reward exchange? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             disabled={isPending}
             className="bg-red-600 hover:bg-red-700 text-white"
           >
-            {isPending ? "Menghapus..." : "Hapus"}
+            {isPending ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -180,7 +180,7 @@ export function AdminSidebar() {
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild className="text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
                         <Link href="/admin/manage-exchange">
-                          Redemptions
+                          Exchange
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

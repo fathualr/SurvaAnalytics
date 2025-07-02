@@ -24,36 +24,52 @@ export const getColumns = (page: number, limit: number): ColumnDef<RewardExchang
   },
   {
     accessorKey: "Umum.nama",
-    header: "Nama Pengguna",
-    cell: ({ row }) => row.original.Umum?.nama ?? "-",
+    header: "User Name",
+    cell: ({ row }) => {
+      const nama = row.original.Umum?.nama
+      return (
+        <span className={!nama ? "italic text-muted-foreground" : ""}>
+          {nama || "[Deleted User]"}
+        </span>
+      )
+    },
   },
   {
     accessorKey: "total_poin",
-    header: "Total Poin",
+    header: "Total Points",
+    cell: ({ row }) => `${row.original.total_poin} pts`,
   },
   {
     accessorKey: "keterangan",
-    header: "Keterangan",
+    header: "Notes",
+    cell: ({ row }) => row.original.keterangan || "-",
   },
   {
     accessorKey: "created_at",
-    header: "Tanggal",
+    header: "Date",
     cell: ({ row }) =>
-      new Date(row.original.created_at).toLocaleDateString("id-ID"),
+      new Date(row.original.created_at).toLocaleString("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "medium",
+      }),
   },
   {
     id: "actions",
-    header: "Aksi",
+    header: "Actions",
     cell: ({ row }) => {
-      const penukaran = row.original;
+      const exchange = row.original;
       return (
         <div className="flex items-center justify-center gap-2">
-          <Link href={`/admin/manage-exchange/detail/${penukaran.id}`}>
-            <Button variant="outline" size="icon">
-              <Eye className="w-4 h-4 text-primary-1" />
+          <Link href={`/admin/manage-exchange/detail/${exchange.id}`}>
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-glass-border bg-glass-bg bg-muted text-foreground backdrop-blur-md transition hover:bg-background hover:text-foreground"
+            >
+              <Eye className="w-4 h-4" />
             </Button>
           </Link>
-          <ButtonDeleteRewardExchange rewardExchangeId={penukaran.id} />
+          <ButtonDeleteRewardExchange rewardExchangeId={exchange.id} />
         </div>
       );
     },
