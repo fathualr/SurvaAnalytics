@@ -3,33 +3,25 @@
 import { Input } from '@/components/ui/input';
 import { FormGroup } from '@/components/umum/form/form-group';
 import { usePengguna } from '../../hooks/useUser';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 
 interface FormDetailUmumProps {
   userId: string;
 }
 
 export const FormDetailUmum = ({ userId }: FormDetailUmumProps) => {
-  const { isLoggedIn, loading: authLoading } = useAuth();
-  const shouldFetch = isLoggedIn && !authLoading;
-
   const {
     data,
     isLoading,
     isError,
     error,
     refetch,
-    isFetching,
-  } = usePengguna(userId, shouldFetch);
+  } = usePengguna(userId);
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
-      <div className="space-y-4">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <Skeleton key={i} className="h-10 w-full" />
-        ))}
+      <div className="flex flex-grow justify-center items-center text-muted-foreground text-sm">
+        Loading Data...
       </div>
     );
   }
@@ -37,11 +29,15 @@ export const FormDetailUmum = ({ userId }: FormDetailUmumProps) => {
   if (isError || !data) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-red-600 font-medium">
-          Gagal memuat data pengguna. {error?.message && `(${error.message})`}
+        <p className="text-sm text-destructive font-medium">
+          Failed to load data. {error?.message && `(${error.message})`}
         </p>
-        <Button variant="outline" onClick={() => refetch()} className="text-sm">
-          Coba Lagi
+        <Button
+          variant="outline"
+          onClick={() => refetch()}
+          className="text-sm"
+        >
+          Try Again
         </Button>
       </div>
     );
@@ -52,71 +48,110 @@ export const FormDetailUmum = ({ userId }: FormDetailUmumProps) => {
   const responden = umum?.profil_responden;
   const klien = umum?.profil_klien;
 
+  const inputStyle =
+    'bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50';
+
   return (
-    <div className="space-y-4">
-      <FormGroup label="Email" htmlFor="email">
-        <Input id="email" value={user.email} readOnly disabled />
+    <div className="flex-grow space-y-4 p-4 rounded-lg border border-glass-border bg-glass-bg bg-background/80 backdrop-blur-md">
+      <FormGroup label="User Id" htmlFor="id">
+        <Input id="id" value={user.id} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Status Email" htmlFor="email_confirmed">
-        <Input id="email_confirmed" value={user.email_confirmed ? 'Sudah Terverifikasi' : 'Belum Terverifikasi'} readOnly disabled />
+      <FormGroup label="Umum Id" htmlFor="id_umum">
+        <Input id="id_umum" value={umum?.id} readOnly disabled className={inputStyle} />
+      </FormGroup>
+
+      <FormGroup label="Email" htmlFor="email">
+        <Input id="email" value={user.email} readOnly disabled className={inputStyle} />
+      </FormGroup>
+
+      <FormGroup label="Email Status" htmlFor="email_confirmed">
+        <Input 
+          id="email_confirmed" 
+          value={user.email_confirmed ? 'Verified' : 'Not verified'} 
+          readOnly 
+          disabled 
+          className={inputStyle} 
+        />
+      </FormGroup>
+
+      <FormGroup label="Email Confirmation Token" htmlFor="email_confirmation_token">
+        <Input id="email_confirmation_token" value={user.email_confirmation_token || '-'} readOnly disabled className={inputStyle} />
+      </FormGroup>
+
+      <FormGroup label="Email Confirmation Sent Time" htmlFor="email_confirmation_sent_at">
+        <Input id="email_confirmation_sent_at" value={user.email_confirmation_sent_at || '-'} readOnly disabled className={inputStyle} />
+      </FormGroup>
+
+      <FormGroup label="Reauth Token" htmlFor="reauth_token">
+        <Input id="reauth_token" value={user.reauth_token || '-'} readOnly disabled className={inputStyle} />
+      </FormGroup>
+
+      <FormGroup label="Reauth Sent Time" htmlFor="reauth_sent_at">
+        <Input id="reauth_sent_at" value={user.reauth_sent_at || '-'} readOnly disabled className={inputStyle} />
+      </FormGroup>
+
+      <FormGroup label="Last Sign In" htmlFor="last_sign_in_at">
+        <Input id="last_sign_in_at" value={user.last_sign_in_at || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
       <FormGroup label="Role" htmlFor="role">
-        <Input id="role" value={user.role} readOnly disabled />
+        <Input id="role" value={user.role} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Nama" htmlFor="nama">
-        <Input id="nama" value={umum?.nama || '-'} readOnly disabled />
+      <FormGroup label="Full Name" htmlFor="nama">
+        <Input id="nama" value={umum?.nama || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Tanggal Lahir" htmlFor="tanggal_lahir">
-        <Input id="tanggal_lahir" value={responden?.tanggal_lahir || '-'} readOnly disabled />
+      <FormGroup label="Date of Birth" htmlFor="tanggal_lahir">
+        <Input id="tanggal_lahir" value={responden?.tanggal_lahir || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Jenis Kelamin" htmlFor="jenis_kelamin">
-        <Input id="jenis_kelamin" value={responden?.jenis_kelamin || '-'} readOnly disabled />
+      <FormGroup label="Gender" htmlFor="jenis_kelamin">
+        <Input id="jenis_kelamin" value={responden?.jenis_kelamin || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
       <FormGroup label="Region" htmlFor="region">
-        <Input id="region" value={responden?.region || '-'} readOnly disabled />
+        <Input id="region" value={responden?.region || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Status Pekerjaan / Pendidikan" htmlFor="status">
-        <Input id="status" value={responden?.status || '-'} readOnly disabled />
+      <FormGroup label="Occupation / Education Status" htmlFor="status">
+        <Input id="status" value={responden?.status || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Nama Klien" htmlFor="nama_klien">
-        <Input id="nama_klien" value={klien?.nama_klien || '-'} readOnly disabled />
+      <FormGroup label="Client Name" htmlFor="nama_klien">
+        <Input id="nama_klien" value={klien?.nama_klien || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Kontak Klien" htmlFor="kontak_klien">
-        <Input id="kontak_klien" value={klien?.kontak_klien || '-'} readOnly disabled />
+      <FormGroup label="Client Contact" htmlFor="kontak_klien">
+        <Input id="kontak_klien" value={klien?.kontak_klien || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Alamat Klien" htmlFor="alamat_klien">
-        <Input id="alamat_klien" value={klien?.alamat_klien || '-'} readOnly disabled />
+      <FormGroup label="Client Address" htmlFor="alamat_klien">
+        <Input id="alamat_klien" value={klien?.alamat_klien || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Poin" htmlFor="poin">
-        <Input id="poin" value={umum?.poin || '0'} readOnly disabled />
+      <FormGroup label="Points" htmlFor="poin">
+        <Input id="poin" value={umum?.poin?.toString() || '0'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Tanggal Dibuat" htmlFor="created_at">
+      <FormGroup label="Created At" htmlFor="created_at">
         <Input
           id="created_at"
           value={new Date(user.created_at).toLocaleString()}
           readOnly
           disabled
+          className={inputStyle}
         />
       </FormGroup>
 
-      <FormGroup label="Terakhir Diperbarui" htmlFor="updated_at">
+      <FormGroup label="Last Updated" htmlFor="updated_at">
         <Input
           id="updated_at"
           value={new Date(user.updated_at).toLocaleString()}
           readOnly
           disabled
+          className={inputStyle}
         />
       </FormGroup>
     </div>
