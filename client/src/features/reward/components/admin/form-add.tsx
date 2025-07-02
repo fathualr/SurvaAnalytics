@@ -11,16 +11,16 @@ import { FormGroup } from '@/components/umum/form/form-group'
 import { useAdminCreateHadiah } from '../../hooks/useAdminReward'
 
 const formSchema = z.object({
-  nama: z.string().min(1, 'Nama hadiah wajib diisi').max(255),
+  nama: z.string().min(1, 'Reward name is required').max(255),
   deskripsi: z.string().optional(),
   stok: z.coerce
-    .number({ invalid_type_error: 'Stok harus berupa angka' })
+    .number({ invalid_type_error: 'Stock must be a number' })
     .int()
-    .min(0, 'Stok tidak boleh negatif'),
+    .min(0, 'Stock cannot be negative'),
   harga_poin: z.coerce
-    .number({ invalid_type_error: 'Poin harus berupa angka' })
+    .number({ invalid_type_error: 'Point price must be a number' })
     .int()
-    .min(1, 'Poin minimal 1'),
+    .min(1, 'Point price must be at least 1'),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -36,58 +36,89 @@ export const FormAddReward = () => {
     resolver: zodResolver(formSchema),
   })
 
-  const { mutateAsync: createHadiah } = useAdminCreateHadiah()
+  const { mutateAsync: createReward } = useAdminCreateHadiah()
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await createHadiah({
+      await createReward({
         nama: values.nama,
         deskripsi: values.deskripsi,
         stok: values.stok,
         harga_poin: values.harga_poin,
       })
 
-      toast.success('Hadiah berhasil ditambahkan')
+      toast.success('Reward added successfully')
       reset()
       router.push('/admin/manage-reward')
     } catch (err: any) {
-      toast.error(err?.message || 'Gagal menambahkan hadiah')
+      toast.error(err?.message || 'Failed to add reward')
     }
   }
 
+  const inputStyle =
+    'bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50'
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <FormGroup label="Nama Hadiah" htmlFor="nama">
-        <Input id="nama" type="text" {...register('nama')} />
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex-grow space-y-4 p-4 rounded-lg border border-glass-border bg-glass-bg bg-background/80 backdrop-blur-md"
+    >
+      <FormGroup label="Reward Name" htmlFor="nama">
+        <Input
+          id="nama"
+          type="text"
+          placeholder="Enter reward name"
+          {...register('nama')}
+          className={inputStyle}
+        />
         {errors.nama && <p className="text-sm text-red-500">{errors.nama.message}</p>}
       </FormGroup>
 
-      <FormGroup label="Deskripsi" htmlFor="deskripsi">
+      <FormGroup label="Description" htmlFor="deskripsi">
         <textarea
           id="deskripsi"
+          placeholder="Enter description (optional)"
           {...register('deskripsi')}
-          className="w-full border rounded p-2"
+          className={`${inputStyle} w-full h-24 text-sm rounded-md px-2 py-1`}
         />
       </FormGroup>
 
-      <FormGroup label="Harga Poin" htmlFor="harga_poin">
-        <Input id="harga_poin" type="number" min={1} {...register('harga_poin')} />
+      <FormGroup label="Point Price" htmlFor="harga_poin">
+        <Input
+          id="harga_poin"
+          type="number"
+          min={1}
+          placeholder="e.g. 100"
+          {...register('harga_poin')}
+          className={inputStyle}
+        />
         {errors.harga_poin && (
           <p className="text-sm text-red-500">{errors.harga_poin.message}</p>
         )}
       </FormGroup>
 
-      <FormGroup label="Stok Hadiah" htmlFor="stok">
-        <Input id="stok" type="number" min={0} {...register('stok')} />
+      <FormGroup label="Stock" htmlFor="stok">
+        <Input
+          id="stok"
+          type="number"
+          min={0}
+          placeholder="e.g. 10"
+          {...register('stok')}
+          className={inputStyle}
+        />
         {errors.stok && <p className="text-sm text-red-500">{errors.stok.message}</p>}
       </FormGroup>
 
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="rounded-md bg-primary-2 text-accent-1 border text-center text-sm p-2 hover:bg-accent-1 hover:text-primary-1 transition-all"
+        className="mt-auto w-full text-background border border-glass-border transition backdrop-blur-md hover:opacity-80"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, var(--color-primary-2) 0%, var(--color-primary-1) 50%, var(--color-primary-3) 100%)`,
+          backgroundSize: 'cover',
+        }}
       >
-        {isSubmitting ? 'Menyimpan...' : 'Simpan'}
+        {isSubmitting ? 'Saving...' : 'Save'}
       </Button>
     </form>
   )

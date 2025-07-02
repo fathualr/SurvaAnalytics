@@ -32,36 +32,36 @@ export const ButtonDeleteHadiah = ({
   const handleDelete = async () => {
     try {
       await deleteHadiah(hadiahId)
-      toast.success("Hadiah berhasil dihapus")
+      toast.success("Reward deleted successfully.")
       setOpen(false)
       onSuccess?.()
     } catch (err: any) {
-      toast.error(err?.message || "Gagal menghapus hadiah")
+      toast.error(err?.message || "Failed to delete reward.")
     }
   }
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className="flex items-center justify-center bg-muted hover:bg-background">
           <Trash className="w-4 h-4 text-red-500" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Hadiah</AlertDialogTitle>
+          <AlertDialogTitle>Delete Reward</AlertDialogTitle>
           <AlertDialogDescription>
-            Apakah kamu yakin ingin menghapus hadiah ini? Tindakan ini tidak dapat dibatalkan.
+            Are you sure you want to delete this reward? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             disabled={isPending}
             className="bg-red-600 hover:bg-red-700 text-white"
           >
-            {isPending ? "Menghapus..." : "Hapus"}
+            {isPending ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

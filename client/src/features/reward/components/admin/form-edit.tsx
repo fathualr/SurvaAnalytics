@@ -13,10 +13,10 @@ import { useAuth } from '@/features/auth/hooks/useAuth'
 import { useAdminHadiah, useAdminUpdateHadiah } from '../../hooks/useAdminReward'
 
 const formSchema = z.object({
-  nama: z.string().min(1, 'Nama tidak boleh kosong').max(255),
+  nama: z.string().min(1, 'Reward name is required').max(255),
   deskripsi: z.string().max(500).optional(),
-  stok: z.coerce.number().nonnegative({ message: 'Stok tidak boleh negatif' }),
-  harga_poin: z.coerce.number().positive({ message: 'Harga poin harus lebih dari 0' }),
+  stok: z.coerce.number().nonnegative({ message: 'Stock cannot be negative' }),
+  harga_poin: z.coerce.number().positive({ message: 'Point price must be greater than 0' }),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -26,9 +26,6 @@ interface FormEditHadiahProps {
 }
 
 export const FormEditReward = ({ rewardId }: FormEditHadiahProps) => {
-  const { isLoggedIn, loading: authLoading } = useAuth()
-  const shouldFetch = isLoggedIn && !authLoading
-
   const {
     data,
     isLoading,
@@ -36,9 +33,9 @@ export const FormEditReward = ({ rewardId }: FormEditHadiahProps) => {
     isError,
     error,
     refetch,
-  } = useAdminHadiah(rewardId, shouldFetch)
+  } = useAdminHadiah(rewardId)
 
-  const { mutateAsync: updateHadiah, isPending: isUpdating } = useAdminUpdateHadiah()
+  const { mutateAsync: updateReward, isPending: isUpdating } = useAdminUpdateHadiah()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -50,23 +47,27 @@ export const FormEditReward = ({ rewardId }: FormEditHadiahProps) => {
     },
   })
 
-  const { register, handleSubmit, formState: { errors }, reset } = form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = form
 
   useEffect(() => {
     if (data) {
-      const hadiah = data
       reset({
-        nama: hadiah.nama,
-        deskripsi: hadiah.deskripsi ?? '',
-        stok: parseInt(hadiah.stok),
-        harga_poin: parseInt(hadiah.harga_poin),
+        nama: data.nama,
+        deskripsi: data.deskripsi ?? '',
+        stok: parseInt(data.stok),
+        harga_poin: parseInt(data.harga_poin),
       })
     }
   }, [data, reset])
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await updateHadiah({
+      await updateReward({
         id: rewardId,
         data: {
           nama: values.nama,
@@ -76,64 +77,76 @@ export const FormEditReward = ({ rewardId }: FormEditHadiahProps) => {
         },
       })
 
-      toast.success('Hadiah berhasil diperbarui')
+      toast.success('Reward updated successfully')
       refetch()
     } catch (err: any) {
-      toast.error(err?.message || 'Gagal memperbarui hadiah')
+      toast.error(err?.message || 'Failed to update reward')
     }
   }
 
-  if (isLoading || isFetching) {
+  const inputStyle =
+    'bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50';
+
+  if (isLoading) {
     return (
-      <div className="space-y-4">
-        {[...Array(4)].map((_, i) => (
-          <Skeleton key={i} className="h-10 w-full" />
-        ))}
+      <div className="flex flex-grow justify-center items-center text-muted-foreground text-sm">
+        Loading Data...
       </div>
-    )
+    );
   }
 
   if (isError || !data) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-red-600 font-medium">
-          Gagal memuat data hadiah. {error?.message && `(${error.message})`}
+        <p className="text-sm text-destructive font-medium">
+          Failed to load data. {error?.message && `(${error.message})`}
         </p>
-        <Button variant="outline" onClick={() => refetch()} className="text-sm">
-          Coba Lagi
+        <Button
+          variant="outline"
+          onClick={() => refetch()}
+          className="text-sm"
+        >
+          Try Again
         </Button>
       </div>
-    )
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <FormGroup label="Nama Hadiah" htmlFor="nama">
-        <Input id="nama" {...register('nama')} />
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex-grow space-y-4 p-4 rounded-lg border border-glass-border bg-glass-bg bg-background/80 backdrop-blur-md"
+    >
+      <FormGroup label="Reward Name" htmlFor="nama">
+        <Input id="nama" {...register('nama')} className={inputStyle} />
         {errors.nama && <p className="text-sm text-red-500">{errors.nama.message}</p>}
       </FormGroup>
 
-      <FormGroup label="Deskripsi" htmlFor="deskripsi">
-        <Input id="deskripsi" {...register('deskripsi')} />
+      <FormGroup label="Description" htmlFor="deskripsi">
+        <Input id="deskripsi" {...register('deskripsi')} className={inputStyle} />
         {errors.deskripsi && <p className="text-sm text-red-500">{errors.deskripsi.message}</p>}
       </FormGroup>
 
-      <FormGroup label="Stok" htmlFor="stok">
-        <Input id="stok" type="number" {...register('stok')} />
-        {errors.stok && <p className="text-sm text-red-500">{errors.stok.message}</p>}
+      <FormGroup label="Point Price" htmlFor="harga_poin">
+        <Input id="harga_poin" type="number" {...register('harga_poin')} className={inputStyle} />
+        {errors.harga_poin && <p className="text-sm text-red-500">{errors.harga_poin.message}</p>}
       </FormGroup>
 
-      <FormGroup label="Harga Poin" htmlFor="harga_poin">
-        <Input id="harga_poin" type="number" {...register('harga_poin')} />
-        {errors.harga_poin && <p className="text-sm text-red-500">{errors.harga_poin.message}</p>}
+      <FormGroup label="Stock" htmlFor="stok">
+        <Input id="stok" type="number" {...register('stok')} className={inputStyle} />
+        {errors.stok && <p className="text-sm text-red-500">{errors.stok.message}</p>}
       </FormGroup>
 
       <Button
         type="submit"
         disabled={isUpdating}
-        className="rounded-md bg-primary-2 text-accent-1 border text-center text-sm p-2 hover:bg-accent-1 hover:text-primary-1 transition-all"
+        className="mt-auto w-full text-background border border-glass-border transition backdrop-blur-md hover:opacity-80"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, var(--color-primary-2) 0%, var(--color-primary-1) 50%, var(--color-primary-3) 100%)`,
+          backgroundSize: 'cover',
+        }}
       >
-        {isUpdating ? 'Menyimpan...' : 'Simpan Perubahan'}
+        {isUpdating ? 'Saving...' : 'Save Changes'}
       </Button>
     </form>
   )
