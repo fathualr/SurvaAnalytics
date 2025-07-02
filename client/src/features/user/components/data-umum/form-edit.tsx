@@ -9,7 +9,6 @@ import { FormGroup } from '@/components/umum/form/form-group';
 import { usePengguna, useUpdatePengguna } from '../../hooks/useUser';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 
 const formSchema = z.object({
   email: z.string().email().max(255),
@@ -32,10 +31,7 @@ interface FormEditUmumProps {
 }
 
 export const FormEditUmum = ({ userId }: FormEditUmumProps) => {
-  const { isLoggedIn, loading: authLoading } = useAuth();
-  const shouldFetch = isLoggedIn && !authLoading;
-
-  const { data, isLoading, isFetching, isError, error, refetch } = usePengguna(userId, shouldFetch);
+  const { data, isLoading, isFetching, isError, error, refetch } = usePengguna(userId);
   const { mutateAsync: updatePengguna, isPending: isUpdating } = useUpdatePengguna();
 
   const form = useForm<FormValues>({

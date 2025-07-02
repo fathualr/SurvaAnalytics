@@ -5,68 +5,57 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { FormGroup } from '@/components/umum/form/form-group';
 import { useAdminSurvey, useUpdateAdminSurvey } from '../../hooks/useAdminSurveys';
-import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { useAuth } from '@/features/auth/hooks/useAuth';
+import { Separator } from '@/components/ui/separator';
 
-interface FormUpdateSurveiProps {
+interface FormUpdateSurveyProps {
   surveyId: string;
 }
 
-const surveySchema = z.object({
-  judul: z.string().min(1, 'Judul wajib diisi'),
-  status_survei: z.enum([
-    'draft',
-    'under_review',
-    'payment_pending',
-    'published',
-    'closed',
-    'archived',
-    'rejected',
-  ]),
-  deskripsi: z.string().optional(),
-  jumlah_responden: z
-    .string()
-    .min(1, 'Jumlah responden wajib diisi')
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: 'Jumlah responden harus berupa angka positif',
+const surveySchema = z
+  .object({
+    judul: z.string().min(1, 'Survey title is required'),
+    status_survei: z.enum([
+      'draft',
+      'under_review',
+      'payment_pending',
+      'published',
+      'closed',
+      'archived',
+      'rejected',
+    ]),
+    deskripsi: z.string().optional(),
+    jumlah_responden: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: 'Target respondents must be a positive number',
     }),
-  tanggal_mulai: z.string().min(1, 'Tanggal mulai wajib diisi'),
-  tanggal_berakhir: z.string().min(1, 'Tanggal berakhir wajib diisi'),
-  usia_min: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().optional()),
-  usia_max: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().optional()),
-  jenis_kelamin: z.string().optional(),
-  region: z.string().default(''),
-  status: z.string().default(''),
-  hadiah_poin: z
-    .string()
-    .refine((val) => val === '' || (!isNaN(Number(val)) && Number(val) >= 0), {
-      message: 'Poin harus angka positif atau kosong',
+    tanggal_mulai: z.string().min(1, 'Start date is required'),
+    tanggal_berakhir: z.string().min(1, 'End date is required'),
+    usia_min: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().optional()),
+    usia_max: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().optional()),
+    jenis_kelamin: z.string().optional(),
+    region: z.string().default(''),
+    status: z.string().default(''),
+    hadiah_poin: z.string().refine((val) => val === '' || (!isNaN(Number(val)) && Number(val) >= 0), {
+      message: 'Reward point must be a positive number or empty',
     }),
-})
-.refine((data) => {
-  if (data.usia_min !== undefined && data.usia_max !== undefined) {
-    return data.usia_min <= data.usia_max;
-  }
-  return true;
-}, {
-  message: 'Usia minimum tidak boleh lebih besar dari maksimum',
-  path: ['usia_max'],
-})
-.refine((data) => new Date(data.tanggal_mulai) <= new Date(data.tanggal_berakhir), {
-  path: ['tanggal_berakhir'],
-  message: 'Tanggal mulai tidak boleh setelah tanggal berakhir',
-})
-.refine((data) => new Date(data.tanggal_mulai) <= new Date(data.tanggal_berakhir), {
-  path: ['tanggal_berakhir'],
-  message: 'Tanggal mulai tidak boleh setelah tanggal berakhir',
-});
+  })
+  .refine((data) => {
+    if (data.usia_min !== undefined && data.usia_max !== undefined) {
+      return data.usia_min <= data.usia_max;
+    }
+    return true;
+  }, {
+    message: 'Minimum age must not exceed maximum age',
+    path: ['usia_max'],
+  })
+  .refine((data) => new Date(data.tanggal_mulai) <= new Date(data.tanggal_berakhir), {
+    path: ['tanggal_berakhir'],
+    message: 'Start date cannot be after end date',
+  });
 
-export const FormEditSurvey = ({ surveyId }: FormUpdateSurveiProps) => {
-  const { isLoggedIn, loading: authLoading } = useAuth();
-  const shouldFetch = isLoggedIn && !authLoading;
-  const { data, isLoading, isFetching, isError, error, refetch } = useAdminSurvey(surveyId, shouldFetch);
+export const FormEditSurvey = ({ surveyId }: FormUpdateSurveyProps) => {
+  const { data, isLoading, isFetching, isError, error, refetch } = useAdminSurvey(surveyId);
   const { mutateAsync: updateSurvey, isPending } = useUpdateAdminSurvey();
 
   const [formData, setFormData] = useState({
@@ -113,20 +102,15 @@ export const FormEditSurvey = ({ surveyId }: FormUpdateSurveiProps) => {
   const generateUsiaRangeFlexible = (min?: number, max?: number): number[] | undefined => {
     const isMinValid = typeof min === 'number' && !isNaN(min);
     const isMaxValid = typeof max === 'number' && !isNaN(max);
-
     if (!isMinValid && !isMaxValid) return undefined;
-
     const usiaMin = isMinValid ? min! : 1;
     const usiaMax = isMaxValid ? max! : 100;
-
     if (usiaMin > usiaMax) return undefined;
-
     return Array.from({ length: usiaMax - usiaMin + 1 }, (_, i) => usiaMin + i);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const parsed = surveySchema.safeParse(formData);
     if (!parsed.success) {
       const firstError = parsed.error.errors[0];
@@ -140,26 +124,12 @@ export const FormEditSurvey = ({ surveyId }: FormUpdateSurveiProps) => {
     const kriteria: Record<string, any> = {
       ...(usiaRange && { usia: usiaRange }),
       ...(values.jenis_kelamin && { jenis_kelamin: values.jenis_kelamin }),
-      ...(values.region &&
-        values.region
-          .split(',')
-          .map((r) => r.trim())
-          .filter(Boolean).length > 0 && {
-          region: values.region
-            .split(',')
-            .map((r) => r.trim())
-            .filter(Boolean),
-        }),
-      ...(values.status &&
-        values.status
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean).length > 0 && {
-          status: values.status
-            .split(',')
-            .map((s) => s.trim())
-            .filter(Boolean),
-        }),
+      ...(values.region && {
+        region: values.region.split(',').map((r) => r.trim()).filter(Boolean),
+      }),
+      ...(values.status && {
+        status: values.status.split(',').map((s) => s.trim()).filter(Boolean),
+      }),
     };
 
     try {
@@ -176,18 +146,19 @@ export const FormEditSurvey = ({ surveyId }: FormUpdateSurveiProps) => {
           kriteria,
         },
       });
-      toast.success('Survei berhasil diperbarui');
-    } catch (err: any) {
-      toast.error('Gagal memperbarui survei');
+      toast.success('Survey updated successfully');
+    } catch {
+      toast.error('Failed to update survey');
     }
   };
 
+  const inputStyle =
+    'bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50';
+
   if (isLoading || isFetching) {
     return (
-      <div className="space-y-4">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <Skeleton key={i} className="h-10 w-full" />
-        ))}
+      <div className="flex flex-grow justify-center items-center text-muted-foreground text-sm">
+        Loading Data...
       </div>
     );
   }
@@ -195,134 +166,168 @@ export const FormEditSurvey = ({ surveyId }: FormUpdateSurveiProps) => {
   if (isError || !data) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-red-600 font-medium">
-          Gagal memuat data survei. {error?.message && `(${error.message})`}
+        <p className="text-sm text-destructive font-medium">
+          Failed to load data. {error?.message && `(${error.message})`}
         </p>
         <Button variant="outline" onClick={() => refetch()} className="text-sm">
-          Coba Lagi
+          Try Again
         </Button>
       </div>
     );
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      <FormGroup label="Judul Survei" htmlFor="judul">
-        <Input id="judul" value={formData.judul} onChange={handleChange} />
+    <form
+      onSubmit={handleSubmit}
+      className="flex-grow space-y-4 p-4 rounded-lg border border-glass-border bg-glass-bg bg-background/80 backdrop-blur-md"
+    >
+      <FormGroup label="Survey Title" htmlFor="judul">
+        <Input
+          id="judul"
+          placeholder="Enter the survey title"
+          value={formData.judul}
+          onChange={handleChange}
+          className={inputStyle}
+        />
       </FormGroup>
 
-      <FormGroup label="Status Survei" htmlFor="status_survei">
+      <FormGroup label="Survey Status" htmlFor="status_survei">
         <select
           id="status_survei"
           value={formData.status_survei}
           onChange={handleChange}
-          className="border w-full p-2 rounded-md"
+          className={`${inputStyle} w-full h-10 rounded-md px-2 text-sm`}
         >
-          <option value="draft">Draft</option>
-          <option value="under_review">Under Review</option>
-          <option value="payment_pending">Payment Pending</option>
-          <option value="published">Published</option>
-          <option value="closed">Closed</option>
-          <option value="archived">Archived</option>
-          <option value="rejected">Rejected</option>
+          <option value="draft" className="bg-background text-foreground">Draft</option>
+          <option value="under_review" className="bg-background text-foreground">Under Review</option>
+          <option value="payment_pending" className="bg-background text-foreground">Payment Pending</option>
+          <option value="published" className="bg-background text-foreground">Published</option>
+          <option value="closed" className="bg-background text-foreground">Closed</option>
+          <option value="archived" className="bg-background text-foreground">Archived</option>
+          <option value="rejected" className="bg-background text-foreground">Rejected</option>
         </select>
       </FormGroup>
 
-      <FormGroup label="Deskripsi" htmlFor="deskripsi">
+      <FormGroup label="Description" htmlFor="deskripsi">
         <textarea
           id="deskripsi"
-          className="border w-full p-2 rounded-md"
+          placeholder="Describe your survey..."
           value={formData.deskripsi}
           onChange={handleChange}
+          className={`${inputStyle} w-full h-24 text-sm rounded-md px-2 py-1`}
         />
       </FormGroup>
 
-      <FormGroup label="Tanggal Mulai" htmlFor="tanggal_mulai">
+      <FormGroup label="Start Date" htmlFor="tanggal_mulai">
         <Input
           id="tanggal_mulai"
           type="date"
           value={formData.tanggal_mulai}
           onChange={handleChange}
+          className={inputStyle}
         />
       </FormGroup>
 
-      <FormGroup label="Tanggal Berakhir" htmlFor="tanggal_berakhir">
+      <FormGroup label="End Date" htmlFor="tanggal_berakhir">
         <Input
           id="tanggal_berakhir"
           type="date"
           value={formData.tanggal_berakhir}
           onChange={handleChange}
+          className={inputStyle}
         />
       </FormGroup>
 
-      <FormGroup label="Jumlah Responden" htmlFor="jumlah_responden">
+      <FormGroup label="Target Respondents" htmlFor="jumlah_responden">
         <Input
           id="jumlah_responden"
           type="number"
+          placeholder="e.g. 100"
           value={formData.jumlah_responden}
           onChange={handleChange}
+          className={inputStyle}
         />
       </FormGroup>
 
-      <FormGroup label="Poin per Responden" htmlFor="hadiah_poin">
+      <FormGroup label="Reward Points" htmlFor="hadiah_poin">
         <Input
           id="hadiah_poin"
           type="number"
-          min="0"
+          placeholder="e.g. 50"
           value={formData.hadiah_poin}
           onChange={handleChange}
+          className={inputStyle}
         />
       </FormGroup>
 
-      <FormGroup label="Jenis Kelamin" htmlFor="jenis_kelamin">
+      <Separator className="border border-foreground/10" />
+      <h3 className="font-semibold text-lg">Respondent Criteria (Optional)</h3>
+      
+      <FormGroup label="Gender" htmlFor="jenis_kelamin">
         <select
           id="jenis_kelamin"
           value={formData.jenis_kelamin}
           onChange={handleChange}
-          className="border w-full p-2 rounded-md"
+          className={`${inputStyle} w-full h-10 rounded-md px-2 text-sm`}
         >
-          <option value="">Semua</option>
-          <option value="Laki-laki">Laki-laki</option>
-          <option value="Perempuan">Perempuan</option>
+          <option value="" className="bg-background text-foreground">All</option>
+          <option value="laki laki" className="bg-background text-foreground">Male</option>
+          <option value="perempuan" className="bg-background text-foreground">Female</option>
         </select>
       </FormGroup>
 
-      <FormGroup label="Usia Minimum" htmlFor="usia_min">
+      <FormGroup label="Minimum Age" htmlFor="usia_min">
         <Input
           id="usia_min"
           type="number"
-          min="0"
-          max="100"
+          placeholder="e.g. 18"
           value={formData.usia_min}
           onChange={handleChange}
+          className={inputStyle}
         />
       </FormGroup>
 
-      <FormGroup label="Usia Maksimum" htmlFor="usia_max">
+      <FormGroup label="Maximum Age" htmlFor="usia_max">
         <Input
           id="usia_max"
           type="number"
-          min="0"
-          max="100"
+          placeholder="e.g. 35"
           value={formData.usia_max}
           onChange={handleChange}
+          className={inputStyle}
         />
       </FormGroup>
 
-      <FormGroup label="Region (pisahkan dengan koma)" htmlFor="region">
-        <Input id="region" value={formData.region} onChange={handleChange} />
+      <FormGroup label="Region(s) (comma-separated)" htmlFor="region">
+        <Input
+          id="region"
+          placeholder="e.g. Jakarta, Bandung"
+          value={formData.region}
+          onChange={handleChange}
+          className={inputStyle}
+        />
       </FormGroup>
 
-      <FormGroup label="Status (pisahkan dengan koma)" htmlFor="status">
-        <Input id="status" value={formData.status} onChange={handleChange} />
+      <FormGroup label="Occupation / Education Status (comma-separated)" htmlFor="status">
+        <Input
+          id="status"
+          placeholder="e.g. Student, Employee"
+          value={formData.status}
+          onChange={handleChange}
+          className={inputStyle}
+        />
       </FormGroup>
 
       <Button
         type="submit"
         disabled={isPending}
-        className="rounded-md bg-primary-2 text-accent-1 border text-center text-sm p-2 hover:bg-accent-1 hover:text-primary-1 transition-all"
+        className="mt-auto w-full text-background border border-glass-border transition backdrop-blur-md hover:opacity-80"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, var(--color-primary-2) 0%, var(--color-primary-1) 50%, var(--color-primary-3) 100%)`,
+          backgroundSize: 'cover',
+        }}
       >
-        {isPending ? 'Menyimpan...' : 'Simpan'}
+        {isPending ? 'Saving...' : 'Save'}
       </Button>
     </form>
   );

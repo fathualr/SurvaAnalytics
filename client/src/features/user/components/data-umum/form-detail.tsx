@@ -108,7 +108,19 @@ export const FormDetailUmum = ({ userId }: FormDetailUmumProps) => {
       </FormGroup>
 
       <FormGroup label="Gender" htmlFor="jenis_kelamin">
-        <Input id="jenis_kelamin" value={responden?.jenis_kelamin || '-'} readOnly disabled className={inputStyle} />
+        <Input
+          id="jenis_kelamin"
+          value={
+            responden?.jenis_kelamin === 'laki laki'
+              ? 'Male'
+              : responden?.jenis_kelamin === 'perempuan'
+              ? 'Female'
+              : 'All'
+          }
+          readOnly
+          disabled
+          className={inputStyle}
+        />
       </FormGroup>
 
       <FormGroup label="Region" htmlFor="region">

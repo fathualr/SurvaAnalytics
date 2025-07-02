@@ -7,7 +7,7 @@ import Link from "next/link";
 export function ManageUserPage() {
   return (
     <section className="flex flex-col flex-grow text-foreground gap-4">
-      <h1 className="text-3xl font-bold">Data - Public</h1>
+      <h1 className="text-3xl font-bold">User Data - Public</h1>
 
       <Link
         href="/admin/manage-user/add"

@@ -230,7 +230,7 @@ export function KriteriaSection({ kriteria, onChange, disabled = false }: Kriter
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All</SelectItem>
-            <SelectItem value="laki-laki">Male</SelectItem>
+            <SelectItem value="laki laki">Male</SelectItem>
             <SelectItem value="perempuan">Female</SelectItem>
           </SelectContent>
         </Select>

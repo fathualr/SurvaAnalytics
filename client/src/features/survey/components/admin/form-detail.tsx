@@ -1,20 +1,17 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { FormGroup } from '@/components/umum/form/form-group';
 import { useAdminSurvey } from '../../hooks/useAdminSurveys';
-import { useAuth } from '@/features/auth/hooks/useAuth';
+import { formatDate } from '@/utils/dateFormat';
+import { Separator } from '@/components/ui/separator';
 
 interface FormDetailSurveyProps {
   surveyId: string;
 }
 
 export const FormDetailSurvey = ({ surveyId }: FormDetailSurveyProps) => {
-  const { isLoggedIn, loading: authLoading } = useAuth();
-  const shouldFetch = isLoggedIn && !authLoading;
-
   const {
     data,
     isLoading,
@@ -22,16 +19,15 @@ export const FormDetailSurvey = ({ surveyId }: FormDetailSurveyProps) => {
     isError,
     error,
     refetch,
-  } = useAdminSurvey(surveyId, shouldFetch);
+  } = useAdminSurvey(surveyId);
 
-  const loading = isLoading || isFetching;
+  const inputStyle =
+    'bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50';
 
-  if (loading) {
+  if (isLoading || isFetching) {
     return (
-      <div className="space-y-4">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <Skeleton key={i} className="h-10 w-full" />
-        ))}
+      <div className="flex flex-grow justify-center items-center text-muted-foreground text-sm">
+        Loading Data...
       </div>
     );
   }
@@ -39,11 +35,15 @@ export const FormDetailSurvey = ({ surveyId }: FormDetailSurveyProps) => {
   if (isError || !data) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-red-600 font-medium">
-          Gagal memuat data survei. {error?.message && `(${error.message})`}
+        <p className="text-sm text-destructive font-medium">
+          Failed to load data. {error?.message && `(${error.message})`}
         </p>
-        <Button variant="outline" onClick={() => refetch()} className="text-sm">
-          Coba Lagi
+        <Button
+          variant="outline"
+          onClick={() => refetch()}
+          className="text-sm"
+        >
+          Try Again
         </Button>
       </div>
     );
@@ -51,92 +51,152 @@ export const FormDetailSurvey = ({ surveyId }: FormDetailSurveyProps) => {
 
   const survei = data;
 
-  const formatDate = (date: string | null | undefined) =>
-    date ? new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-';
-
   return (
-    <div className="space-y-4">
-      <FormGroup label="Judul Survei" htmlFor="judul">
-        <Input id="judul" value={survei.judul || '-'} readOnly disabled />
+    <div className="flex-grow space-y-4 p-4 rounded-lg border border-glass-border bg-glass-bg bg-background/80 backdrop-blur-md">
+      <FormGroup label="Id" htmlFor="id">
+        <Input id="id" value={survei.id || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Status Survei" htmlFor="status">
-        <Input id="status" value={survei.status || '-'} readOnly disabled />
+      <FormGroup label="Umum Id" htmlFor="id_umum">
+        <Input id="id_umum" value={survei.Umum?.id || '[Deleted User]'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Deskripsi" htmlFor="deskripsi">
-        <Input id="deskripsi" value={survei.deskripsi || '-'} readOnly disabled />
+      <FormGroup label="Survey Title" htmlFor="judul">
+        <Input id="judul" value={survei.judul || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Jumlah Responden Dibutuhkan" htmlFor="jumlah_responden">
-        <Input id="jumlah_responden" value={survei.jumlah_responden?.toString() || '-'} readOnly disabled />
+      <FormGroup label="Status" htmlFor="status">
+        <Input id="status" value={survei.status || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Tanggal Mulai" htmlFor="tanggal_mulai">
-        <Input id="tanggal_mulai" value={formatDate(survei.tanggal_mulai)} readOnly disabled />
+      <FormGroup label="Description" htmlFor="deskripsi">
+        <Input id="deskripsi" value={survei.deskripsi || '-'} readOnly disabled className={inputStyle} />
       </FormGroup>
 
-      <FormGroup label="Tanggal Berakhir" htmlFor="tanggal_berakhir">
-        <Input id="tanggal_berakhir" value={formatDate(survei.tanggal_berakhir)} readOnly disabled />
+      <FormGroup label="Target Respondents" htmlFor="jumlah_responden">
+        <Input
+          id="jumlah_responden"
+          value={survei.jumlah_responden?.toString() || '-'}
+          readOnly
+          disabled
+          className={inputStyle}
+        />
       </FormGroup>
 
-      <FormGroup label="Poin per Responden" htmlFor="poin">
-        <Input id="poin" value={survei.hadiah_poin.toString() || '-'} readOnly disabled />
+      <FormGroup label="Start Date" htmlFor="tanggal_mulai">
+        <Input
+          id="tanggal_mulai"
+          value={formatDate(survei.tanggal_mulai)}
+          readOnly
+          disabled
+          className={inputStyle}
+        />
       </FormGroup>
 
-      <div className="grid grid-cols-1 gap-5 pt-6 border-t">
-        <h3 className="font-semibold text-lg">Kriteria Responden</h3>
+      <FormGroup label="End Date" htmlFor="tanggal_berakhir">
+        <Input
+          id="tanggal_berakhir"
+          value={formatDate(survei.tanggal_berakhir)}
+          readOnly
+          disabled
+          className={inputStyle}
+        />
+      </FormGroup>
 
-        <FormGroup label="Jenis Kelamin" htmlFor="jenis_kelamin">
-          <Input id="jenis_kelamin" value={survei.kriteria.jenis_kelamin || 'Semua'} readOnly disabled />
-        </FormGroup>
+      <FormGroup label="Reward Points" htmlFor="poin">
+        <Input
+          id="poin"
+          value={survei.hadiah_poin?.toString() || '0'}
+          readOnly
+          disabled
+          className={inputStyle}
+        />
+      </FormGroup>
 
-        <FormGroup label="Usia Minimum" htmlFor="usia_min">
-          <Input
-            id="usia_min"
-            value={Array.isArray(survei.kriteria.usia) && survei.kriteria.usia.length > 0
+      <Separator className="border border-foreground/10" />
+      <h3 className="font-semibold text-lg">Respondent Criteria</h3>
+
+      <FormGroup label="Gender" htmlFor="jenis_kelamin">
+        <Input
+          id="jenis_kelamin"
+          value={
+            survei.kriteria.jenis_kelamin === 'laki laki'
+              ? 'Male'
+              : survei.kriteria.jenis_kelamin === 'perempuan'
+              ? 'Female'
+              : 'All'
+          }
+          readOnly
+          disabled
+          className={inputStyle}
+        />
+      </FormGroup>
+
+      <FormGroup label="Min Age" htmlFor="usia_min">
+        <Input
+          id="usia_min"
+          value={
+            Array.isArray(survei.kriteria.usia) && survei.kriteria.usia.length > 0
               ? Math.min(...survei.kriteria.usia).toString()
-              : '-'}
-            readOnly
-            disabled
-          />
-        </FormGroup>
+              : '-'
+          }
+          readOnly
+          disabled
+          className={inputStyle}
+        />
+      </FormGroup>
 
-        <FormGroup label="Usia Maksimum" htmlFor="usia_max">
-          <Input
-            id="usia_max"
-            value={Array.isArray(survei.kriteria.usia) && survei.kriteria.usia.length > 0
+      <FormGroup label="Max Age" htmlFor="usia_max">
+        <Input
+          id="usia_max"
+          value={
+            Array.isArray(survei.kriteria.usia) && survei.kriteria.usia.length > 0
               ? Math.max(...survei.kriteria.usia).toString()
-              : '-'}
-            readOnly
-            disabled
-          />
-        </FormGroup>
+              : '-'
+          }
+          readOnly
+          disabled
+          className={inputStyle}
+        />
+      </FormGroup>
 
-        <FormGroup label="Region / Domisili" htmlFor="region">
-          <Input id="region" value={survei.kriteria.region?.join(', ') || '-'} readOnly disabled />
-        </FormGroup>
+      <FormGroup label="Region / Domicile" htmlFor="region">
+        <Input
+          id="region"
+          value={survei.kriteria.region?.join(', ') || '-'}
+          readOnly
+          disabled
+          className={inputStyle}
+        />
+      </FormGroup>
 
-        <FormGroup label="Status Pekerjaan / Pendidikan" htmlFor="status">
-          <Input id="status" value={survei.kriteria.status?.join(', ') || '-'} readOnly disabled />
-        </FormGroup>
+      <FormGroup label="Occupation / Education Status" htmlFor="status">
+        <Input
+          id="status"
+          value={survei.kriteria.status?.join(', ') || '-'}
+          readOnly
+          disabled
+          className={inputStyle}
+        />
+      </FormGroup>
 
-        <FormGroup label="Tanggal Dibuat" htmlFor="created_at">
-          <Input
-            id="created_at"
-            value={new Date(survei.created_at).toLocaleString('id-ID')}
-            readOnly
-            disabled
-          />
-        </FormGroup>
-      </div>
+      <FormGroup label="Created At" htmlFor="created_at">
+        <Input
+          id="created_at"
+          value={new Date(survei.created_at).toLocaleString('id-ID')}
+          readOnly
+          disabled
+          className={inputStyle}
+        />
+      </FormGroup>
 
-      <FormGroup label="Terakhir Diperbarui" htmlFor="updated_at">
+      <FormGroup label="Last Updated" htmlFor="updated_at">
         <Input
           id="updated_at"
           value={new Date(survei.updated_at).toLocaleString('id-ID')}
           readOnly
           disabled
+          className={inputStyle}
         />
       </FormGroup>
     </div>
