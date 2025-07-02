@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import { useState } from "react"
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -11,85 +11,92 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
   AlertDialogDescription,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
-import { useVerifySurveiByAdmin } from "../../hooks/useAdminSurveyVerification"
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useVerifySurveiByAdmin } from "../../hooks/useAdminSurveyVerification";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  surveyId: string
+  surveyId: string;
 }
 
 export const SurveyVerificationActions = ({ surveyId }: Props) => {
-  const [openReject, setOpenReject] = useState(false)
-  const [openAccept, setOpenAccept] = useState(false)
-  const [umpanBalik, setUmpanBalik] = useState("")
+  const [openReject, setOpenReject] = useState(false);
+  const [openAccept, setOpenAccept] = useState(false);
+  const [feedback, setFeedback] = useState("");
   const router = useRouter();
 
-  const { mutate: verifySurvei, isPending } = useVerifySurveiByAdmin()
-
+  const { mutate: verifySurvey, isPending } = useVerifySurveiByAdmin();
 
   const handleApprove = () => {
-    verifySurvei(
+    verifySurvey(
       {
         id: surveyId,
         payload: { approve: true },
       },
       {
         onSuccess: () => {
-          toast.success("Survei telah disetujui");
+          toast.success("Survey approved successfully.");
           setOpenAccept(false);
           router.push("/admin/manage-verification");
         },
-        onError: () => toast.error("Gagal menyetujui survei"),
+        onError: () => toast.error("Failed to approve survey."),
       }
     );
   };
 
   const handleReject = () => {
-    if (!umpanBalik.trim()) {
-      toast.error("Umpan balik penolakan harus diisi");
+    if (!feedback.trim()) {
+      toast.error("Rejection feedback is required.");
       return;
     }
 
-    verifySurvei(
+    verifySurvey(
       {
         id: surveyId,
         payload: {
           approve: false,
-          umpan_balik: umpanBalik,
+          umpan_balik: feedback,
         },
       },
       {
         onSuccess: () => {
-          toast.success("Survei ditolak");
+          toast.success("Survey rejected.");
           setOpenReject(false);
-          setUmpanBalik("");
+          setFeedback("");
           router.push("/admin/manage-verification");
         },
-        onError: () => toast.error("Gagal menolak survei"),
+        onError: () => toast.error("Failed to reject survey."),
       }
     );
   };
 
   return (
-    <div className="flex gap-2 mt-4">
+    <div className="flex gap-2 w-full">
       <AlertDialog open={openAccept} onOpenChange={setOpenAccept}>
         <AlertDialogTrigger asChild>
-          <Button className="w-28 bg-green-100 text-green-700 hover:bg-green-200">Terima</Button>
+          <Button
+            className="flex-1 bg-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:hover:bg-green-600 transition-colors"
+          >
+            Approve
+          </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Terima survei ini?</AlertDialogTitle>
+            <AlertDialogTitle>Approve this survey?</AlertDialogTitle>
             <AlertDialogDescription>
-              Survei akan disetujui dan dapat dipublikasikan oleh pengguna.
+              The survey will be approved and can be published by the user.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Batal</AlertDialogCancel>
-            <AlertDialogAction onClick={handleApprove} className="bg-green-100 text-green-700 hover:bg-green-200" disabled={isPending}>
-              Ya, Terima
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleApprove}
+              disabled={isPending}
+              className="bg-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:hover:bg-green-600 transition-colors"
+            >
+              Yes, Approve
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -97,31 +104,39 @@ export const SurveyVerificationActions = ({ surveyId }: Props) => {
 
       <AlertDialog open={openReject} onOpenChange={setOpenReject}>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive" className="w-28 bg-red-400 hover:bg-red-500">Tolak</Button>
+          <Button
+            className="flex-1 bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 transition-colors"
+          >
+            Reject
+          </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Tolak survei ini?</AlertDialogTitle>
+            <AlertDialogTitle>Reject this survey?</AlertDialogTitle>
             <AlertDialogDescription>
-              Berikan umpan balik penolakan untuk dikirimkan ke pengguna.
+              Please provide a reason that will be sent to the user.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <textarea
-            value={umpanBalik}
-            onChange={(e) => setUmpanBalik(e.target.value)}
-            placeholder="Tuliskan alasan penolakan..."
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+            placeholder="Enter rejection reason..."
             rows={4}
             required
-            className="w-full border rounded-md p-2 text-sm"
+            className="w-full border border-input rounded-md p-2 text-sm bg-background text-foreground"
           />
           <AlertDialogFooter>
-            <AlertDialogCancel>Batal</AlertDialogCancel>
-            <AlertDialogAction onClick={handleReject} className="bg-red-400 hover:bg-red-500" disabled={isPending}>
-              Kirim Penolakan
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleReject}
+              disabled={isPending}
+              className="bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600 transition-colors"
+            >
+              Submit Rejection
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  )
-}
+  );
+};
