@@ -25,8 +25,8 @@ export function SurveyPaymentChart() {
 
   if (isLoading) {
     return (
-      <div className="w-full h-64 flex items-center justify-center rounded-xl bg-glass-bg border border-glass-border backdrop-blur-md text-muted-foreground shadow-md">
-        Loading chart...
+      <div className="flex flex-grow justify-center items-center text-muted-foreground text-sm">
+        Loading data...
       </div>
     );
   }

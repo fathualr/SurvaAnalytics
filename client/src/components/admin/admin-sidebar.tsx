@@ -27,6 +27,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
 import { create } from "zustand";
@@ -56,10 +57,15 @@ export const useSidebarStore = create<SidebarState>((set) => ({
 }));
 
 export function AdminSidebar() {
+  const { isMobile, setOpenMobile } = useSidebar();
   const isUserOpen = useSidebarStore((s) => s.openMenus["user"]);
   const isSurveyOpen = useSidebarStore((s) => s.openMenus["survey"]);
   const isRewardOpen = useSidebarStore((s) => s.openMenus["reward"]);
   const toggleMenu = useSidebarStore((s) => s.toggleMenu);
+
+  const handleNav = () => {
+    if (isMobile) setOpenMobile(false);
+  };
 
   return (
     <Sidebar className="border border-y-0 border-l-0 border-glass-border font-medium" collapsible="icon">
@@ -77,10 +83,14 @@ export function AdminSidebar() {
           </div>
 
           <SidebarMenu className="gap-3 pt-0">
+            <Separator className="border border-foreground/10" />
+            <SidebarGroupLabel className="grid content-center h-4 text-foreground/75">
+              Menu
+            </SidebarGroupLabel>
 
             <SidebarMenuItem className="rounded-sm justify-center">
               <SidebarMenuButton asChild tooltip="Dashboard" className="text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
-                <Link href="/admin/dashboard">
+                <Link href="/admin/dashboard" onClick={handleNav}>
                   <LayoutDashboard />
                   Dashboard
                 </Link>
@@ -95,7 +105,7 @@ export function AdminSidebar() {
             <Collapsible open={isUserOpen} onOpenChange={() => toggleMenu("user")} asChild>
               <SidebarMenuItem className="rounded-sm">
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip="User Data" className="cursor-pointer group text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
+                  <SidebarMenuButton tooltip="User Data" className="group cursor-pointer text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
                     <Users />
                     Users
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]:rotate-90" />
@@ -105,14 +115,14 @@ export function AdminSidebar() {
                   <SidebarMenuSub className="pr-0 mr-0 border-muted-foreground/20">
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild className="text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
-                        <Link href="/admin/manage-admin">
+                        <Link href="/admin/manage-admin" onClick={handleNav}>
                           Admin
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild className="text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
-                        <Link href="/admin/manage-user">
+                        <Link href="/admin/manage-user" onClick={handleNav}>
                           Public
                         </Link>
                       </SidebarMenuSubButton>
@@ -125,7 +135,7 @@ export function AdminSidebar() {
             <Collapsible open={isSurveyOpen} onOpenChange={() => toggleMenu("survey")} asChild>
               <SidebarMenuItem className="rounded-sm">
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip="Survey Data" className="cursor-pointer group text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
+                  <SidebarMenuButton tooltip="Survey Data" className="group cursor-pointer text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
                     <ClipboardList />
                     Surveys
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]:rotate-90" />
@@ -135,21 +145,21 @@ export function AdminSidebar() {
                   <SidebarMenuSub className="pr-0 mr-0 border-muted-foreground/20">
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild className="text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
-                        <Link href="/admin/manage-survey">
+                        <Link href="/admin/manage-survey" onClick={handleNav}>
                           Survey List
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild className="text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
-                        <Link href="/admin/manage-verification">
+                        <Link href="/admin/manage-verification" onClick={handleNav}>
                           Verifications
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild className="text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
-                        <Link href="/admin/manage-payment">
+                        <Link href="/admin/manage-payment" onClick={handleNav}>
                           Payments
                         </Link>
                       </SidebarMenuSubButton>
@@ -162,7 +172,7 @@ export function AdminSidebar() {
             <Collapsible open={isRewardOpen} onOpenChange={() => toggleMenu("reward")} asChild>
               <SidebarMenuItem className="rounded-sm">
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip="Reward Data" className="cursor-pointer group text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
+                  <SidebarMenuButton tooltip="Reward Data" className="group cursor-pointer text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
                     <Gift />
                     Rewards
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]:rotate-90" />
@@ -172,14 +182,14 @@ export function AdminSidebar() {
                   <SidebarMenuSub className="pr-0 mr-0 border-muted-foreground/20">
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild className="text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
-                        <Link href="/admin/manage-reward">
+                        <Link href="/admin/manage-reward" onClick={handleNav}>
                           Reward List
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild className="text-foreground hover:text-background hover:bg-muted-foreground h-10 transition">
-                        <Link href="/admin/manage-exchange">
+                        <Link href="/admin/manage-exchange" onClick={handleNav}>
                           Exchange
                         </Link>
                       </SidebarMenuSubButton>
@@ -196,7 +206,7 @@ export function AdminSidebar() {
 
             <SidebarMenuItem className="rounded-sm">
               <SidebarMenuButton asChild tooltip="Survey Pricing" className="text-foreground bg-background hover:text-background hover:bg-muted-foreground h-10 transition">
-                <Link href="/admin/configuration/survey-price" className="flex items-center gap-2">
+                <Link href="/admin/configuration/survey-price" className="flex items-center gap-2" onClick={handleNav}>
                   <Calculator />
                   Survey Price
                 </Link>
@@ -206,7 +216,6 @@ export function AdminSidebar() {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-
       <SidebarRail />
     </Sidebar>
   );
