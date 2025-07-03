@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useKonfigurasiHarga, useUpdateKonfigurasiHarga } from '../hooks/usePriceConfiguration';
+import { useCreateKonfigurasiHarga, useKonfigurasiHarga, useUpdateKonfigurasiHarga } from '../hooks/usePriceConfiguration';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -9,6 +9,7 @@ import { FormGroup } from '@/components/umum/form/form-group';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { defaultSurveyPriceConfig } from '../constant/constants';
 
 const formSchema = z.object({
   harga_dasar: z.string().min(1, 'Base price is required'),
@@ -20,6 +21,7 @@ const formSchema = z.object({
 export function FormSurveyPrice() {
   const [isEditMode, setIsEditMode] = useState(false);
   const { config, isLoading, isFetching, isError, error, refetch } = useKonfigurasiHarga();
+  const { mutateAsync: createConfig, isPending: isCreating } = useCreateKonfigurasiHarga();
   const { mutateAsync: updateConfig, isPending } = useUpdateKonfigurasiHarga();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,6 +52,17 @@ export function FormSurveyPrice() {
     }
   }, [config, isEditMode, reset]);
 
+  const handleInitializePricing = async () => {
+    try {
+      await createConfig(defaultSurveyPriceConfig);
+      toast.success('Default pricing initialized');
+      refetch();
+      setIsEditMode(true);
+    } catch (err: any) {
+      toast.error(err?.message || 'Failed to initialize pricing');
+    }
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await updateConfig({
@@ -77,7 +90,7 @@ export function FormSurveyPrice() {
     );
   }
 
-  if (isError || !config) {
+  if (isError) {
     return (
       <div className="space-y-4">
         <p className="text-sm text-destructive font-medium">
@@ -85,6 +98,23 @@ export function FormSurveyPrice() {
         </p>
         <Button variant="outline" onClick={() => refetch()} className="text-sm">
           Try Again
+        </Button>
+      </div>
+    );
+  }
+
+  if (!config) {
+    return (
+      <div className="space-y-4 text-sm">
+        <p className="text-destructive font-medium">
+          No pricing configuration found.
+        </p>
+        <Button
+          onClick={handleInitializePricing}
+          disabled={isCreating}
+          className="border-glass-border bg-glass-bg bg-background/80 text-foreground backdrop-blur-md transition hover:bg-background hover:text-foreground"
+        >
+          {isCreating ? 'Initializing...' : 'Initialize Default Pricing'}
         </Button>
       </div>
     );

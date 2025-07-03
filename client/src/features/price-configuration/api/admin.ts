@@ -6,9 +6,17 @@ import {
 } from '../types/types';
 
 export const getKonfigurasiHarga = async (): Promise<KonfigurasiHargaResponse> => {
-  const res = await api.get('/api/konfigurasi-harga');
-  return res.data;
+  try {
+    const res = await api.get('/api/konfigurasi-harga');
+    return res.data;
+  } catch (err: any) {
+    if (err.response?.status === 404) {
+      return { data: null, status: 404, message: 'Not initialized' };
+    }
+    throw err;
+  }
 };
+
 
 export const createKonfigurasiHarga = async (
   payload: CreateKonfigurasiHargaPayload

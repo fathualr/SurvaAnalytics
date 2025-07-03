@@ -8,9 +8,9 @@ export interface KonfigurasiHarga {
 }
 
 export interface KonfigurasiHargaResponse {
-  status: string;
+  status: number;
   message: string;
-  data: KonfigurasiHarga;
+  data: KonfigurasiHarga | null;
 }
 
 export interface CreateKonfigurasiHargaPayload {
