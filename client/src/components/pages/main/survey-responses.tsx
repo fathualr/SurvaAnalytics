@@ -2,7 +2,7 @@
 
 import { SurveyBreadcrumbNav } from "@/components/umum/breadcrumb-survey";
 import { NavUmum } from "@/components/umum/nav-umum";
-import ResponseList from "@/features/surveyResponseResult/components/response-list";
+import ResponseList from "@/features/survey-response-result/components/response-list";
 import { useState } from "react";
 
 interface SurveyResponsePageProps {

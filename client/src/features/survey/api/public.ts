@@ -1,5 +1,5 @@
 import { api } from '@/lib/api';
-import { SurveyListResponse, SurveyDetailResponse } from '../types';
+import { SurveyListResponse, SurveyDetailResponse } from '../types/types';
 
 export const surveyService = {
   getPublishedSurveys: async (params?: Record<string, any>): Promise<SurveyListResponse> => {

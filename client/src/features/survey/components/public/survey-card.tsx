@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { ClipboardList, Coins } from 'lucide-react';
-import { StartSurveyButton } from '@/features/SurveyResponseSubmission/components/start-survey-button';
+import { StartSurveyButton } from '@/features/survey-response-submission/components/start-survey-button';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { formatDate } from '@/utils/dateFormat';
 

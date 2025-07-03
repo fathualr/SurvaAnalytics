@@ -1,7 +1,7 @@
 'use client';
 
 import { AdminBreadcrumb } from "@/components/admin/admin-breadcrumb";
-import { FormDetailSurveyPayment } from "@/features/surveyPayment/components/admin/form-detail";
+import { FormDetailSurveyPayment } from "@/features/survey-payment/components/admin/form-detail";
 import { ClipboardList, Eye } from "lucide-react";
 
 interface ManagePaymentDetailPageProps {

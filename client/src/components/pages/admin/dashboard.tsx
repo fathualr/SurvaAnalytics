@@ -3,7 +3,7 @@
 import { StatCard } from "@/components/admin/stat-card";
 import { usePenggunas } from "@/features/user/hooks/useUser";
 import { useAdminSurveys } from "@/features/survey/hooks/useAdminSurveys";
-import { useAdminSurveyResponses } from "@/features/surveyResponse/hooks/useAdminResponseSurvey";
+import { useAdminSurveyResponses } from "@/features/survey-response/hooks/useAdminResponseSurvey";
 import { SurveyPaymentChart } from "@/components/admin/data/survey-payment-chart";
 
 export function DashboardAdminPage() {

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Building2, SquareUserRound } from 'lucide-react';
 import { ProfileFormField } from '@/components/umum/form/profile-form-field';
-import { UserProfile } from '../types';
+import { UserProfile } from '../types/types';
 import { updateProfileForm } from '../hooks/useProfile';
 
 interface ProfileFormProps {

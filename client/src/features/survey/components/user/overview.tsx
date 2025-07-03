@@ -3,7 +3,7 @@
 import { DetailItem } from '@/components/umum/detail-item';
 import { useUserSurvey } from '../../hooks/useUserSurveys';
 import { formatDate } from '@/utils/dateFormat';
-import { ExportSurveyButton } from '@/features/surveyResponseResult/components/export-survey-button';
+import { ExportSurveyButton } from '@/features/survey-response-result/components/export-survey-button';
 
 interface SurveyOverviewProps {
   surveiId: string;

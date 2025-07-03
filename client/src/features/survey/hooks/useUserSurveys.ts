@@ -5,7 +5,7 @@ import {
   CreateUserSurveiPayload,
   UpdateUserSurveiPayload,
   SurveyListResponse,
-} from '../types';
+} from '../types/types';
 
 export interface UseUserSurveysOptions {
   page?: number;

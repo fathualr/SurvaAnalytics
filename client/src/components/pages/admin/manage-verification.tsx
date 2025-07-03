@@ -1,6 +1,6 @@
 'use client';
 
-import DataTableVerification from "@/features/surveyVerification/components/admin/data-table";
+import DataTableVerification from "@/features/survey-verification/components/admin/data-table";
 
 export function ManageVerificationPage() {
   return (

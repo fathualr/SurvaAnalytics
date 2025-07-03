@@ -1,4 +1,4 @@
-import { SurveyViewForm } from '@/features/SurveyResponseSubmission/components/survey-viewform';
+import { SurveyViewForm } from '@/features/survey-response-submission/components/survey-viewform';
 
 interface SurveyViewFormPageProps {
   surveyId: string;

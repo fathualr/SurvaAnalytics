@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Survei, SurveiStatus } from '../../types';
+import { Survei, SurveiStatus } from '../../types/types';
 import { useRouter } from 'next/navigation';
 import {
   FilePenLine,

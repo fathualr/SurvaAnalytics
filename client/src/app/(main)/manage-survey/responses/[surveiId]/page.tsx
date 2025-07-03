@@ -7,8 +7,9 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { surveiId } = await params;
+  const shortId = surveiId.slice(0, 8);
   return {
-    title: `Surva. - Responses Survey`,
+    title: `Surva. - Responses Survey #${shortId}`,
   };
 }
 

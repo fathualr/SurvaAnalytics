@@ -1,6 +1,6 @@
 'use client';
 
-import { FormSurveyPrice } from "@/features/priceConfiguration/components/form-survey-price";
+import { FormSurveyPrice } from "@/features/price-configuration/components/form-survey-price";
 
 export function ConfigurationSurveyPricePage() {
   return (

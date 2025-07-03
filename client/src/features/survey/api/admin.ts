@@ -5,7 +5,7 @@ import {
   SurveyDetailResponse,
   CreateAdminSurveiPayload,
   UpdateUserSurveiPayload,
-} from '../types';
+} from '../types/types';
 
 export const adminSurveiService = {
   getAll: async (params?: Record<string, any>): Promise<SurveyListResponse> => {

@@ -1,7 +1,7 @@
 'use client';
 
 import { AdminBreadcrumb } from "@/components/admin/admin-breadcrumb";
-import { FormAddRewardExchange } from "@/features/rewardExchange/components/admin/form-add";
+import { FormAddRewardExchange } from "@/features/reward-exchange/components/admin/form-add";
 import { Gift, Plus } from "lucide-react";
 
 export function ManageRewardExchangeAddPage() {

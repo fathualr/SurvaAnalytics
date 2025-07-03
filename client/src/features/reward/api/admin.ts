@@ -4,7 +4,7 @@ import {
   HadiahListResponse,
   CreateHadiahPayload,
   UpdateHadiahPayload,
-} from '../types';
+} from '../types/types';
 
 export const adminHadiahService = {
   getAll: async (params?: Record<string, any>): Promise<HadiahListResponse> => {

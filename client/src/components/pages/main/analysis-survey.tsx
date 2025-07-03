@@ -2,7 +2,7 @@
 
 import { SurveyBreadcrumbNav } from "@/components/umum/breadcrumb-survey";
 import { NavUmum } from "@/components/umum/nav-umum";
-import { AnalysisList } from "@/features/surveyResponseResult/components/analysis-list";
+import { AnalysisList } from "@/features/survey-response-result/components/analysis-list";
 
 interface AnalysisSurveyPageProps {
   surveyId: string;

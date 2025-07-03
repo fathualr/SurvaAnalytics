@@ -11,11 +11,11 @@ import {
   useUpdateUserSurvey,
   useDeleteUserSurvey,
 } from '@/features/survey/hooks/useUserSurveys';
-import { QuestionSection } from '@/features/surveyQuestion/components/user/question-section';
-import SubmitButton from '@/features/surveyVerification/components/user/submit-button';
-import { useSurveyQuestions } from '@/features/surveyQuestion/hooks/useUserSurveyQuestion';
+import { QuestionSection } from '@/features/survey-question/components/user/question-section';
+import SubmitButton from '@/features/survey-verification/components/user/submit-button';
+import { useSurveyQuestions } from '@/features/survey-question/hooks/useUserSurveyQuestion';
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import { CreateSurveyPaymentButton } from '@/features/surveyPayment/components/user/payment-button';
+import { CreateSurveyPaymentButton } from '@/features/survey-payment/components/user/payment-button';
 
 interface SurveyContainerProps {
   surveyId: string;

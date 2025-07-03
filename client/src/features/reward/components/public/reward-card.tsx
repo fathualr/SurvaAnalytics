@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
-import { Hadiah } from '../../types';
+import { Hadiah } from '../../types/types';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import RewardExchangePreview from '@/features/rewardExchange/components/user/confirmation-exchange-button';
+import RewardExchangePreview from '@/features/reward-exchange/components/user/confirmation-exchange-button';
 import { BadgePercent, Coins, Gift } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 

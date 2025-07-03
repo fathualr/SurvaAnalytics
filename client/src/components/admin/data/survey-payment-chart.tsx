@@ -1,6 +1,6 @@
 'use client';
 
-import { useAdminSurveyPayments } from '@/features/surveyPayment/hooks/useAdminSurveyPayment';
+import { useAdminSurveyPayments } from '@/features/survey-payment/hooks/useAdminSurveyPayment';
 import { DynamicAreaChart } from '@/components/admin/dynamic-area-chart';
 import * as React from 'react';
 

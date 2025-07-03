@@ -2,7 +2,7 @@
 
 import { SurveyBreadcrumbNav } from "@/components/umum/breadcrumb-survey";
 import { NavUmum } from "@/components/umum/nav-umum";
-import { ResponseDetail } from "@/features/surveyResponseResult/components/response-detail";
+import { ResponseDetail } from "@/features/survey-response-result/components/response-detail";
 
 interface SurveyResponsePageProps {
   surveyId: string;

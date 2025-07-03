@@ -1,6 +1,6 @@
 'use client';
 
-import DataTableRewardExchange from "@/features/rewardExchange/components/admin/data-table";
+import DataTableRewardExchange from "@/features/reward-exchange/components/admin/data-table";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 

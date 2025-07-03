@@ -1,7 +1,7 @@
 'use client';
 
 import { AdminBreadcrumb } from "@/components/admin/admin-breadcrumb";
-import { FormDetailRewardExchange } from "@/features/rewardExchange/components/admin/form-detail";
+import { FormDetailRewardExchange } from "@/features/reward-exchange/components/admin/form-detail";
 import { Eye, Gift } from "lucide-react";
 
 interface ManageRewardExchangeDetailPageProps {

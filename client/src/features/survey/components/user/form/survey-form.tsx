@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { isEqual } from 'lodash';
 import { Input } from '@/components/ui/input';
 import { KriteriaSection } from './kriteria-section';
-import { UpdateUserSurveiPayload } from '@/features/survey/types';
+import { UpdateUserSurveiPayload } from '@/features/survey/types/types';
 import { DateRangeSection } from '@/components/umum/form/date-range-input';
 import { FormGroup } from '@/components/umum/form/form-group';
 import { useAutosave } from '@/hooks/useAutoSave';

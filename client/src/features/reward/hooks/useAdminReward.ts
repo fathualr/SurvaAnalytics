@@ -4,7 +4,7 @@ import {
   UpdateHadiahPayload,
   Hadiah,
   HadiahListResponse,
-} from '../types';
+} from '../types/types';
 import { adminHadiahService } from '../api/admin';
 
 export interface UseAdminHadiahOptions {

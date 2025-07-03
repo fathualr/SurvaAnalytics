@@ -1,6 +1,6 @@
 'use client';
 
-import DataTableSurveyPayment from "@/features/surveyPayment/components/admin/data-table";
+import DataTableSurveyPayment from "@/features/survey-payment/components/admin/data-table";
 
 export function ManagePaymentPage() {
   return (

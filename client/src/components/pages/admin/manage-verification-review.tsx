@@ -1,7 +1,7 @@
 'use client';
 
 import { AdminBreadcrumb } from "@/components/admin/admin-breadcrumb";
-import { SurveyVerificationContainer } from "@/features/surveyVerification/components/admin/survey-verification-container";
+import { SurveyVerificationContainer } from "@/features/survey-verification/components/admin/survey-verification-container";
 import { ClipboardList, SquareChartGantt } from "lucide-react";
 
 interface ManageVerificationReviewPageProps {

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/useMobile';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useUserSurvey } from '@/features/survey/hooks/useUserSurveys';
 import {

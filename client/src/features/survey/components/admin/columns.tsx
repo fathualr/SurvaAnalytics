@@ -1,7 +1,7 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { Survei } from '../../types'
+import { Survei } from '../../types/types'
 import { Button } from '@/components/ui/button'
 import { Eye, Pencil, CheckCircle, Trash2, AlertCircle, Ban, FilePenLine, Hourglass } from 'lucide-react'
 import Link from 'next/link'

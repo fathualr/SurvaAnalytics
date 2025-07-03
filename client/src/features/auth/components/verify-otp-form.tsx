@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useCountdown } from '@/hooks/useCountdown'
-import { formatTime } from '@/utils/format'
+import { formatTime } from '@/utils/timeFormat'
 import {
   InputOTP,
   InputOTPGroup,

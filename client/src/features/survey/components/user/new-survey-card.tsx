@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
 import { useCreateUserSurvey } from '@/features/survey/hooks/useUserSurveys';
-import { defaultSurveyPayload } from '../../constants';
+import { defaultSurveyPayload } from '../../constant/constants';
 import { toast } from 'sonner';
 
 export const NewSurveyCard = () => {
