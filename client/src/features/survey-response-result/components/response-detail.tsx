@@ -74,8 +74,8 @@ export function ResponseDetail({ surveyId, responSurveyId }: Props) {
           backdropFilter: 'var(--glass-blur)',
         }}
       >
-        <DetailItem label="Name" value={Umum.nama} />
-        <DetailItem label="Email" value={Umum.Pengguna.email} />
+        <DetailItem label="Name" value={Umum?.nama || '[Deleted User]'} />
+        <DetailItem label="Email" value={Umum?.Pengguna.email || '[Deleted User]'} />
         <DetailItem
           label="Profile"
           value={`${profil_metadata.status} • ${profil_metadata.region} • ${profil_metadata.usia} y.o • ${profil_metadata.jenis_kelamin}`}

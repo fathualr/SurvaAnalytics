@@ -46,14 +46,14 @@ export default function ResponList({
   if (isLoading) {
     return (
       <div
-        className="flex flex-grow justify-center rounded-xl border border-glass-border bg-glass-bg backdrop-blur-xl shadow-sm"
+        className="flex flex-col flex-grow rounded-xl sm:p-5 p-3 gap-3 border border-glass-border bg-glass-bg backdrop-blur-xl shadow-sm"
         style={{
           background: 'var(--glass-background)',
           borderColor: 'var(--glass-border)',
           backdropFilter: 'var(--glass-blur)',
         }}
       >
-        <ul className="space-y-3 w-full px-6">
+        <ul className="space-y-3">
           {Array.from({ length: 2 }).map((_, i) => (
             <li
               key={i}
@@ -139,7 +139,7 @@ export default function ResponList({
                   <div className="flex flex-col gap-1 text-sm text-foreground">
                     <div className="flex items-center gap-2 text-base font-medium truncate">
                       <User className="w-4 h-4 text-muted-foreground" />
-                      <span className="line-clamp-1">{respon.Umum.nama}</span>
+                      <span className="line-clamp-1">{respon.Umum?.nama || '[Deleted User]'}</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <ListCheck className="w-4 h-4" />
