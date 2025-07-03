@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 
 export function ProfilePage() {
   const router = useRouter();
-  const { user, isLoggedIn, loading: authLoading } = useAuth();
+  const { isLoggedIn, loading: authLoading } = useAuth();
   const shouldFetch = isLoggedIn && !authLoading;
 
   const {
@@ -20,8 +20,6 @@ export function ProfilePage() {
     isError,
     refetch,
     updateProfile,
-    errorMessage,
-    clearError,
   } = useProfile(shouldFetch);
 
   const [isEditing, setIsEditing] = useState(false);

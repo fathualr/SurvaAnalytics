@@ -27,4 +27,4 @@ export interface CreateHadiahPayload {
   harga_poin: number;
 }
 
-export interface UpdateHadiahPayload extends Partial<CreateHadiahPayload> {}
+export type UpdateHadiahPayload = Partial<CreateHadiahPayload>;

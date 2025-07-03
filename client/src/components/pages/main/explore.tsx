@@ -6,14 +6,14 @@ import { NavUmum } from "@/components/umum/nav-umum";
 
 export function ExplorePage() {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const [searchInput, setSearchInput] = useState('');
+  // const [search, setSearch] = useState('');
+  // const [searchInput, setSearchInput] = useState('');
   const limit = 10;
 
-  const handleSearch = () => {
-    setPage(1);
-    setSearch(searchInput.trim());
-  };
+  // const handleSearch = () => {
+  //   setPage(1);
+  //   setSearch(searchInput.trim());
+  // };
 
   return (
     <main className="flex flex-col w-full overflow-hidden min-h-screen pt-16 pb-5 md:px-10 px-5">
@@ -44,7 +44,7 @@ export function ExplorePage() {
         <SurveyList
           page={page}
           limit={limit}
-          filters={search ? { keyword: search } : {}}
+          // filters={search ? { keyword: search } : {}}
           onPageChange={setPage}
         />
       </section>

@@ -47,13 +47,13 @@ export function ProfileFormField({
             onChange={(e) => onChange?.(id, e.target.value)}
             disabled={isReadOnly}
             autoComplete="off"
-            className={`w-full h-10 px-3 rounded-md bg-background/50 dark:bg-neutral-800/40 border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary`}
+            className={`w-full h-10 px-3 rounded-md bg-transparent backdrop-blur-md border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary`}
           >
-            <option disabled value="">
+            <option disabled value="" className="bg-background text-foreground">
               Select {label.toLowerCase()}
             </option>
             {options.map((opt) => (
-              <option key={opt.value} value={opt.value}>
+              <option key={opt.value} value={opt.value} className="bg-background text-foreground">
                 {opt.label}
               </option>
             ))}

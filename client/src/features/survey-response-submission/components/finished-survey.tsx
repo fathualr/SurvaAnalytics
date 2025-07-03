@@ -21,7 +21,7 @@ export function FinishedSurvey({ points }: SurveyFinishScreenProps) {
         Your responses have been successfully submitted.
       </p>
       <p className="text-lg font-semibold text-foreground mb-6">
-        You've earned <span className="text-green-600">{points}</span> points!
+        You have earned <span className="text-green-600">{points}</span> points!
       </p>
       <Button
         onClick={() => router.push('/explore')}

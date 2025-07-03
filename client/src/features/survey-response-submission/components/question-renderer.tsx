@@ -96,9 +96,13 @@ export function QuestionRenderer({ question, value, onChange }: QuestionRenderer
                   checked={isChecked}
                   onChange={(e) => {
                     const set = new Set(selected);
-                    e.target.checked ? set.add(opt) : set.delete(opt);
+                    if (e.target.checked) {
+                      set.add(opt);
+                    } else {
+                      set.delete(opt);
+                    }
                     const updated = Array.from(set);
-                    onChange(updated.length > 0 ? updated : null); // ⬅️ gunakan null jika kosong
+                    onChange(updated.length > 0 ? updated : null);
                   }}
                   className="hidden"
                 />
@@ -179,7 +183,7 @@ export function QuestionRenderer({ question, value, onChange }: QuestionRenderer
           value={safeString(value)}
           onChange={(e) => {
             const val = e.target.value.trim();
-            onChange(val.length > 0 ? val : null); // ⬅️ kirim null jika kosong
+            onChange(val.length > 0 ? val : null);
           }}
           placeholder="Write your answer here..."
           rows={4}

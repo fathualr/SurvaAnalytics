@@ -1,6 +1,7 @@
 'use client';
 
 import { useWordCloudImage } from '@/features/.python-service/hooks/useUserPythonService';
+import Image from 'next/image';
 
 export default function WordCloudVisualization({ texts }: { texts: string[] }) {
   const { data: imageUrl, isLoading, isError } = useWordCloudImage(texts);
@@ -20,11 +21,15 @@ export default function WordCloudVisualization({ texts }: { texts: string[] }) {
     );
 
   return (
-    <div className="flex justify-center items-center">
-      <img
+    <div className="flex h-full justify-center items-center">
+      <Image
         src={imageUrl}
         alt="Word Cloud Visualization"
-        className="max-w-full max-h-[350px] object-contain rounded-lg"
+        width={0}
+        height={0}
+        sizes="100vw"
+        unoptimized
+        className="max-h-[350px] w-full object-contain rounded-lg"
       />
     </div>
   );
