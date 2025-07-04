@@ -43,22 +43,25 @@ export function CompleteAccountForm({
   return (
     <>
       <header className="mb-8 text-center">
-        <h2 className="text-2xl font-bold">Detail Profil</h2>
-        <p className="text-sm">Lengkapi informasi akun Anda</p>
+        <h2 className="text-2xl font-bold text-foreground">Complete Your Profile</h2>
+        <p className="text-sm text-muted-foreground">Please provide additional information</p>
       </header>
 
-      <form onSubmit={handleSubmit} className="w-full max-w-[600px] space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-[600px] space-y-6 text-foreground"
+      >
         <FormGroup label="Email" htmlFor="email">
           <Input
             id="email"
             type="email"
             value={email}
             readOnly
-            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+            className="bg-glass-bg border border-glass-border text-foreground placeholder:text-muted-foreground backdrop-blur-md"
           />
         </FormGroup>
 
-        <FormGroup label="Nama Lengkap" htmlFor="nama_lengkap">
+        <FormGroup label="Full Name" htmlFor="nama_lengkap">
           <Input
             id="nama_lengkap"
             name="nama_lengkap"
@@ -66,7 +69,8 @@ export function CompleteAccountForm({
             value={formData.nama_lengkap}
             onChange={handleChange}
             required
-            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+            placeholder="e.g. John Doe"
+            className="bg-glass-bg border border-glass-border text-foreground placeholder:text-muted-foreground backdrop-blur-md"
           />
         </FormGroup>
 
@@ -77,20 +81,22 @@ export function CompleteAccountForm({
             onChange={handleChange}
             required
             minLength={8}
+            placeholder="Enter a secure password"
           />
         </FormGroup>
 
-        <FormGroup label="Konfirmasi Password" htmlFor="konfirmasi_password">
+        <FormGroup label="Confirm Password" htmlFor="konfirmasi_password">
           <PasswordInput
             name="konfirmasi_password"
             value={formData.konfirmasi_password}
             onChange={handleChange}
             required
             minLength={8}
+            placeholder="Re-enter your password"
           />
         </FormGroup>
 
-        <FormGroup label="Tanggal Lahir" htmlFor="tanggal_lahir">
+        <FormGroup label="Date of Birth" htmlFor="tanggal_lahir">
           <Input
             id="tanggal_lahir"
             name="tanggal_lahir"
@@ -98,23 +104,24 @@ export function CompleteAccountForm({
             value={formData.tanggal_lahir}
             onChange={handleChange}
             required
-            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+            placeholder="YYYY-MM-DD"
+            className="bg-glass-bg border border-glass-border text-foreground placeholder:text-muted-foreground backdrop-blur-md"
           />
         </FormGroup>
 
-        <FormGroup label="Jenis Kelamin" htmlFor="jenis_kelamin">
-          <select
-            id="jenis_kelamin"
-            name="jenis_kelamin"
-            value={formData.jenis_kelamin}
-            onChange={handleChange}
-            required
-            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
-          >
-            <option disabled value="">Pilih Jenis Kelamin</option>
-            <option value="laki-laki">Laki-laki</option>
-            <option value="perempuan">Perempuan</option>
-          </select>
+        <FormGroup label="Gender" htmlFor="jenis_kelamin">
+        <select
+          id="jenis_kelamin"
+          name="jenis_kelamin"
+          value={formData.jenis_kelamin}
+          onChange={handleChange}
+          required
+          className="bg-glass-bg border border-glass-border text-sm text-foreground placeholder:text-muted-foreground backdrop-blur-md h-10 px-2 rounded-md w-full appearance-none"
+        >
+          <option disabled hidden value="">Select Gender</option>
+          <option value="laki laki" className="bg-background text-foreground">Male</option>
+          <option value="perempuan" className="bg-background text-foreground">Female</option>
+        </select>
         </FormGroup>
 
         <FormGroup label="Region" htmlFor="region">
@@ -125,11 +132,12 @@ export function CompleteAccountForm({
             value={formData.region}
             onChange={handleChange}
             required
-            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+            placeholder="e.g. Jakarta, Indonesia"
+            className="bg-glass-bg border border-glass-border text-foreground placeholder:text-muted-foreground backdrop-blur-md"
           />
         </FormGroup>
 
-        <FormGroup label="Status Pekerjaan / Pendidikan" htmlFor="status">
+        <FormGroup label="Occupation / Education Status" htmlFor="status">
           <Input
             id="status"
             name="status"
@@ -137,7 +145,8 @@ export function CompleteAccountForm({
             value={formData.status}
             onChange={handleChange}
             required
-            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+            placeholder="e.g. Software Engineer / University Student"
+            className="bg-glass-bg border border-glass-border text-foreground placeholder:text-muted-foreground backdrop-blur-md"
           />
         </FormGroup>
 
@@ -145,9 +154,9 @@ export function CompleteAccountForm({
           <Button
             type="submit"
             disabled={loading}
-            className="cursor-pointer font-semibold w-40 rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
+            className="w-full font-semibold bg-secondary hover:bg-secondary/90"
           >
-            {loading ? 'Menyimpan...' : 'Simpan'}
+            {loading ? 'Saving...' : 'Save'}
           </Button>
         </div>
       </form>

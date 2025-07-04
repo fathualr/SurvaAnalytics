@@ -3,7 +3,7 @@ import { NotFoundPage } from '@/components/pages/errors/404';
 
 export const metadata: Metadata = {
   title: 'Error - 404',
-  description: 'Halaman aplikasi tidak ditemukan',
+  description: 'The requested page could not be found',
 };
 
 export default function NotFound() {

@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { authService } from '../api';
-import { CompleteAccountPayload, EmailRegisterPayload, VerifyOtpPayload } from '../types';
+import { authService } from '../api/api';
+import { CompleteAccountPayload, EmailRegisterPayload, VerifyOtpPayload } from '../types/types';
 
 type RegisterStep = 'init' | 'verify' | 'complete';
 
@@ -123,6 +123,7 @@ export const useRegister = () => {
     },
     completeAccount: {
       mutate: completeAccount.mutate,
+      mutateAsync: completeAccount.mutateAsync,
       isPending: completeAccount.isPending,
     },
   };

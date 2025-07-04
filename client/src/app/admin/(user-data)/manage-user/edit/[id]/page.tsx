@@ -1,10 +1,19 @@
 import { ManageUserEditPage } from '@/components/pages/admin/manage-user-edit';
+import type { Metadata } from 'next';
 
-export default async function Page({
-  params,
-}: {
+type Props = {
   params: Promise<{ id: string }>
-}) {
-  const { id } = await params
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const shortId = id.slice(0, 8);
+  return {
+    title: `Data - Edit Public #${shortId}`,
+  };
+}
+
+export default async function Page({ params }: Props) {
+  const { id } = await params;
   return <ManageUserEditPage userId={id} />;
 }

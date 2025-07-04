@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { penggunaService } from '../api';
+import { penggunaService } from '../api/admin';
 import {
   GetPenggunasResponse,
   GetPenggunaResponse,
   CreatePenggunaPayload,
   UpdatePenggunaPayload,
-} from '../types';
+} from '../types/types';
 
 export interface UsePenggunasOptions {
   page?: number;

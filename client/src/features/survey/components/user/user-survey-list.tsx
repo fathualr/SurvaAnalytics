@@ -17,7 +17,7 @@ interface UserSurveyListProps {
 export function UserSurveyList({
   page,
   limit = 8,
-  filters = {},
+  filters = { sort: "-updated_at"},
   onPageChange,
 }: UserSurveyListProps) {
   const { isLoggedIn, loading: authLoading } = useAuth();
@@ -34,11 +34,20 @@ export function UserSurveyList({
 
   const totalPages = meta?.total_pages ?? 1;
 
-  if (authLoading || isLoading) {
+  if (isLoading) {
     return (
       <div className="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 xl:gap-8 md:gap-5 gap-3">
         {Array.from({ length: 2 }).map((_, i) => (
-          <div key={i} className="animate-pulse bg-muted rounded-lg w-full h-[250px]" />
+          <div
+            key={i}
+            className="animate-pulse h-[250px] rounded-xl bg-glass-bg backdrop-blur-lg border border-glass-border shadow-inner"
+            style={{
+              background: 'var(--glass-background)',
+              borderColor: 'var(--glass-border)',
+              backdropFilter: 'var(--glass-blur)',
+              boxShadow: 'var(--glass-shadow)',
+            }}
+          />
         ))}
       </div>
     );
@@ -46,10 +55,29 @@ export function UserSurveyList({
 
   if (isError) {
     return (
-      <div className="flex flex-col gap-4 items-center justify-center bg-red-50 border border-red-200 text-red-700 px-4 py-6 rounded">
-        <p>{errorMessage || 'Gagal memuat survei kamu.'}</p>
+      <div
+        className="flex flex-col gap-4 items-center justify-center text-center px-6 py-8 rounded-2xl bg-glass-bg backdrop-blur-xl border border-glass-border shadow-md"
+        style={{
+          background: 'var(--glass-background)',
+          borderColor: 'var(--glass-border)',
+          boxShadow: 'var(--glass-shadow)',
+          backdropFilter: 'var(--glass-blur)',
+        }}
+      >
+        <p className="text-destructive font-medium">
+          {errorMessage || 'Gagal memuat survei kamu.'}
+        </p>
         {refetch && (
-          <Button variant="destructive" onClick={() => refetch()}>
+          <Button
+            onClick={() => refetch()}
+            className="px-5 py-2 text-sm font-semibold rounded-lg border border-glass-border backdrop-blur-md shadow-md 
+              bg-destructive/50 dark:bg-destructive/50 text-foreground hover:bg-destructive/40 dark:hover:bg-destructive/20 transition"
+            style={{
+              borderColor: 'var(--glass-border)',
+              backdropFilter: 'var(--glass-blur)',
+              boxShadow: 'var(--glass-shadow)',
+            }}
+          >
             Coba Lagi
           </Button>
         )}
@@ -59,7 +87,9 @@ export function UserSurveyList({
 
   if (surveys.length === 0) {
     return (
-      <div className="grid lg:grid-cols-4 grid-cols-2 lg:gap-5 gap-3">
+      <div
+        className="grid lg:grid-cols-4 grid-cols-2 md:gap-5 gap-3"
+      >
         <NewSurveyCard />
       </div>
     );
@@ -68,7 +98,7 @@ export function UserSurveyList({
   return (
     <>
       <div className="flex-grow">
-        <div className="grid lg:grid-cols-4 grid-cols-2 lg:gap-5 gap-3">
+        <div className="grid lg:grid-cols-4 grid-cols-2 md:gap-5 gap-3">
           {page === 1 && <NewSurveyCard />}
 
           {surveys

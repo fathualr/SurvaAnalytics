@@ -5,7 +5,7 @@ import {
   UpdateUserSurveiPayload,
   SurveyListResponse,
   SurveyDetailResponse,
-} from '../types';
+} from '../types/types';
 
 export interface UseAdminSurveysOptions {
   page?: number;

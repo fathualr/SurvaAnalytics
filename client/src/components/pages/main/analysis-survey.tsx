@@ -1,8 +1,8 @@
 'use client'
 
-import { NavSurvey } from "@/components/umum/nav-survey";
+import { SurveyBreadcrumbNav } from "@/components/umum/breadcrumb-survey";
 import { NavUmum } from "@/components/umum/nav-umum";
-import { AnalysisList } from "@/features/surveyResponseResult/components/analysis-list";
+import { AnalysisList } from "@/features/survey-response-result/components/analysis-list";
 
 interface AnalysisSurveyPageProps {
   surveyId: string;
@@ -14,14 +14,18 @@ export function AnalysisSurveyPage({ surveyId }: AnalysisSurveyPageProps) {
       <NavUmum />
 
       <section className="flex flex-col flex-grow">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
-          Analisis Survei
-          <span className="block text-sm text-muted-foreground">Id: {surveyId}</span>
-          <NavSurvey surveyId={surveyId} />
-        </h1>
+        <div className="font-bold my-4">
+          <h1 className="text-3xl md:text-4xl ">
+            Analysis Survey
+          </h1>
+          <p className="block text-xs text-foreground/80 italic">
+            Survey ID:{' '}
+            <span className="not-italic">{surveyId}</span>
+          </p>
+          <SurveyBreadcrumbNav surveyId={surveyId} />
+        </div>
 
         <AnalysisList surveyId={surveyId} />
-
       </section>
     </main>
   );

@@ -1,18 +1,33 @@
-"use client"
+'use client'
 
-import * as React from "react"
+import * as React from 'react'
 import {
-  AreaChart, Area, CartesianGrid, XAxis,
-} from "recharts"
+  AreaChart,
+  Area,
+  CartesianGrid,
+  XAxis,
+} from 'recharts'
 import {
-  Card, CardHeader, CardTitle, CardDescription, CardContent,
-} from "@/components/ui/card"
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card'
 import {
-  Select, SelectTrigger, SelectContent, SelectItem, SelectValue,
-} from "@/components/ui/select"
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from '@/components/ui/select'
 import {
-  ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent,
-} from "@/components/ui/chart"
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart'
 
 type ChartProps = {
   data: any[]
@@ -29,25 +44,25 @@ export function DynamicAreaChart({
   dateKey,
   dataKeys,
   title,
-  description = "",
-  referenceDate = new Date().toISOString().split("T")[0],
+  description = '',
+  referenceDate = new Date().toISOString().split('T')[0],
   enableTimeRangeSelector = true,
 }: ChartProps) {
-  const [timeRange, setTimeRange] = React.useState("90d")
+  const [timeRange, setTimeRange] = React.useState('90d')
 
   const filteredData = data.filter((item) => {
     const date = new Date(item[dateKey])
     const refDate = new Date(referenceDate)
     let days = 90
-    if (timeRange === "30d") days = 30
-    if (timeRange === "7d") days = 7
+    if (timeRange === '30d') days = 30
+    if (timeRange === '7d') days = 7
     const from = new Date(refDate)
     from.setDate(from.getDate() - days)
     return date >= from && date <= refDate
   })
 
   return (
-    <Card className="pt-0">
+    <Card className="pt-0 bg-glass-bg bg-background/90 border border-glass-border backdrop-blur-md shadow-sm text-foreground transition-colors">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
           <CardTitle>{title}</CardTitle>
@@ -55,7 +70,7 @@ export function DynamicAreaChart({
         </div>
         {enableTimeRangeSelector && (
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="hidden w-[160px] sm:flex">
+            <SelectTrigger className="hidden w-[160px] sm:flex bg-background border border-border text-sm">
               <SelectValue placeholder="Time range" />
             </SelectTrigger>
             <SelectContent>
@@ -66,9 +81,15 @@ export function DynamicAreaChart({
           </Select>
         )}
       </CardHeader>
+
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
-          config={{ visitors: { label: "Total" }, ...Object.fromEntries(dataKeys.map(k => [k.key, { label: k.label, color: k.color }])) }}
+          config={Object.fromEntries(
+            dataKeys.map(({ key, label, color }) => [
+              key,
+              { label, color },
+            ])
+          )}
           className="aspect-auto h-[250px] w-full"
         >
           <AreaChart data={filteredData}>
@@ -80,7 +101,8 @@ export function DynamicAreaChart({
                 </linearGradient>
               ))}
             </defs>
-            <CartesianGrid vertical={false} />
+
+            <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis
               dataKey={dateKey}
               tickLine={false}
@@ -88,9 +110,9 @@ export function DynamicAreaChart({
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) =>
-                new Date(value).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
+                new Date(value).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
                 })
               }
             />
@@ -99,9 +121,9 @@ export function DynamicAreaChart({
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) =>
-                    new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
+                    new Date(value).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
                     })
                   }
                   indicator="dot"

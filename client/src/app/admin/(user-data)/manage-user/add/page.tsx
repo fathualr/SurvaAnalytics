@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { ManageUserAddPage } from '@/components/pages/admin/manage-user-add';
 
 export const metadata: Metadata = {
-  title: 'Data Pengguna - Tambah',
-  description: 'Menambah data admin aplikasi.',
+  title: 'Data - Add Public',
+  description: 'Add new public data to the application.',
 };
 
 export default function ManageAdminAdd() {

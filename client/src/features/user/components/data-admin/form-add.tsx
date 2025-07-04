@@ -13,15 +13,15 @@ import { FormGroup } from '@/components/umum/form/form-group';
 
 const formSchema = z
   .object({
-    email: z.string().email({ message: 'Email tidak valid' }).max(255),
-    password: z.string().min(8, { message: 'Password minimal 8 karakter' }).max(255),
-    password_confirmation: z.string().min(8, { message: 'Password minimal 8 karakter' }),
-    nama_admin: z.string().min(1, { message: 'Nama wajib diisi' }).max(255),
-    kontak_darurat: z.string().min(1, { message: 'Kontak darurat wajib diisi' }).max(255),
+    email: z.string().email({ message: 'Invalid email address' }).max(255),
+    password: z.string().min(8, { message: 'Password must be at least 8 characters' }).max(255),
+    password_confirmation: z.string().min(8, { message: 'Password must be at least 8 characters' }),
+    nama_admin: z.string().min(1, { message: 'Name is required' }).max(255),
+    kontak_darurat: z.string().min(1, { message: 'Emergency contact is required' }).max(255),
   })
   .refine((data) => data.password === data.password_confirmation, {
     path: ['password_confirmation'],
-    message: 'Konfirmasi password tidak cocok',
+    message: 'Password confirmation does not match',
   });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -51,49 +51,86 @@ export const FormAddAdmin = () => {
         },
       });
 
-      toast.success('Admin berhasil dibuat');
+      toast.success('Admin created successfully');
       reset();
       router.push('/admin/manage-admin');
     } catch (err: any) {
-      toast.error(err?.message || 'Gagal membuat pengguna');
+      toast.error(err?.message || 'Failed to create user');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className=" flex-grow space-y-4 p-4 rounded-lg border border-glass-border bg-glass-bg bg-background/80 backdrop-blur-md"
+    >
       <FormGroup label="Email" htmlFor="email">
-        <Input id="email" type="email" {...register('email')} />
-        {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+        <Input
+          id="email"
+          type="email"
+          placeholder="admin@example.com"
+          {...register('email')}
+          className="bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50"
+        />
+        {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
       </FormGroup>
 
       <FormGroup label="Password" htmlFor="password">
-        <Input id="password" type="password" {...register('password')} />
-        {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
+        <Input
+          id="password"
+          type="password"
+          placeholder="Enter a secure password"
+          {...register('password')}
+          className="bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50"
+        />
+        {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
       </FormGroup>
 
-      <FormGroup label="Konfirmasi Password" htmlFor="password_confirmation">
-        <Input id="password_confirmation" type="password" {...register('password_confirmation')} />
+      <FormGroup label="Confirm Password" htmlFor="password_confirmation">
+        <Input
+          id="password_confirmation"
+          type="password"
+          placeholder="Repeat your password"
+          {...register('password_confirmation')}
+          className="bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50"
+        />
         {errors.password_confirmation && (
-          <p className="text-sm text-red-500">{errors.password_confirmation.message}</p>
+          <p className="text-sm text-destructive">{errors.password_confirmation.message}</p>
         )}
       </FormGroup>
 
-      <FormGroup label="Nama Admin" htmlFor="nama_admin">
-        <Input id="nama_admin" type="text" {...register('nama_admin')} />
-        {errors.nama_admin && <p className="text-sm text-red-500">{errors.nama_admin.message}</p>}
+      <FormGroup label="Admin Name" htmlFor="nama_admin">
+        <Input
+          id="nama_admin"
+          type="text"
+          placeholder="Full name of the admin"
+          {...register('nama_admin')}
+          className="bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50"
+        />
+        {errors.nama_admin && <p className="text-sm text-destructive">{errors.nama_admin.message}</p>}
       </FormGroup>
 
-      <FormGroup label="Kontak Darurat" htmlFor="kontak_darurat">
-        <Input id="kontak_darurat" type="text" {...register('kontak_darurat')} />
-        {errors.kontak_darurat && <p className="text-sm text-red-500">{errors.kontak_darurat.message}</p>}
+      <FormGroup label="Emergency Contact" htmlFor="kontak_darurat">
+        <Input
+          id="kontak_darurat"
+          type="text"
+          placeholder="Phone or email for emergency contact"
+          {...register('kontak_darurat')}
+          className="bg-transparent backdrop-blur-md border border-glass-border text-foreground placeholder:text-muted-foreground/50"
+        />
+        {errors.kontak_darurat && <p className="text-sm text-destructive">{errors.kontak_darurat.message}</p>}
       </FormGroup>
 
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="rounded-md bg-primary-2 text-accent-1 border text-center text-sm p-2 hover:bg-accent-1 hover:text-primary-1 transition-all"
+        className="mt-auto w-full text-background border border-glass-border transition backdrop-blur-md hover:opacity-80"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, var(--color-primary-2) 0%, var(--color-primary-1) 50%, var(--color-primary-3) 100%)`,
+          backgroundSize: 'cover',
+        }}
       >
-        {isSubmitting ? 'Menyimpan...' : 'Simpan'}
+        {isSubmitting ? 'Saving...' : 'Save'}
       </Button>
     </form>
   );

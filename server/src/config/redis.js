@@ -4,13 +4,15 @@ const redis = createClient({
   url: process.env.REDIS_URL,
 });
 
-redis.on('connect', () => {
-  console.log('✅ Redis connected successfully');
-});
-
-redis.on('error', (err) => {
-  console.error('❌ Redis connection error:', err);
-});
-await redis.connect();
+export const testRedisConnection = async () => {
+  try {
+    await redis.connect();
+    console.log('✅ Redis connected successfully');
+    return redis;
+  } catch (err) {
+    console.error('❌ Redis connection failed:', err.message);
+    return null;
+  }
+};
 
 export default redis;

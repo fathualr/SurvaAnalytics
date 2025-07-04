@@ -38,11 +38,9 @@ export function LoginForm({ onSubmit, loading }: LoginFormProps) {
 
   return (
     <>
-      <header className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-white">Masuk Akun</h1>
-        <p className="text-sm mt-1 text-white">
-          Silakan masuk dengan email dan password Anda
-        </p>
+      <header className="text-center space-y-1">
+        <h1 className="text-2xl font-bold text-foreground">Login to Your Account</h1>
+        <p className="text-sm text-muted-foreground">Use your credentials to sign in</p>
       </header>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -54,8 +52,8 @@ export function LoginForm({ onSubmit, loading }: LoginFormProps) {
             required
             value={formData.email}
             onChange={handleChange}
-            placeholder="test@email.com"
-            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+            placeholder="example@mail.com"
+            className="bg-glass-bg text-foreground placeholder:text-foreground/60 border border-glass-border backdrop-blur-md"
             disabled={loading}
           />
         </FormGroup>
@@ -68,7 +66,7 @@ export function LoginForm({ onSubmit, loading }: LoginFormProps) {
             minLength={8}
             value={formData.password}
             onChange={handleChange}
-            placeholder="password"
+            placeholder="Your password"
             disabled={loading}
           />
         </FormGroup>
@@ -81,30 +79,31 @@ export function LoginForm({ onSubmit, loading }: LoginFormProps) {
             onCheckedChange={(checked: boolean) =>
               setFormData((prev) => ({ ...prev, remember_me: checked }))
             }
-            className="bg-accent-1 data-[state=checked]:bg-accent-1 data-[state=checked]:text-black"
             disabled={loading}
+            className="bg-glass-bg text-foreground placeholder:text-foreground/60 border border-glass-border backdrop-blur-md"
           />
-          <label htmlFor="remember_me" className="text-sm text-white cursor-pointer">
-            Ingat saya
+          <label
+            htmlFor="remember_me"
+            className="text-sm cursor-pointer text-foreground"
+          >
+            Remember Me
           </label>
         </div>
 
-        <div className="pt-2 flex justify-center">
-          <Button
-            type="submit"
-            disabled={loading}
-            className="cursor-pointer font-semibold w-24 rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
-          >
-            {loading ? 'Memproses...' : 'Masuk'}
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full font-semibold bg-secondary hover:bg-secondary/90"
+        >
+          {loading ? 'Processing...' : 'Sign In'}
+        </Button>
       </form>
 
-      <footer className="mt-6 text-center text-sm text-white">
+      <footer className="mt-6 text-center text-sm text-muted-foreground">
         <p>
-          Belum punya akun?{' '}
-          <Link href="/register" className="underline hover:text-blue-300 font-medium">
-            Daftar di sini
+          Don’t have an account?{' '}
+          <Link href="/register" className="underline hover:text-primary font-medium">
+            Sign up here
           </Link>
         </p>
       </footer>

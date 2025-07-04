@@ -6,16 +6,13 @@ import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useProfile } from '@/features/profile/hooks/useProfile';
 import { ProfileForm } from '@/features/profile/components/profile-form';
 import { NavUmum } from '@/components/umum/nav-umum';
-import { ErrorDialog } from '@/components/umum/error-dialog';
-import { SuccessDialog } from '@/components/umum/success-dialog';
 import { updateProfileForm } from '@/features/profile/hooks/useProfile';
+import { toast } from 'sonner';
 
 export function ProfilePage() {
   const router = useRouter();
-  const { user, isLoggedIn, loading: authLoading } = useAuth();
+  const { isLoggedIn, loading: authLoading } = useAuth();
   const shouldFetch = isLoggedIn && !authLoading;
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
 
   const {
     profile,
@@ -23,8 +20,6 @@ export function ProfilePage() {
     isError,
     refetch,
     updateProfile,
-    errorMessage,
-    clearError,
   } = useProfile(shouldFetch);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -36,11 +31,18 @@ export function ProfilePage() {
   }, [authLoading, isLoggedIn, router]);
 
   const handleUpdateProfile = (data: updateProfileForm) => {
+    const toastId = toast.loading('Updating profile...');
     updateProfile.mutate(data, {
       onSuccess: (res) => {
         setIsEditing(false);
-        setSuccessMessage(res?.message || 'Profil berhasil diperbarui!');
-        setShowSuccess(true);
+        toast.success(res?.message || 'Profile updated successfully!', {
+          id: toastId,
+        });
+      },
+      onError: () => {
+        toast.error('Failed to update profile.', {
+          id: toastId,
+        });
       },
     });
   };
@@ -49,12 +51,18 @@ export function ProfilePage() {
     <main className="flex flex-col w-full overflow-hidden min-h-screen pt-16 pb-5 md:px-10 px-5">
       <NavUmum />
 
-      <section className="flex flex-col flex-grow mt-6">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
-          Profil Pengguna
+      <section className="flex flex-col flex-grow">
+        <h1 className="text-3xl md:text-4xl font-bold my-4">
+          User Profile
         </h1>
 
-        <article className="bg-primary-2/90 text-accent-1 sm:p-10 p-5 rounded-xl flex flex-col flex-grow justify-between shadow-lg">
+        <article
+          className="bg-glass-bg bg-background/40 border-glass-border text-foreground backdrop-blur-xl sm:p-10 p-5 rounded-xl shadow-lg transition"
+          style={{
+            borderColor: 'var(--glass-border)',
+            boxShadow: 'var(--glass-shadow)',
+          }}
+        >
           {isLoggedIn && (
             <ProfileForm
               user={profile}
@@ -69,17 +77,6 @@ export function ProfilePage() {
           )}
         </article>
       </section>
-
-      <ErrorDialog
-        open={!!errorMessage}
-        message={errorMessage || ''}
-        onClose={clearError}
-      />
-      <SuccessDialog
-        open={showSuccess}
-        message={successMessage}
-        onClose={() => setShowSuccess(false)}
-      />
     </main>
   );
 }

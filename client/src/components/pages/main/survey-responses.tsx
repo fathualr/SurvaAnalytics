@@ -1,8 +1,8 @@
 'use client'
 
-import { NavSurvey } from "@/components/umum/nav-survey";
+import { SurveyBreadcrumbNav } from "@/components/umum/breadcrumb-survey";
 import { NavUmum } from "@/components/umum/nav-umum";
-import ResponseList from "@/features/surveyResponseResult/components/response-list";
+import ResponseList from "@/features/survey-response-result/components/response-list";
 import { useState } from "react";
 
 interface SurveyResponsePageProps {
@@ -18,11 +18,16 @@ export function SurveyResponsesPage({ surveyId }: SurveyResponsePageProps) {
       <NavUmum />
 
       <section className="flex flex-col flex-grow">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
-          Respons Survei
-          <span className="block text-sm text-muted-foreground">Id: {surveyId}</span>
-          <NavSurvey surveyId={surveyId} />
-        </h1>
+        <div className="font-bold my-4">
+          <h1 className="text-3xl md:text-4xl ">
+            Responses Survey
+          </h1>
+          <p className="block text-xs text-foreground/80 italic">
+            Survey ID:{' '}
+            <span className="not-italic">{surveyId}</span>
+          </p>
+          <SurveyBreadcrumbNav surveyId={surveyId} />
+        </div>
 
         <ResponseList 
           surveiId={surveyId}
@@ -30,7 +35,6 @@ export function SurveyResponsesPage({ surveyId }: SurveyResponsePageProps) {
           limit={limit}
           onPageChange={setPage}
         />
-
       </section>
     </main>
   );

@@ -1,25 +1,51 @@
-import Link from 'next/link';
-import Image from 'next/image';
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Toaster } from "sonner";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const logoSrc =
+    resolvedTheme === "dark"
+      ? "/images/surva-white.png"
+      : "/images/surva.png";
+
   return (
     <>
-      <nav className=" top-5 relative md:px-[50] px-[20] w-full">
+      <nav className="absolute top-0 z-50 w-full h-16 px-5 md:px-12 py-4 flex items-center justify-between">
         <Link
-          href="/" 
-          className="absolute hover:opacity-80 flex items-center"
+          href="/"
+          className="hover:opacity-80 transition-opacity flex items-center"
         >
-          <Image
-            src="/images/surva.png"
-            alt="Logo"
-            width={0}
-            height={0}
-            sizes="25vw"
-            className="w-[120px] h-auto object-contain"
-          />
+          {mounted && (
+            <Image
+              src={logoSrc}
+              alt="Surva Logo"
+              width={0}
+              height={0}
+              sizes="50vw"
+              className="h-auto w-[120px] object-contain"
+              priority
+            />
+          )}
         </Link>
+        <div className="ml-auto">
+          <ThemeToggle />
+        </div>
       </nav>
-      <main >{children}</main>
+
+      <Toaster />
+      {children}
     </>
   );
 }

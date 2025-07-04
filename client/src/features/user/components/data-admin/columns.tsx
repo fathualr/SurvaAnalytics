@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Pengguna } from "../../types"
+import { Pengguna } from "../../types/types"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil } from "lucide-react"
 import Link from "next/link"
@@ -28,37 +28,48 @@ export const getColumns = (page: number, limit: number): ColumnDef<Pengguna>[] =
   },
   {
     accessorKey: "Admin.nama_admin",
-    header: "Nama",
+    header: "Name",
     cell: ({ row }) => row.original.Admin?.nama_admin ?? "-",
   },
   {
     accessorKey: "Admin.kontak_darurat",
-    header: "Kontak Darurat",
+    header: "Emergency Contact",
     cell: ({ row }) => row.original.Admin?.kontak_darurat ?? "-",
   },
   {
     accessorKey: "last_sign_in_at",
-    header: "Terakhir Masuk",
+    header: "Last Login",
     cell: ({ row }) =>
       row.original.last_sign_in_at
-        ? new Date(row.original.last_sign_in_at).toLocaleString("id-ID")
+        ? new Date(row.original.last_sign_in_at).toLocaleString("id-ID", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          })
         : "-",
   },
   {
     id: "actions",
-    header: "Aksi",
+    header: "Actions",
     cell: ({ row }) => {
       const pengguna = row.original;
       return (
         <div className="flex items-center justify-center gap-2">
           <Link href={`/admin/manage-admin/detail/${pengguna.id}`}>
-            <Button variant="outline" size="icon">
-              <Eye className="w-4 h-4 text-primary-1" />
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-glass-border bg-glass-bg bg-muted text-foreground backdrop-blur-md transition hover:bg-background hover:text-foreground"
+            >
+              <Eye className="w-4 h-4" />
             </Button>
           </Link>
           <Link href={`/admin/manage-admin/edit/${pengguna.id}`}>
-            <Button variant="outline" size="icon">
-              <Pencil className="w-4 h-4 text-primary-1" />
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-glass-border bg-glass-bg bg-muted text-foreground backdrop-blur-md transition hover:bg-background hover:text-foreground"
+            >
+              <Pencil className="w-4 h-4" />
             </Button>
           </Link>
           <ButtonDeletePengguna userId={pengguna.id} />

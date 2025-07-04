@@ -32,37 +32,36 @@ export const ButtonDeletePengguna = ({
   const handleDelete = async () => {
     try {
       await deletePengguna(userId);
-      toast.success('Pengguna berhasil dihapus');
+      toast.success('User successfully deleted');
       setOpen(false);
       onSuccess?.();
     } catch (err: any) {
-      toast.error(err?.message || 'Gagal menghapus pengguna');
+      toast.error(err?.message || 'Failed to delete user');
     }
   };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className="flex items-center justify-center bg-muted hover:bg-background">
           <Trash className="w-4 h-4 text-red-500" />
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="bg-background">
         <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Pengguna</AlertDialogTitle>
+          <AlertDialogTitle>Delete User</AlertDialogTitle>
           <AlertDialogDescription>
-            Apakah kamu yakin ingin menghapus pengguna ini? Tindakan ini tidak
-            dapat dibatalkan.
+            Are you sure you want to delete this user? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             disabled={isPending}
             className="bg-red-600 hover:bg-red-700 text-white"
           >
-            {isPending ? 'Menghapus...' : 'Hapus'}
+            {isPending ? 'Deleting...' : 'Delete'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

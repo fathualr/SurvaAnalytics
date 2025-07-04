@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
 interface EmailRegisterFormProps {
-  onSubmit: (payload: {email:string}) => void;
+  onSubmit: (payload: { email: string }) => void
   loading: boolean
 }
 
@@ -20,14 +20,14 @@ export function EmailRegisterForm({ onSubmit, loading }: EmailRegisterFormProps)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    onSubmit({email})
+    onSubmit({ email })
   }
 
   return (
     <>
-      <header className="text-center mb-6">
-        <h1 className="text-2xl font-bold">Daftar Akun</h1>
-        <p className="text-sm mt-1">Masukkan email untuk mulai mendaftar</p>
+      <header className="text-center space-y-1">
+        <h1 className="text-2xl font-bold text-foreground">Create an Account</h1>
+        <p className="text-sm text-muted-foreground">Enter your email to start registering</p>
       </header>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -38,9 +38,9 @@ export function EmailRegisterForm({ onSubmit, loading }: EmailRegisterFormProps)
             required
             value={email}
             onChange={handleChange}
-            placeholder="test@email.com"
-            className="border-none bg-accent-1 rounded-md w-full h-10 text-black"
+            placeholder="user@email.com"
             disabled={loading}
+            className="bg-glass-bg text-foreground placeholder:text-foreground/60 border border-glass-border backdrop-blur-md"
           />
         </FormGroup>
 
@@ -48,22 +48,21 @@ export function EmailRegisterForm({ onSubmit, loading }: EmailRegisterFormProps)
           <Button
             type="submit"
             disabled={loading}
-            className="cursor-pointer font-semibold w-24 rounded-xl bg-secondary-1 hover:bg-secondary-2 text-primary-1 hover:text-primary-2"
-            variant="default"
+            className="w-full font-semibold bg-secondary hover:bg-secondary/90"
           >
-            {loading ? 'Mendaftar...' : 'Daftar'}
+            {loading ? 'Processing...' : 'Sign Up'}
           </Button>
         </div>
       </form>
 
-      <footer className="mt-6 text-center text-sm">
+      <footer className="mt-6 text-center text-sm text-muted-foreground">
         <p>
-          Sudah punya akun?{' '}
+          Already have an account?{' '}
           <Link
             href="/login"
-            className="text-accent-1 hover:underline font-medium"
+            className="underline hover:text-primary font-medium"
           >
-            Masuk di sini
+            Sign in here
           </Link>
         </p>
       </footer>

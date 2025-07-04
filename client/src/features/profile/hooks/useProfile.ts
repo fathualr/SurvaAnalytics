@@ -2,8 +2,8 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { profileService } from '../api';
-import { UserProfile } from '../types';
+import { profileService } from '../api/api';
+import { UserProfile } from '../types/types';
 
 export interface updateProfileForm {
   umum: {
@@ -34,7 +34,6 @@ export const useProfile = (enabled = true) => {
     setErrorMessage(message);
   };
 
-  // Fetch Profile
   const {
     data: profile,
     isLoading,
@@ -53,7 +52,7 @@ export const useProfile = (enabled = true) => {
 
   const updateProfile = useMutation({
     mutationFn: profileService.updateProfile,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userProfile'] });
     },
     onError: (err) => handleError(err, 'Gagal memperbarui profil'),

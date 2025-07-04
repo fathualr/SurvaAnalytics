@@ -20,7 +20,7 @@ export const updateSurveiSchema = Joi.object({
   deskripsi: Joi.string().allow('').optional(),
   status: Joi.string().valid('draft', 'under_review', 'payment_pending', 'published', 'closed', 'archived', 'rejected').optional(),
   jumlah_responden: Joi.number().integer().min(1).max(1000).optional(),
-  tanggal_mulai: Joi.date().iso().min(minStartDate),
+  tanggal_mulai: Joi.date().iso().optional(),
   tanggal_berakhir: Joi.date().iso().greater(Joi.ref('tanggal_mulai')).optional(),
   hadiah_poin: Joi.number().integer().min(0).default(0),
   kriteria: Joi.object().optional(),

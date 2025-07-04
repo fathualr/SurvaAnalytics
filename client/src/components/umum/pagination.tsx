@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 interface PaginationProps {
@@ -28,49 +28,43 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
   };
 
   return (
-    <div className="flex justify-center items-center mt-10 gap-4">
-      <button
-        onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
-        disabled={currentPage === 1}
-        className="cursor-pointer p-0 m-0 bg-transparent border-none outline-none hover:opacity-80 disabled:opacity-40 disabled:cursor-default"
+    <div className="flex justify-center items-center mt-10">
+      <div
+        className="flex items-center gap-3 px-3 py-1 rounded-xl backdrop-blur-md bg-glass-bg border border-glass-border shadow-md transition text-foreground"
+        style={{
+          background: 'var(--glass-background)',
+          borderColor: 'var(--glass-border)',
+          boxShadow: 'var(--glass-shadow)',
+          backdropFilter: 'var(--glass-blur)',
+        }}
       >
-        <Image
-          src="/pagination-left.svg"
-          alt="Previous"
-          width={0}
-          height={0}
-          sizes="25vw"
-          className="h-8 w-auto"
-          priority
-        />
-      </button>
+        <button
+          onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
+          disabled={currentPage === 1}
+          className="cursor-pointer p-2 rounded-md hover:bg-secondary/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          <ChevronLeft size={20} />
+        </button>
 
-      <div className="flex items-center gap-2">
-        <Input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          onBlur={handleInputBlur}
-          className="w-14 text-center text-2xl font-semibold border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary"
-        />
-        <span className="text-md text-muted-foreground">/ {totalPages}</span>
+        <div className="flex items-center gap-2">
+          <Input
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+            className="w-16 text-center text-base font-medium border border-glass-border bg-transparent backdrop-blur-md text-foreground placeholder:text-muted-foreground"
+          />
+          <span className="text-sm text-muted-foreground">/ {totalPages}</span>
+        </div>
+
+        <button
+          onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className="cursor-pointer p-2 rounded-md hover:bg-secondary/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          <ChevronRight size={20} />
+        </button>
       </div>
-
-      <button
-        onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
-        disabled={currentPage === totalPages}
-        className="cursor-pointer p-0 m-0 bg-transparent border-none outline-none hover:opacity-80 disabled:opacity-40 disabled:cursor-default"
-      >
-        <Image
-          src="/pagination-right.svg"
-          alt="Next"
-          width={0}
-          height={0}
-          sizes="25vw"
-          className="h-8 w-auto"
-          priority
-        />
-      </button>
     </div>
   );
 };

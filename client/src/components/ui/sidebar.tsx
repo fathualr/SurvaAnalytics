@@ -5,7 +5,7 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva, VariantProps } from "class-variance-authority"
 import { SquareMenu  } from "lucide-react"
 
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useIsMobile } from "@/hooks/useMobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -264,7 +264,7 @@ function SidebarTrigger({
     <button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      className={cn("cursor-pointer flex justify-center items-center text-accent-1 hover:text-primary-1 hover:bg-accent-1 h-10 w-10 rounded-md transition", className)}
+      className={cn("cursor-pointer flex justify-center items-center text-foreground hover:text-background hover:bg-muted-foreground h-8 w-8 rounded-sm transition", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()

@@ -28,13 +28,15 @@ export function ProfileFormField({
   readOnly = false,
   isEditing = false,
 }: ProfileFormFieldProps) {
-  return (
-    <div className="flex flex-col md:flex-row sm:items-center gap-2 sm:gap-4">
-      <div className="w-full md:w-40 font-semibold">
-        <label htmlFor={id}>{label}</label>
-      </div>
+  const isReadOnly = readOnly || !isEditing;
 
-      <div className="hidden md:block font-semibold">:</div>
+  return (
+    <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4">
+      <label htmlFor={id} className="w-full md:w-40 font-medium text-sm text-foreground">
+        {label}
+      </label>
+
+      <div className="hidden md:block text-foreground">:</div>
 
       <div className="w-full">
         {type === 'select' ? (
@@ -43,13 +45,15 @@ export function ProfileFormField({
             name={id}
             value={value}
             onChange={(e) => onChange?.(id, e.target.value)}
-            disabled={!isEditing || readOnly}
+            disabled={isReadOnly}
             autoComplete="off"
-            className="rounded-md w-full h-10 border bg-none px-3"
+            className={`w-full h-10 px-3 rounded-md bg-transparent backdrop-blur-md border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary`}
           >
-            <option className="text-[#323232]" disabled value="">Pilih {label.toLowerCase()}</option>
-            {options.map(opt => (
-              <option key={opt.value} value={opt.value} className="text-[#323232]">
+            <option disabled value="" className="bg-background text-foreground">
+              Select {label.toLowerCase()}
+            </option>
+            {options.map((opt) => (
+              <option key={opt.value} value={opt.value} className="bg-background text-foreground">
                 {opt.label}
               </option>
             ))}
@@ -60,9 +64,9 @@ export function ProfileFormField({
             type={type}
             value={value || '-'}
             onChange={(e) => onChange?.(id, e.target.value)}
-            readOnly={readOnly || !isEditing}
+            readOnly={isReadOnly}
             autoComplete="off"
-            className="h-9 w-full bg-none"
+            className="w-full h-9 rounded-md bg-background/50 dark:bg-neutral-800/40 border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
           />
         )}
       </div>

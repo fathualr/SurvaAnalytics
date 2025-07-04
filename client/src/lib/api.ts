@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useAuthStore } from '@/features/auth/store';
-import { authService } from '@/features/auth/api';
+import { useAuthStore } from '@/features/auth/stores/store';
+import { authService } from '@/features/auth/api/api';
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_API_BASE_URL,

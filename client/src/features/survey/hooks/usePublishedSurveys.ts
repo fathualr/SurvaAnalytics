@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { surveyService } from '@/features/survey/api/public';
-import { SurveyDetailResponse, SurveyListResponse } from '../types';
+import { SurveyDetailResponse, SurveyListResponse } from '../types/types';
 
 export interface UsePublishedSurveysOptions {
   page?: number;

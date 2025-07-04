@@ -1,6 +1,8 @@
 'use client';
 
-import { SurveyVerificationContainer } from "@/features/surveyVerification/components/admin/survey-verification-container";
+import { AdminBreadcrumb } from "@/components/admin/admin-breadcrumb";
+import { SurveyVerificationContainer } from "@/features/survey-verification/components/admin/survey-verification-container";
+import { ClipboardList, SquareChartGantt } from "lucide-react";
 
 interface ManageVerificationReviewPageProps {
   surveyId: string;
@@ -8,10 +10,14 @@ interface ManageVerificationReviewPageProps {
 
 export function ManageVerificationReviewPage({ surveyId }: ManageVerificationReviewPageProps) {
   return (
-    <section className="flex flex-col flex-grow text-primary-1 font-semibold">
-      <h1 className="text-3xl font-bold">Data Verifikasi Survei</h1>
-      <span className="block text-sm text-muted-foreground mb-5">Id: {surveyId}</span>
-
+    <section className="flex flex-col flex-grow text-foreground gap-5 font-semibold">
+      <h1 className="text-3xl font-bold">Survey Data - Review Verification</h1>
+      <AdminBreadcrumb
+        items={[
+          { label: 'Manage Verification', href: '/admin/manage-verification', icon: <ClipboardList size={16} /> },
+          { label: 'Review Verification', icon: <SquareChartGantt size={16}/> },
+        ]}
+      />
       <SurveyVerificationContainer surveyId={surveyId} />
     </section>
   );

@@ -3,11 +3,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { authService } from '../api';
-import { LoginPayload } from '../types';
-import { useAuthStore } from '../store';
+import { authService } from '../api/api';
+import { LoginPayload } from '../types/types';
+import { useAuthStore } from '../stores/store';
 import { api } from '@/lib/api';
-import { profileService } from '@/features/profile/api';
+import { profileService } from '@/features/profile/api/api';
 
 let channel: BroadcastChannel | null = null;
 let isRefreshing = false;

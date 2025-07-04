@@ -48,7 +48,7 @@ export default selectedConfig;
 export const testDatabaseConnection = async () => {
   try {
     await db.sequelize.authenticate();
-    console.log(`✅ Database connected successfully using [${process.env.DB_TYPE || 'local'}] configuration.`);
+    console.log(`✅ Database connected successfully: [${process.env.DB_TYPE || 'local'}]`);
     return true;
   } catch (err) {
     console.error('❌ Database connection failed:', err.message);
