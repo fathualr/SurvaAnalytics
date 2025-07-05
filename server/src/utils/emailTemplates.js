@@ -10,3 +10,15 @@ export const registrationOTPTemplate = (otp) => `
     </p>
   </div>
 `;
+
+export const opinionEmailTemplate = ({ email, subject, message }) => `
+  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #2563eb;">Opini Baru dari Pengguna</h2>
+    <p><strong>Pengirim:</strong> <a href="mailto:${email}">${email}</a></p>
+    <p><strong>Subjek:</strong> ${subject}</p>
+    <div style="background: #f9fafb; padding: 16px; margin: 16px 0; border-left: 4px solid #2563eb;">
+      ${message}
+    </div>
+    <p style="font-size: 13px; color: #6b7280;">Silakan balas langsung ke email pengirim jika perlu menindaklanjuti.</p>
+  </div>
+`;
