@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards"
 import { GridBackgroundDemo } from '@/components/ui/grid-background';
+import { FormOpinion } from '@/features/opinion/components/form-opinion';
 
 export const metadata: Metadata = {
   title: 'Surva.',
@@ -167,50 +168,7 @@ export default function Home() {
             }}
           >
             <h4 className="text-xl font-semibold mb-4 text-center text-foreground">Opinion Form</h4>
-            <form className="flex flex-col gap-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-1 text-foreground">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition"
-                  placeholder="user@email.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-1 text-foreground">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition"
-                  placeholder="Feedback, Suggestion, etc."
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-1 text-foreground">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows={4}
-                  className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary transition"
-                  placeholder="Write your thoughts here..."
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="mt-2 bg-secondary  hover:bg-secondary/90 font-semibold px-5 py-2 rounded-lg transition-all"
-              >
-                Send
-              </Button>
-            </form>
+            <FormOpinion />
           </div>
         </div>
       </section>
