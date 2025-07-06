@@ -31,11 +31,29 @@ export const penukaranHadiahTemplate = ({ nama, namaHadiah, totalPoin, tanggal }
 
     <ul>
       <li><strong>Hadiah:</strong> ${namaHadiah}</li>
-      <li><strong>Total Poin Digunakan:</strong> ${totalPoin}</li>
+      <li><strong>Total Poin Digunakan:</strong> ${totalPoin} pts</li>
       <li><strong>Tanggal Penukaran:</strong> ${tanggal}</li>
     </ul>
 
     <p>Terima kasih telah menggunakan SurvaAnalytics.</p>
     <p style="color: #6b7280; font-size: 13px;">Email ini dikirim otomatis. Mohon tidak membalas.</p>
+  </div>
+`;
+
+export const invoiceEmailTemplate = ({ namaSurvei, email, paidAmount, paymentMethod, tanggal }) => `
+  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
+    <h2 style="color: #2563eb;">Invoice Pembayaran Survei</h2>
+    <p>Terima kasih, pembayaran survei Anda telah berhasil.</p>
+
+    <ul>
+      <li><strong>Nama Survei:</strong> ${namaSurvei}</li>
+      <li><strong>Pemilik Survei:</strong> ${email}</li>
+      <li><strong>Total Dibayar:</strong> Rp ${paidAmount.toLocaleString('id-ID')}</li>
+      <li><strong>Metode Pembayaran:</strong> ${paymentMethod}</li>
+      <li><strong>Tanggal:</strong> ${tanggal}</li>
+    </ul>
+
+    <p>Jika Anda memerlukan bukti cetak atau mengalami kendala, silakan hubungi tim kami.</p>
+    <p style="color: #6b7280; font-size: 13px;">Email ini dikirim otomatis. Mohon tidak membalas langsung.</p>
   </div>
 `;

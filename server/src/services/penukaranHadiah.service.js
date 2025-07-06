@@ -83,7 +83,7 @@ export const create = async (dataPenukaranHadiah) => {
       email: umum.Pengguna.email,
       nama: umum.nama,
       namaHadiah: hadiah.nama,
-      total_poin,
+      totalPoin: total_poin,
     });
 
     await transaction.commit();

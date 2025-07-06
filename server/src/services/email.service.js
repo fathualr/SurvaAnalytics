@@ -1,6 +1,11 @@
 import dayjs from 'dayjs';
 import transporter from '../config/email.js';
-import { registrationOTPTemplate, opinionEmailTemplate, penukaranHadiahTemplate } from '../utils/emailTemplates.js';
+import { 
+  registrationOTPTemplate,
+  opinionEmailTemplate,
+  penukaranHadiahTemplate,
+  invoiceEmailTemplate
+} from '../utils/emailTemplates.js';
 
 export const sendRegistrationOTP = async (email, otp) => {
   try {
@@ -32,12 +37,12 @@ export const sendOpinionEmail = async ({ email, subject, message }) => {
 };
 
 export const sendHadiahRedemptionEmail = async ({ email, nama, namaHadiah, totalPoin }) => {
-  const tanggalFormatted = dayjs().locale('id').format('dddd, D MMMM YYYY [pukul] HH.mm');
+  const tanggalFormatted = dayjs().locale('id').format('dddd, D MMMM YYYY, HH.mm');
 
   try {
     await transporter.sendMail({
       to: email,
-      subject: 'Penukaran Hadiah Kamu Berhasil!',
+      subject: '[Penukaran Hadiah Berhasil!]',
       html: penukaranHadiahTemplate({
         nama,
         namaHadiah,
@@ -45,6 +50,27 @@ export const sendHadiahRedemptionEmail = async ({ email, nama, namaHadiah, total
         tanggal: tanggalFormatted,
       }),
       text: `Penukaran Hadiah: ${namaHadiah}\nTotal Poin: ${totalPoin}\nTanggal: ${tanggalFormatted}`,
+    });
+  } catch (error) {
+    throw { status: 500, message: 'Failed to send reward redemption email' };
+  }
+};
+
+export const sendSurveyInvoiceEmail = async ({ email, namaSurvei, paidAmount, paymentMethod }) => {
+  const tanggalFormatted = dayjs().locale('id').format('dddd, D MMMM YYYY, HH.mm');
+
+  try {
+    await transporter.sendMail({
+      to: email,
+      subject: '[Invoice Pembayaran Survei]',
+      html: invoiceEmailTemplate({
+        namaSurvei,
+        email,
+        paidAmount,
+        paymentMethod,
+        tanggal: tanggalFormatted,
+      }),
+      text: `Survei: ${namaSurvei}\nTotal Dibayar: Rp ${paidAmount}\nMetode: ${paymentMethod}\nTanggal: ${tanggalFormatted}`,
     });
   } catch (error) {
     throw { status: 500, message: 'Failed to send reward redemption email' };
