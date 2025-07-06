@@ -4,6 +4,7 @@ import db from '../models/index.js';
 const { PembayaranSurvei, Survei, PertanyaanSurvei, Pengguna, Umum, sequelize } = db;
 import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
 import { kalkulasiJumlahTagihanSurvei, kalkulasiHadiahPoinSurvei } from '../utils/surveiCalculations.js';
+import { sendSurveyInvoiceEmail } from './email.service.js';
 
 export const index = async (queryParams) => {
   const { where, order, pagination } = parseQuery(queryParams, {
@@ -112,6 +113,17 @@ export const webhook = async (headers, payload) => {
     const survei = await Survei.findByPk(pembayaranSurvei.id_survei, { transaction });
     if (!survei) throw { status: 404, message: 'Survei not found' };
 
+    const umum = await Umum.findByPk(survei.id_umum, {
+      transaction,
+      include: [
+        {
+          model: Pengguna,
+          attributes: ['id', 'email'],
+        },
+      ],
+    });
+    if (!umum) throw { status: 404, message: 'Umum not found' };
+
     const hadiahPoin = status === 'paid'
       ? kalkulasiHadiahPoinSurvei({
           paidAmount,
@@ -133,6 +145,13 @@ export const webhook = async (headers, payload) => {
     }
 
     await transaction.commit();
+
+    await sendSurveyInvoiceEmail({
+      email: umum.Pengguna.email,
+      namaSurvei: survei.judul,
+      paidAmount,
+      paymentMethod,
+    });
   } catch (error) {
     await transaction.rollback();
     throw error;

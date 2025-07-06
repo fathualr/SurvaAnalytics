@@ -8,7 +8,6 @@ with open("ai_models/sentiment_analysis_config.json") as f:
     config = json.load(f)
 
 MODEL_PATH = config["model_name_or_path"]
-label_mapping = config["label_mapping"]
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
@@ -21,8 +20,7 @@ def predict_single(text: str) -> Dict:
         probs = F.softmax(output.logits, dim=1)
         confidence, predicted_class = torch.max(probs, dim=1)
 
-    raw_label = model.config.id2label[predicted_class.item()]
-    label = label_mapping.get(raw_label, "unknown")
+    label = model.config.id2label[predicted_class.item()]
 
     return {"text": text, "label": label, "confidence": round(confidence.item(), 2)}
 

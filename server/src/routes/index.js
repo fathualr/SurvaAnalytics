@@ -23,6 +23,7 @@ import userPenukaranHadiahRoutes from './users/penukaranHadiah.routes.js';
 
 import publicSurveiRoutes from './public/survei.routes.js';
 import publicHadiahRoutes from './public/hadiah.routes.js';
+import publicEmailRoutes from './public/email.routes.js';
 
 const router = Router();
 
@@ -50,5 +51,6 @@ router.use('/users/penukaran-hadiah', userPenukaranHadiahRoutes)
 
 router.use('/public/survei', publicSurveiRoutes)
 router.use('/public/hadiah', publicHadiahRoutes)
+router.use('/public/email', publicEmailRoutes)
 
 export default router;
