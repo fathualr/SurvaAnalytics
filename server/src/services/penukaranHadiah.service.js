@@ -1,6 +1,7 @@
 import db from '../models/index.js';
 const { PenukaranHadiah, Umum, Pengguna, Hadiah, sequelize } = db;
 import { parseQuery, metaQueryFormat } from '../utils/queryParser.js';
+import { sendHadiahRedemptionEmail } from './email.service.js';
 
 export const index = async (queryParams) => {
   const { where, order, pagination } = parseQuery(queryParams, {
@@ -47,7 +48,15 @@ export const create = async (dataPenukaranHadiah) => {
       throw { status: 400, message: 'Out of stock hadiah' };
     }
 
-    const umum = await Umum.findByPk(dataPenukaranHadiah.id_umum, { transaction });
+    const umum = await Umum.findByPk(dataPenukaranHadiah.id_umum, {
+      transaction,
+      include: [
+        {
+          model: Pengguna,
+          attributes: ['id', 'email'],
+        },
+      ],
+    });
     if (!umum) throw { status: 404, message: 'Umum not found' };
 
     const poin_pengguna = parseInt(umum.poin);
@@ -69,6 +78,13 @@ export const create = async (dataPenukaranHadiah) => {
       umum.decrement('poin', { by: total_poin, transaction }),
       hadiah.decrement('stok', { by: 1, transaction }),
     ]);
+
+    await sendHadiahRedemptionEmail({
+      email: umum.Pengguna.email,
+      nama: umum.nama,
+      namaHadiah: hadiah.nama,
+      total_poin,
+    });
 
     await transaction.commit();
     return PenukaranHadiah.findByPk(penukaranHadiah.id);

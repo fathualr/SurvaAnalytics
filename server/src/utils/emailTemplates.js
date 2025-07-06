@@ -22,3 +22,20 @@ export const opinionEmailTemplate = ({ email, subject, message }) => `
     <p style="font-size: 13px; color: #6b7280;">Silakan balas langsung ke email pengirim jika perlu menindaklanjuti.</p>
   </div>
 `;
+
+export const penukaranHadiahTemplate = ({ nama, namaHadiah, totalPoin, tanggal }) => `
+  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #2563eb;">Penukaran Hadiah Berhasil 🎉</h2>
+    <p>Halo <strong>${nama}</strong>,</p>
+    <p>Berikut detail penukaran hadiah kamu:</p>
+
+    <ul>
+      <li><strong>Hadiah:</strong> ${namaHadiah}</li>
+      <li><strong>Total Poin Digunakan:</strong> ${totalPoin}</li>
+      <li><strong>Tanggal Penukaran:</strong> ${tanggal}</li>
+    </ul>
+
+    <p>Terima kasih telah menggunakan SurvaAnalytics.</p>
+    <p style="color: #6b7280; font-size: 13px;">Email ini dikirim otomatis. Mohon tidak membalas.</p>
+  </div>
+`;
