@@ -7,6 +7,7 @@ export const useResponseSurveySubmissionDraft = (surveiId: string, enabled = tru
     queryKey: ['respon-survei', surveiId, 'draft'],
     queryFn: () => surveyResponseSubmissionService.getDraft(surveiId),
     enabled: !!surveiId && enabled,
+    retry: false,
   });
 };
 

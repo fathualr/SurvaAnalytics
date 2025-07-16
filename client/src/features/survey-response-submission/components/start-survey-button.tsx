@@ -41,15 +41,18 @@ export function StartSurveyButton({
       setLoading(true);
 
       const res = await refetch();
-      if (!res.data || res.status !== 'success') {
-        throw new Error('Failed to create or fetch survey draft.');
+
+      if (res.isError || !res.data) {
+        const errorMessage =
+          (res as any)?.error?.message || 'Failed to fetch draft.';
+        toast.error(errorMessage);
+        return;
       }
 
       toast.success('Survey started.');
       router.push(`/survey/viewform/${surveiId}`);
     } catch (err: any) {
-      const message = err?.response?.data?.message || err?.message || '';
-      toast.error(message || 'Failed to start the survey.');
+      toast.error(err.message || 'Unexpected error.');
     } finally {
       setLoading(false);
     }
