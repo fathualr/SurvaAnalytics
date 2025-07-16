@@ -25,7 +25,10 @@ logger.addHandler(file_handler)
 @pytest.fixture(scope="module")
 def driver():
     logger.info(f"\nStarting the test \n{'='*3}\n03-dapat-mengelola-kalkulasi-harga-survei.py\n{'='*3}")
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument('--incognito')  # Enable incognito mode
+
+    driver = webdriver.Chrome(options=options)
     driver.maximize_window()
     yield driver
     driver.quit()
