@@ -148,7 +148,7 @@ export const FormAddSurvey = () => {
           defaultValue=""
           className={`${inputStyle} w-full h-10 rounded-md px-2 text-sm`}
         >
-          <option disabled hidden value="">All</option>
+          <option value="" className="bg-background text-foreground">All</option>
           <option value="Laki-laki" className="bg-background text-foreground">Male</option>
           <option value="Perempuan" className="bg-background text-foreground">Female</option>
         </select>

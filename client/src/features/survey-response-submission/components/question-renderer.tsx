@@ -182,7 +182,7 @@ export function QuestionRenderer({ question, value, onChange }: QuestionRenderer
           `}
           value={safeString(value)}
           onChange={(e) => {
-            const val = e.target.value.trim();
+            const val = e.target.value;
             onChange(val.length > 0 ? val : null);
           }}
           placeholder="Write your answer here..."
