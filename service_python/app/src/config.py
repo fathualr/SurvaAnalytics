@@ -10,6 +10,9 @@ class Settings(BaseSettings):
     environment: str = "development"
     port: int = 8000
 
+    gemini_api_key: str
+    gemini_model: str
+
     model_config = SettingsConfigDict(
         env_file=str(BASE_DIR / ".env"),
         env_file_encoding="utf-8"

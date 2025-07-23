@@ -48,3 +48,4 @@ wordcloud==1.9.4
 locust
 pytest
 selenium
+google-genai
