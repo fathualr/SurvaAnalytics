@@ -14,6 +14,7 @@ import penukaranHadiahRoutes from './penukaranHadiah.routes.js';
 
 import profileRoutes from './users/profile.routes.js';
 import userSurveiRoutes from './users/survei.routes.js';
+import userSurveiGenerationRoutes from './users/surveiGeneration.routes.js';
 import userPertanyaanSurveiRoutes from './users/pertanyaanSurvei.routes.js';
 import userPembayaranSurveiRoutes from './users/pembayaranSurvei.routes.js';
 import userResponSurveiRoutes from './users/responSurvei.routes.js';
@@ -41,7 +42,7 @@ router.use('/hadiah', hadiahRoutes);
 router.use('/penukaran-hadiah', penukaranHadiahRoutes);
 
 router.use('/users/profile', profileRoutes)
-router.use('/users/survei', userSurveiRoutes)
+router.use('/users/survei', [userSurveiRoutes, userSurveiGenerationRoutes])
 router.use('/users', userPertanyaanSurveiRoutes)
 router.use('/users/pembayaran-survei', userPembayaranSurveiRoutes)
 router.use('/users/respon-survei', userResponSurveiRoutes)
