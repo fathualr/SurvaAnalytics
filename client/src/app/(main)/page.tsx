@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import Image from "next/image"
 import Link from 'next/link'
-import { Button } from "@/components/ui/button"
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards"
 import { GridBackgroundDemo } from '@/components/ui/grid-background';
+import { ShinyGeminiButton } from '@/components/umum/shiny-gemini-button';
+import { GeminiIcon } from '@/components/icons/gemini';
 import { FormOpinion } from '@/features/opinion/components/form-opinion';
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function Home() {
         <section
           className="pt-20 md:pt-24 pb-16 min-h-screen grid grid-cols-1 md:grid-cols-2 items-center md:px-20 sm:px-10 px-5 from-primary-1 via-primary-2 to-primary-3 text-foreground"
         >
-          <div className="col-span-1 md:row-start-1 row-start-2 flex flex-col gap-8 md:items-start items-center text-center md:text-left">
+          <div className="col-span-1 md:row-start-1 row-start-2 flex flex-col md:gap-8 gap-4 md:items-start items-center text-center md:text-left">
             <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl leading-tight">
               <span>Quick Surveys,</span>
               <br />
@@ -33,27 +34,46 @@ export default function Home() {
                 A fast, simple, and accurate survey analytics platform to help you make the best decisions.
               </span>
             </p>
-            <Link
-              href="/explore"
-              className="inline-flex items-center justify-center px-8 py-4 text-2xl font-semibold
-                rounded-tr-3xl rounded-bl-3xl
-                bg-glass-background border border-glass-border
-                backdrop-blur-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.1)]
-                text-primary-background
-                transition-all hover:shadow-[0_6px_24px_rgba(0,0,0,0.15)]
-                hover:backdrop-blur-[14px] hover:brightness-110"
-              style={{
-                background: 'var(--glass-background)',
-                borderColor: 'var(--glass-border)',
-                boxShadow: 'var(--glass-shadow)',
-                backdropFilter: 'var(--glass-blur)',
-              }}
-            >
-              Get Started
-            </Link>
+            <div className="flex xl:flex-row flex-col xl:justify-start justify-center items-center md:gap-5 gap-3 w-full">
+              <Link
+                href="/explore"
+                className="inline-flex gap-1 items-center justify-center px-8 py-4 text-2xl font-semibold
+                  rounded-tr-3xl rounded-bl-3xl
+                  bg-glass-background border border-glass-border
+                  backdrop-blur-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.1)]
+                  text-primary-background
+                  transition-all hover:shadow-[0_6px_24px_rgba(0,0,0,0.15)]
+                  hover:backdrop-blur-[14px] hover:brightness-110"
+                style={{
+                  background: 'var(--glass-background)',
+                  borderColor: 'var(--glass-border)',
+                  boxShadow: 'var(--glass-shadow)',
+                  backdropFilter: 'var(--glass-blur)',
+                }}
+              >
+                <span
+                  className="inline-block"
+                  style={{
+                    animation: 'floatIcon 2.5s ease-in-out infinite',
+                  }}
+                >
+                  🚀
+                </span>
+                <span>Get Started</span>
+              </Link>
+              <Link href="/generate-survey" passHref>
+                <ShinyGeminiButton className="px-4 py-4">
+                  <GeminiIcon className="w-5 h-5" />
+                  <span className="text-xl font-semibold">
+                    Generate Survey
+                  </span>
+                  <GeminiIcon className="w-5 h-5" />
+                </ShinyGeminiButton>
+              </Link>
+            </div>
           </div>
 
-          <div className="select-none col-span-1 row-start-1 flex items-center justify-center mt-10 md:mt-0">
+          <div className="select-none col-span-1 row-start-1 flex items-center justify-center">
             <Image
               src="/images/landing-page/hero-1.png"
               alt="Survey analytics visual"
