@@ -1,27 +1,56 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { GenerateSurveyForm } from './generate-survey-form';
 import { GeneratedSurveyStructure } from '@/features/.python-service/types/types';
-import { GenerateSurveyResult } from '@/features/survey-generation/components/generate-survey-result';
-import { PromptSuggestionGrid } from '@/features/survey-generation/components/prompt-suggestion-grid';
+import { useGenerateSurveyStructure } from '@/features/.python-service/hooks/useUserPythonService';
+import { GenerateSurveyResult } from './generate-survey-result';
+import { PromptSuggestionGrid } from './prompt-suggestion-grid';
 import { ActionButtonSurveyGenerated } from './action-button-survey-generated';
 
 export const GenerateSurveyContainer = () => {
   const [prompt, setPrompt] = useState('');
+  const [submittedPrompt, setSubmittedPrompt] = useState('');
   const [result, setResult] = useState<GeneratedSurveyStructure | null>(null);
   const [isError, setIsError] = useState(false);
 
-  const handleSuccess = useCallback((data: GeneratedSurveyStructure) => {
-    setResult(data);
-    setIsError(false);
-  }, []);
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isError: isFetchError,
+    refetch,
+  } = useGenerateSurveyStructure(submittedPrompt, !!submittedPrompt);
+
+  const handleSubmit = () => {
+    const trimmed = prompt.trim();
+    if (!trimmed) return;
+
+    if (trimmed === submittedPrompt) {
+      refetch();
+    } else {
+      setSubmittedPrompt(trimmed);
+    }
+  };
 
   const handleClear = () => {
     setPrompt('');
+    setSubmittedPrompt('');
     setResult(null);
     setIsError(false);
   };
+
+  if (data && data !== result) {
+    setResult(data);
+    setIsError(false);
+    if ('error' in data) {
+      setIsError(true);
+    }
+  }
+
+  if (isFetchError && !isError) {
+    setIsError(true);
+  }
 
   return (
     <div
@@ -36,8 +65,9 @@ export const GenerateSurveyContainer = () => {
       <GenerateSurveyForm
         prompt={prompt}
         setPrompt={setPrompt}
-        onSuccess={handleSuccess}
-        setIsError={setIsError}
+        isLoading={isLoading || isFetching}
+        onSubmit={handleSubmit}
+        isRegenerate={submittedPrompt === prompt.trim() && !!result}
       />
 
       <div className="w-full space-y-3 mt-auto">

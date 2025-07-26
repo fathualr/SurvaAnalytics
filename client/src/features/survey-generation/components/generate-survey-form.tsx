@@ -1,59 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useGenerateSurveyStructure } from '@/features/.python-service/hooks/useUserPythonService';
 import { Loader2Icon } from 'lucide-react';
 import { ShinyGeminiButton } from '@/components/umum/shiny-gemini-button';
 import { GeminiIcon } from '@/components/icons/gemini';
-import { GeneratedSurveyStructure } from '@/features/.python-service/types/types';
 
 interface GenerateSurveyFormProps {
   prompt: string;
   setPrompt: (prompt: string) => void;
-  onSuccess?: (data: GeneratedSurveyStructure) => void;
-  setIsError?: (value: boolean) => void;
+  isLoading: boolean;
+  onSubmit: () => void;
+  isRegenerate?: boolean;
 }
 
 export const GenerateSurveyForm = ({
   prompt,
   setPrompt,
-  onSuccess,
-  setIsError,
+  isLoading,
+  onSubmit,
+  isRegenerate = false,
 }: GenerateSurveyFormProps) => {
-  const [submittedPrompt, setSubmittedPrompt] = useState('');
-
-  const {
-    data,
-    isLoading,
-    isFetching,
-    isError,
-    refetch,
-  } = useGenerateSurveyStructure(submittedPrompt, !!submittedPrompt);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = prompt.trim();
-    if (!trimmed) return;
-
-    if (trimmed === submittedPrompt) {
-      refetch();
-    } else {
-      setSubmittedPrompt(trimmed);
-    }
+    onSubmit();
   };
-
-  useEffect(() => {
-    if (data) {
-      onSuccess?.(data);
-      setIsError?.(false);
-    }
-  }, [data, onSuccess, setIsError]);
-
-  useEffect(() => {
-    if (isError) {
-      setIsError?.(true);
-    }
-  }, [isError, setIsError]);
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-grow w-full">
@@ -69,9 +38,9 @@ export const GenerateSurveyForm = ({
         <ShinyGeminiButton
           type="submit"
           className="sm:w-fit w-full px-4 py-2"
-          disabled={isLoading || isFetching || prompt.trim().length === 0}
+          disabled={isLoading || prompt.trim().length === 0}
         >
-          {isLoading || isFetching ? (
+          {isLoading ? (
             <>
               <Loader2Icon className="animate-spin w-5 h-5" />
               <span className="text-xl font-semibold">Generating...</span>
@@ -80,7 +49,7 @@ export const GenerateSurveyForm = ({
             <>
               <GeminiIcon className="w-5 h-5" />
               <span className="text-xl font-semibold">
-                {submittedPrompt === prompt.trim() && data || isError ? 'Re-generate' : 'Generate'}
+                {isRegenerate ? 'Re-generate' : 'Generate'}
               </span>
               <GeminiIcon className="w-5 h-5" />
             </>
