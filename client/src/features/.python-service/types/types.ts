@@ -21,16 +21,21 @@ export interface UserPrompt {
   prompt: string;
 }
 
-interface PertanyaanSurvei {
+export interface PertanyaanSurvei {
   teks_pertanyaan: string;
   tipe_pertanyaan: string;
   opsi: string[];
 }
 
-export interface GeneratedSurveyStructure {
+export interface SurveyStructure {
+  id?: string;
   judul: string;
   deskripsi: string;
   jumlah_responden: number;
   kriteria: Record<string, any>;
-  PertanyaanSurvei:PertanyaanSurvei[];
+  PertanyaanSurvei: PertanyaanSurvei[];
 }
+
+export type GeneratedSurveyStructure =
+  | SurveyStructure
+  | { error: string };
