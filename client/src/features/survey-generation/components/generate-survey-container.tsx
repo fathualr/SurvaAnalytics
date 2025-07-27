@@ -13,6 +13,7 @@ export const GenerateSurveyContainer = () => {
   const [submittedPrompt, setSubmittedPrompt] = useState('');
   const [result, setResult] = useState<GeneratedSurveyStructure | null>(null);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const {
     data,
@@ -20,6 +21,7 @@ export const GenerateSurveyContainer = () => {
     isFetching,
     isError: isFetchError,
     refetch,
+    error,
   } = useGenerateSurveyStructure(submittedPrompt, !!submittedPrompt);
 
   const handleSubmit = () => {
@@ -40,17 +42,25 @@ export const GenerateSurveyContainer = () => {
     setIsError(false);
   };
 
-  if (data && data !== result) {
-    setResult(data);
-    setIsError(false);
-    if ('error' in data) {
-      setIsError(true);
-    }
-  }
+if (data && data !== result) {
+  setResult(data);
+  setIsError(false);
+  setErrorMessage('');
 
-  if (isFetchError && !isError) {
+  if ('error' in data && data.error) {
     setIsError(true);
+    setErrorMessage(typeof data.error === 'string' ? data.error : 'An unexpected error occurred.');
   }
+}
+
+if (isFetchError && !isError) {
+  setIsError(true);
+  const message =
+    typeof error === 'object' && error !== null && 'message' in error
+      ? String(error.message)
+      : 'Failed to generate survey.';
+  setErrorMessage(message);
+}
 
   return (
     <div
@@ -75,8 +85,10 @@ export const GenerateSurveyContainer = () => {
           <>
             <ActionButtonSurveyGenerated
               onClear={handleClear}
+              isError={isError}
+              data={!isError && result && 'error' in result === false ? result : null}
             />
-            <GenerateSurveyResult data={result ?? { error: '' }} isError={isError} />
+            <GenerateSurveyResult data={result ?? { error: errorMessage }} isError={isError} />
           </>
         ) : (
           <PromptSuggestionGrid onSelect={(selectedPrompt) => setPrompt(selectedPrompt)} />

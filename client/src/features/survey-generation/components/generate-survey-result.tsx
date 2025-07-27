@@ -18,7 +18,13 @@ const formatNumberArrayToRange = (arr: number[]) => {
 
 export const GenerateSurveyResult = ({ data, isError }: Props) => {
   const [answers, setAnswers] = useState<Record<string, any>>({});
-
+  const isKriteriaEmpty = (kriteria: Record<string, unknown>) => {
+  return Object.values(kriteria).every((value) => {
+    if (Array.isArray(value)) return value.length === 0;
+    if (typeof value === 'string') return value.trim() === '';
+    return !value;
+  });
+};
   const updateAnswer = (id: string, value: any) =>
     setAnswers((prev) => ({ ...prev, [id]: value }));
 
@@ -51,7 +57,7 @@ export const GenerateSurveyResult = ({ data, isError }: Props) => {
         </Badge>
       </div>
 
-      {Object.keys(data.kriteria ?? {}).length > 0 && (
+      {data.kriteria && !isKriteriaEmpty(data.kriteria) && (
         <div className="space-y-2">
           <h4 className="text-xl font-semibold">Survey Criteria</h4>
           <div className="flex flex-wrap justify-center gap-2">
