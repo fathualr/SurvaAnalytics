@@ -15,7 +15,7 @@ export const SurveyQuestion = ({ id, question, value, onChange, index }: Props) 
 
   const toggleCheckbox = (opt: string) => {
     const current = new Set(Array.isArray(value) ? value : []);
-    current.has(opt) ? current.delete(opt) : current.add(opt);
+    current[current.has(opt) ? 'delete' : 'add'](opt);
     onChange(Array.from(current));
   };
 
