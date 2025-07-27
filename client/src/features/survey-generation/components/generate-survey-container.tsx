@@ -1,12 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { GenerateSurveyForm } from './generate-survey-form';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { GeneratedSurveyStructure } from '@/features/.python-service/types/types';
 import { useGenerateSurveyStructure } from '@/features/.python-service/hooks/useUserPythonService';
 import { GenerateSurveyResult } from './generate-survey-result';
 import { PromptSuggestionGrid } from './prompt-suggestion-grid';
+import { GenerateSurveyForm } from './generate-survey-form';
 import { ActionButtonSurveyGenerated } from './action-button-survey-generated';
+import { toast } from 'sonner';
+import { Separator } from '@/components/ui/separator';
 
 export const GenerateSurveyContainer = () => {
   const [prompt, setPrompt] = useState('');
@@ -14,6 +18,8 @@ export const GenerateSurveyContainer = () => {
   const [result, setResult] = useState<GeneratedSurveyStructure | null>(null);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
 
   const {
     data,
@@ -25,6 +31,12 @@ export const GenerateSurveyContainer = () => {
   } = useGenerateSurveyStructure(submittedPrompt, !!submittedPrompt);
 
   const handleSubmit = () => {
+    if (!isLoggedIn) {
+      router.push('/login');
+      toast.error('Please log in first to generate survey.');
+      return;
+    }
+
     const trimmed = prompt.trim();
     if (!trimmed) return;
 
@@ -78,9 +90,11 @@ if (isFetchError && !isError) {
         isLoading={isLoading || isFetching}
         onSubmit={handleSubmit}
         isRegenerate={submittedPrompt === prompt.trim() && !!result}
+        isDisabled={!isLoggedIn}
       />
 
       <div className="w-full space-y-3 mt-auto">
+        <Separator className="bg-foreground/25 my-3"/>
         {result || isError ? (
           <>
             <ActionButtonSurveyGenerated
@@ -91,7 +105,12 @@ if (isFetchError && !isError) {
             <GenerateSurveyResult data={result ?? { error: errorMessage }} isError={isError} />
           </>
         ) : (
-          <PromptSuggestionGrid onSelect={(selectedPrompt) => setPrompt(selectedPrompt)} />
+          <PromptSuggestionGrid
+            onSelect={(selectedPrompt) => {
+              if (isLoggedIn) setPrompt(selectedPrompt);
+            }}
+            isDisabled={!isLoggedIn} 
+          />
         )}
       </div>
     </div>

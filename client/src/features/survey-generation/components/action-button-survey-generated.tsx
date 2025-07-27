@@ -38,6 +38,7 @@ export const ActionButtonSurveyGenerated = ({
 
     try {
       const result = await mutateAsync(data);
+      onClear();
       router.push(`/manage-survey/edit/${result.id}`);
     } catch (error: any) {
       const message = error?.response?.data?.message || 'Failed to save survey.';
