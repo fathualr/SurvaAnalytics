@@ -88,7 +88,7 @@ const Navbar = () => {
               </Button>
 
               {isOpen && (
-                <div className="absolute right-0 top-12 mt-2 w-60 bg-[var(--glass-bg)] text-foreground rounded-xl shadow-lg z-20 p-4 border border-[var(--glass-border)] backdrop-blur-md transition-colors duration-200">
+                <div className="absolute right-0 top-12 mt-2 w-60 bg-background/75 text-foreground rounded-xl shadow-lg z-20 p-4 border border-[var(--glass-border)] backdrop-blur-md transition-colors duration-200">
                   <div className="mb-3 space-y-0.5">
                     <p className="font-semibold text-md truncate">
                       {user?.Umum?.nama || "Anonymous"}
@@ -102,7 +102,7 @@ const Navbar = () => {
                       <Link
                         href="/profile"
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center gap-2 px-2 py-2 rounded-md text-sm hover:bg-white/30 dark:hover:bg-white/10 transition"
+                        className="flex items-center gap-2 px-2 py-2 rounded-md text-sm hover:bg-foreground/25 transition"
                       >
                         <IdCard className="w-4 h-4" />
                         <span>Profile</span>
@@ -110,9 +110,9 @@ const Navbar = () => {
                     </li>
                   </ul>
                   <Button
-                    variant="ghost"
+                    variant="default"
                     size="icon"
-                    className="w-full flex items-center justify-start mt-3 gap-2 px-2 py-2 text-sm hover:bg-white/30 dark:hover:bg-white/10 hover:text-foreground transition"
+                    className="w-full flex items-center justify-start mt-3 gap-2 px-2 py-2 text-sm text-foreground bg-transparent hover:bg-foreground/25 hover:text-foreground transition"
                     onClick={logout}
                   >
                     <LogOut className="w-4 h-4" />
