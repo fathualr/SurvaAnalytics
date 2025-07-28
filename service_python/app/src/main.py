@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.src.config import settings
 from app.src.routers import sentiment_analysis_router
+from app.src.routers import survey_structure_generation_router
 from app.src.routers import wordcloud_routers
 
 app = FastAPI(title=settings.app_name)
@@ -16,7 +17,8 @@ app.add_middleware(
 
 @app.get("/")
 async def read_root():
-    return {"status": "success", "message": "Welcome to the Sentiment Analysis API!"}
+    return {"status": "success", "message": "Welcome to Service Python API!"}
 
 app.include_router(sentiment_analysis_router.router, prefix="/api")
+app.include_router(survey_structure_generation_router.router, prefix="/api")
 app.include_router(wordcloud_routers.router, prefix="/api")

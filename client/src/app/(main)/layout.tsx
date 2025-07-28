@@ -9,7 +9,7 @@ import { RequireAuth } from '@/guards/RequireAuth';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useEffect, useState } from 'react';
 
-const PUBLIC_ROUTES = ['/', '/explore'];
+const PUBLIC_ROUTES = ['/', '/explore', '/generate-survey'];
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

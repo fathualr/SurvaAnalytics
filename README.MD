@@ -33,48 +33,50 @@ SurvaAnalytics/
 
 ### Client (.env)
 
-| Variabel                                  | Keterangan                              | Contoh                  |
-| ----------------------------------------- | --------------------------------------- | ----------------------- |
-| `NEXT_PUBLIC_SERVER_API_BASE_URL`         | URL API dari server backend             | `http://localhost:5000` |
-| `NEXT_PUBLIC_PYTHON_SERVICE_API_BASE_URL` | URL layanan Python eksternal (opsional) | `http://localhost:8000` |
+| Variable                                  | Description                                        | Example                 |
+| ----------------------------------------- | -------------------------------------------------- | ----------------------- |
+| `NEXT_PUBLIC_SERVER_API_BASE_URL`         | Base URL of the backend server API                 | `http://localhost:5000` |
+| `NEXT_PUBLIC_PYTHON_SERVICE_API_BASE_URL` | Base URL of the external Python service (optional) | `http://localhost:8000` |
 
 ### Server (.env)
 
-| Variabel                | Keterangan                                                  | Contoh                       |
-| ----------------------- | ----------------------------------------------------------- | ---------------------------- |
-| `PORT`                  | Port untuk menjalankan server backend                       | `5000`                       |
-| `NODE_ENV`              | Mode environment: `development` atau `production`           | `development`                |
-| `CLIENT_URL`            | URL frontend yang terhubung ke backend                      | `http://localhost:3000`      |
-| `DB_TYPE`               | Jenis database yang digunakan (`local`, `neon`, `supabase`) | `local`                      |
-| `DB_USER`               | Username database untuk koneksi lokal                       | `postgres`                   |
-| `DB_HOST`               | Host database untuk koneksi lokal                           | `localhost`                  |
-| `DB_NAME`               | Nama database yang digunakan                                | `survaanalytics_db`          |
-| `DB_PASSWORD`           | Password database lokal                                     | `yourpassword`               |
-| `DB_PORT`               | Port database                                               | `5432`                       |
-| `DB_SSL`                | Gunakan SSL untuk koneksi database (`true` / `false`)       | `false`                      |
-| `NEON_DATABASE_URL`     | Connection string dari Neon PostgreSQL                      | `postgres://...`             |
-| `SUPABASE_DATABASE_URL` | Connection string dari Supabase PostgreSQL                  | `postgres://...`             |
-| `JWT_ACCESS_SECRET`     | Secret key JWT Access Token                                 | `someaccesssecretkey`        |
-| `JWT_REFRESH_SECRET`    | Secret key JWT Refresh Token                                | `somerefreshsecretkey`       |
-| `SMTP_HOST`             | Alamat SMTP provider email                                  | `smtp.gmail.com`             |
-| `SMTP_PORT`             | Port SMTP (465 = SSL, 587 = TLS)                            | `465`                        |
-| `SMTP_USE_SSL`          | Gunakan SSL untuk email (`true` / `false`)                  | `true`                       |
-| `SMTP_USER`             | Alamat email pengirim                                       | `youremail@gmail.com`        |
-| `SMTP_PASSWORD`         | App Password atau password email                            | `yourapppassword`            |
-| `FROM_EMAIL`            | Email pengirim yang tampil                                  | `noreply@survaanalytics.com` |
-| `REDIS_URL`             | URL koneksi ke Redis                                        | `redis://localhost:6379`     |
-| `XENDIT_SECRET_KEY`     | API key dari Xendit                                         | `xnd_production_...`         |
-| `XENDIT_CALLBACK_TOKEN` | Token untuk memverifikasi callback dari Xendit              | `your-callback-token`        |
+| Variable                | Description                                            | Example                      |
+| ----------------------- | ------------------------------------------------------ | ---------------------------- |
+| `PORT`                  | Port number the backend server runs on                 | `5000`                       |
+| `NODE_ENV`              | Application environment: `development` or `production` | `development`                |
+| `CLIENT_URL`            | Frontend application URL that connects to the backend  | `http://localhost:3000`      |
+| `DB_TYPE`               | Database type used: `local`, `neon`, or `supabase`     | `local`                      |
+| `DB_USER`               | Database username (for local connections)              | `postgres`                   |
+| `DB_HOST`               | Database host (for local connections)                  | `localhost`                  |
+| `DB_NAME`               | Name of the database in use                            | `survaanalytics_db`          |
+| `DB_PASSWORD`           | Password for the database (local)                      | `yourpassword`               |
+| `DB_PORT`               | Database port number                                   | `5432`                       |
+| `DB_SSL`                | Use SSL for database connection: `true` or `false`     | `false`                      |
+| `NEON_DATABASE_URL`     | Full connection string for Neon PostgreSQL             | `postgres://...`             |
+| `SUPABASE_DATABASE_URL` | Full connection string for Supabase PostgreSQL         | `postgres://...`             |
+| `JWT_ACCESS_SECRET`     | Secret key used to sign JWT Access Tokens              | `someaccesssecretkey`        |
+| `JWT_REFRESH_SECRET`    | Secret key used to sign JWT Refresh Tokens             | `somerefreshsecretkey`       |
+| `SMTP_HOST`             | SMTP server host for sending emails                    | `smtp.gmail.com`             |
+| `SMTP_PORT`             | SMTP port: use `465` for SSL or `587` for TLS          | `465`                        |
+| `SMTP_USE_SSL`          | Use SSL for SMTP: `true` or `false`                    | `true`                       |
+| `SMTP_USER`             | Email address used to send emails                      | `youremail@gmail.com`        |
+| `SMTP_PASSWORD`         | Email password or app-specific password                | `yourapppassword`            |
+| `FROM_EMAIL`            | Email address shown as sender                          | `noreply@survaanalytics.com` |
+| `REDIS_URL`             | Redis connection string                                | `redis://localhost:6379`     |
+| `XENDIT_SECRET_KEY`     | Xendit API secret key                                  | `xnd_production_...`         |
+| `XENDIT_CALLBACK_TOKEN` | Token used to verify callbacks from Xendit             | `your-callback-token`        |
 
 ### Python Service (.env)
 
-| Variabel      | Keterangan                                       | Contoh                  |
-| ------------- | ------------------------------------------------ | ----------------------- |
-| `APP_NAME`    | Nama aplikasi atau layanan                       | `AI Service`            |
-| `CLIENT_URL`  | URL aplikasi frontend yang mengakses layanan ini | `http://localhost:3000` |
-| `DEBUG`       | Aktifkan debug mode (`True` / `False`)           | `True`                  |
-| `ENVIRONMENT` | Lingkungan aktif (`development` / `production`)  | `development`           |
-| `PORT`        | Port untuk menjalankan service Python            | `8000`                  |
+| Variable         | Description                                                          | Example                 |
+| ---------------- | -------------------------------------------------------------------- | ----------------------- |
+| `APP_NAME`       | Name of the Python microservice                                      | `AI Service`            |
+| `CLIENT_URL`     | URL of the frontend accessing this service                           | `http://localhost:3000` |
+| `DEBUG`          | Enable debug mode: `True` or `False`                                 | `True`                  |
+| `ENVIRONMENT`    | Environment the service is running in: `development` or `production` | `development`           |
+| `PORT`           | Port number the Python service runs on                               | `8000`                  |
+| `GEMINI_API_KEY` | API key used to access the Gemini model                              | `abcde...`              |
+| `GEMINI_MODEL`   | Name of the Gemini model used                                        | `gemini-2.5-flash`      |
 
 ---
 

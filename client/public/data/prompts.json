@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Customer Feedback",
+    "prompt": "Generate a detailed post-service customer satisfaction survey consisting of at least 10 questions. Include a mix of multiple choice, Likert scale (1–5), and one open-ended question. Focus on service quality, communication, and overall experience.",
+    "icon": "📝"
+  },
+  {
+    "title": "Employee Wellness",
+    "prompt": "Design an employee wellness and burnout assessment survey with questions covering workload, work-life balance, mental health support, and job satisfaction. Use a combination of rating scales and anonymous feedback options.",
+    "icon": "💼"
+  },
+  {
+    "title": "Event Satisfaction",
+    "prompt": "Create a comprehensive event satisfaction survey for attendees. Include questions about the content relevance, speaker quality, venue experience, networking opportunities, and suggestions for improvement.",
+    "icon": "🎯"
+  },
+  {
+    "title": "Product Research",
+    "prompt": "Draft a user-centric product research survey to validate a new product idea. Include demographic profiling, feature prioritization, pricing sensitivity (e.g., Van Westendorp method), and willingness to pay.",
+    "icon": "📦"
+  },
+  {
+    "title": "UX Evaluation",
+    "prompt": "Create a usability and user experience feedback survey for a mobile application. Include questions on ease of navigation, task completion efficiency, visual design satisfaction, and friction points.",
+    "icon": "⚙️"
+  },
+  {
+    "title": "Student Feedback",
+    "prompt": "Generate a student course evaluation form with sections for content clarity, instructor performance, learning outcomes, and resources used. Include both structured ratings and optional free-text comments.",
+    "icon": "👨‍🏫"
+  },
+  {
+    "title": "Market Insights",
+    "prompt": "Build a market research survey aimed at identifying current trends, consumer pain points, and purchase behaviors. Include segmentation by age, gender, and income level. Focus on industry-specific needs.",
+    "icon": "📊"
+  },
+  {
+    "title": "Feature Requests",
+    "prompt": "Develop a user feedback form to gather prioritized feature requests. Include questions on which features are missing, how often the product is used, and what would improve user retention.",
+    "icon": "✨"
+  },
+  {
+    "title": "Usability Testing",
+    "prompt": "Create a usability test exit survey for participants. Include metrics such as task success rate, perceived difficulty, time to completion, and qualitative feedback on experience flow.",
+    "icon": "🔍"
+  },
+  {
+    "title": "Remote Work Insights",
+    "prompt": "Draft a remote work productivity and engagement survey. Include questions on tool usage, team communication, isolation levels, productivity tracking, and preferences for hybrid work models.",
+    "icon": "🏠"
+  },
+  {
+    "title": "Onboarding Experience",
+    "prompt": "Create a new hire onboarding feedback survey to measure effectiveness. Ask about clarity of training materials, support from team, timeline expectations, and overall first-month experience.",
+    "icon": "🧭"
+  },
+  {
+    "title": "Brand Perception",
+    "prompt": "Generate a brand perception and awareness survey for customers. Include aided vs unaided brand recall, emotional associations, trust level, and comparison with competitors.",
+    "icon": "📣"
+  }
+]

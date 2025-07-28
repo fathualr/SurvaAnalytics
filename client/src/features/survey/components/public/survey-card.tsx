@@ -168,30 +168,27 @@ export function SurveyCard({
               <h3 className="font-semibold">Criteria: </h3>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(kriteria).map(([key, value]) => {
-                  let displayValue = '';
+              if (!value || (Array.isArray(value) && value.length === 0)) return null;
 
-                  if (Array.isArray(value) && value.every((v) => typeof v === 'number')) {
-                    displayValue = formatNumberArrayToRange(value);
-                  } else if (Array.isArray(value)) {
-                    displayValue = value.join(', ');
-                  } else {
-                    displayValue = String(value);
-                  }
+              const displayValue = Array.isArray(value)
+                ? value.every((v) => typeof v === 'number')
+                  ? formatNumberArrayToRange(value)
+                  : value.join(', ')
+                : String(value);
 
-                  return (
-                    <Badge
-                      key={key}
-                      variant="outline"
-                      className="bg-secondary-1/10 dark:bg-secondary-1/20 text-muted-foreground border border-secondary-1/30 dark:border-secondary-1/40 backdrop-blur-sm px-3 py-1 text-xs font-medium flex items-start gap-1 break-words max-w-full whitespace-normal"
-                    >
-                      <ClipboardList className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                      <div className="capitalize">
-                        <span className="font-semibold">{key}:</span>{' '}
-                        <span>{displayValue}</span>
-                      </div>
-                    </Badge>
-                  );
-                })}
+                    return (
+                      <Badge
+                        key={key}
+                        variant="outline"
+                        className="bg-secondary-1/10 dark:bg-secondary-1/20 text-muted-foreground border border-secondary-1/30 dark:border-secondary-1/40 backdrop-blur-sm px-3 py-1 text-xs font-medium flex items-start gap-1 break-words max-w-full whitespace-normal"
+                      >
+                        <ClipboardList className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                        <div className="capitalize">
+                          <span className="font-semibold">{key}:</span> <span>{displayValue}</span>
+                        </div>
+                      </Badge>
+                    );
+                  })}
               </div>
             </div>
           )}

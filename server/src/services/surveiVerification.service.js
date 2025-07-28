@@ -1,5 +1,5 @@
 import db from '../models/index.js';
-const { Survei, PembayaranSurvei } = db;
+const { Survei, PembayaranSurvei, PertanyaanSurvei } = db;
 
 export const submitForVerification = async (surveiId) => {
   const transaction = await db.sequelize.transaction();
@@ -7,12 +7,27 @@ export const submitForVerification = async (surveiId) => {
   try {
     const survei = await Survei.findOne({
       where: { id: surveiId },
+      include: [
+        {
+          model: PertanyaanSurvei,
+          separate: true,
+          order: [['index', 'ASC']],
+        }
+      ],
       transaction
     });
     if (!survei) throw { status: 404, message: 'Survei not found' };
 
     if (survei.status !== 'draft' && survei.status !== 'rejected') {
       throw { status: 400, message: `Survei must be in draft status. Current survei status: ${survei.status}` };
+    }
+
+    if (new Date(survei.tanggal_mulai).getTime() <= Date.now()) {
+      throw { status: 400, message: `Survei start date must be in the future.` };
+    }
+
+    if (!Array.isArray(survei.PertanyaanSurveis) || survei.PertanyaanSurveis.length === 0) {
+      throw {  status: 400,  message: 'Survey must contain at least one question.', };
     }
 
     await survei.update({ status: 'under_review' }, { transaction });
